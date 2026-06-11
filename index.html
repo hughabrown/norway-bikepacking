@@ -80,7 +80,8 @@ h2{font-size:34px;font-weight:700;text-transform:uppercase;letter-spacing:.03em}
   position:sticky;top:0;z-index:1100;background:var(--paper);
   border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);
 }
-.crumbs ul{display:flex;gap:4px;list-style:none;margin:0;padding:0 12px;overflow-x:auto}
+.crumbs ul{display:flex;gap:4px;list-style:none;margin:0 auto;padding:0 20px;max-width:1060px;overflow-x:auto}
+.crumbs li:first-child a{padding-left:0}
 .crumbs a{
   display:block;padding:11px 14px;text-decoration:none;color:var(--ink);
   font-family:'Barlow Condensed',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.1em;font-size:15px;white-space:nowrap;
@@ -142,12 +143,24 @@ section{padding:46px 0 8px}
   font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;letter-spacing:.12em;text-transform:uppercase;
   margin:0 0 8px;padding-bottom:5px;border-bottom:2px solid var(--ink);
 }
-.day-cols ul{list-style:none;margin:0;padding:0}
-.day-cols li{padding:7px 0;border-bottom:1px dotted var(--contour);font-size:15.5px}
-.day-cols li .nm{font-weight:600}
-.day-cols li .nm a{color:inherit;text-decoration:none;border-bottom:1px solid var(--contour)}
-.day-cols li .nm a:hover{color:var(--lake);border-color:var(--lake)}
-.day-cols li .ds{display:block;color:var(--ink-soft);font-size:14px;line-height:1.45}
+.plist{margin:0}
+.pl{border-bottom:1px dotted var(--contour)}
+.pl summary{
+  list-style:none;display:flex;align-items:baseline;gap:8px;
+  padding:8px 0;cursor:pointer;font-size:15.5px;
+}
+.pl summary::-webkit-details-marker{display:none}
+.pl summary .pl-nm{font-weight:600;flex:1 1 auto;min-width:0}
+.pl summary:hover .pl-nm{color:var(--lake)}
+.pl summary::after{content:"+";font-family:'Barlow Condensed',sans-serif;font-weight:600;color:var(--ink-soft);flex:none}
+.pl[open] summary::after{content:"−"}
+.pl summary .price{flex:0 1 auto;max-width:32%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pl .pl-body{padding:0 0 10px}
+.pl .pl-body .ds{display:block;color:var(--ink-soft);font-size:14px;line-height:1.45;margin-bottom:5px}
+.pl .pl-body a{
+  font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:13px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;
+}
+.pl-static{padding:8px 0;border-bottom:1px dotted var(--contour);color:var(--ink-soft);font-size:14.5px}
 .badge{
   font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:12px;letter-spacing:.08em;text-transform:uppercase;
   border-radius:2px;padding:1px 6px;margin-right:6px;color:#fff;display:inline-block;transform:translateY(-1px);
@@ -503,14 +516,22 @@ footer a{color:var(--ink-soft)}
     var d = new Date(iso + 'T12:00:00');
     return DOW[d.getDay()] + ' ' + d.getDate() + ' ' + MON[d.getMonth()];
   }
+  function isDetour(p){ return !!(p.detour && !/^on route/i.test(p.detour)); }
   function liPlace(p, badgeClass, badgeText){
     var meta = [];
-    if (p.detour && p.detour !== 'on route') meta.push(p.detour);
+    if (isDetour(p)) meta.push(p.detour);
     if (p.price) meta.push(p.price);
-    return '<li><span class="badge '+badgeClass+'">'+esc(badgeText)+'</span>'+
-      '<span class="nm"><a href="'+gmaps(p)+'" target="_blank" rel="noopener">'+esc(p.name)+'</a></span>'+
-      (meta.length? ' <span class="price">'+esc(meta.join(' · '))+'</span>':'')+
-      '<span class="ds">'+esc(p.description||'')+'</span></li>';
+    var bodyMeta = [p.detour, p.price].filter(Boolean).join(' · ');
+    return '<details class="pl"><summary>'+
+      '<span class="badge '+badgeClass+'">'+esc(badgeText)+'</span>'+
+      '<span class="pl-nm">'+esc(p.name)+'</span>'+
+      (meta.length? '<span class="price">'+esc(meta.join(' · '))+'</span>':'')+
+      '</summary>'+
+      '<div class="pl-body">'+
+      (bodyMeta? '<span class="ds mono" style="font-size:12px">'+esc(bodyMeta)+'</span>':'')+
+      '<span class="ds">'+esc(p.description||'')+'</span>'+
+      '<a href="'+gmaps(p)+'" target="_blank" rel="noopener">Open in Google Maps ↗</a></div>'+
+      '</details>';
   }
   function renderDays(){
     var stages = stagesOf(current);
@@ -524,10 +545,10 @@ footer a{color:var(--ink-soft)}
         var sk = p.name;
         if (shownSee[sk]) return ''; shownSee[sk]=1;
         var cat = (p.category||'').replace('_',' ');
-        return liPlace(p, p.detour && p.detour!=='on route' ? 'b-detour':'b-nature', cat || 'sight');
+        return liPlace(p, isDetour(p) ? 'b-detour':'b-nature', cat || 'sight');
       }).join('');
       if (!seeHtml && (st.highlights||[]).length){
-        seeHtml = st.highlights.map(function(h){ return '<li><span class="ds">'+esc(h)+'</span></li>'; }).join('');
+        seeHtml = st.highlights.map(function(h){ return '<div class="pl-static">'+esc(h)+'</div>'; }).join('');
       }
       var eatHtml = town ? (town.food||[]).map(function(f){ return liPlace(f,'b-food', f.type||'food'); }).join('') : '';
       var sleepHtml = town ? (town.sleep||[]).map(function(s){ return liPlace(s,'b-sleep', (s.type||'sleep').replace('_',' ')); }).join('') : '';
@@ -552,9 +573,9 @@ footer a{color:var(--ink-soft)}
         '<p class="summary">'+esc(st.summary||'')+'</p>'+
         (st.notes ? '<p class="notes">⚠ '+esc(st.notes)+'</p>':'')+
         '<div class="day-cols">'+
-          '<div><h4>See &amp; do</h4><ul>'+(seeHtml||'<li><span class="ds">Big views all day — see the map.</span></li>')+'</ul></div>'+
-          '<div><h4>Eat</h4><ul>'+(eatHtml||'<li><span class="ds">Carry food — no reliable services at this stop.</span></li>')+'</ul></div>'+
-          '<div><h4>Sleep</h4><ul>'+(sleepHtml||'<li><span class="ds">Wild camp (allemannsretten): 150 m from houses, max 2 nights.</span></li>')+'</ul></div>'+
+          '<div><h4>See &amp; do</h4><div class="plist">'+(seeHtml||'<div class="pl-static">Big views all day — see the map.</div>')+'</div></div>'+
+          '<div><h4>Eat</h4><div class="plist">'+(eatHtml||'<div class="pl-static">Carry food — no reliable services at this stop.</div>')+'</div></div>'+
+          '<div><h4>Sleep</h4><div class="plist">'+(sleepHtml||'<div class="pl-static">Wild camp (allemannsretten): 150 m from houses, max 2 nights.</div>')+'</div></div>'+
         '</div>'+
         '<button class="map-jump" data-day="'+st.day+'">Show day '+st.day+' on the map</button>'+
         '</div></article>';
@@ -587,6 +608,15 @@ footer a{color:var(--ink-soft)}
     this.setAttribute('aria-pressed', open ? 'true' : 'false');
     this.textContent = open ? 'Collapse all' : 'Expand all';
     document.querySelectorAll('.day-head').forEach(function(h){ setDayOpen(h, open); });
+  });
+  var printOpened = [];
+  window.addEventListener('beforeprint', function(){
+    printOpened = [];
+    document.querySelectorAll('details.pl:not([open])').forEach(function(d){ d.setAttribute('open',''); printOpened.push(d); });
+  });
+  window.addEventListener('afterprint', function(){
+    printOpened.forEach(function(d){ d.removeAttribute('open'); });
+    printOpened = [];
   });
 
   /* ---------- saved places ---------- */
