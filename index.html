@@ -1,0 +1,625 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Røros → Flåm · Setrer og villmark · July 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<style>
+:root{
+  --paper:#FBFAF7;
+  --ink:#22302B;
+  --ink-soft:#5C6963;
+  --contour:#D8D0BC;
+  --lake:#2E6E73;
+  --dnt:#C8351F;
+  --birch:#5E7A4B;
+  --snow:#EEF1EC;
+  --card:#FFFFFF;
+  --amber:#A06B22;
+  --slate:#4A5E75;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:'Source Serif 4',Georgia,serif;font-size:17px;line-height:1.55;
+}
+a{color:var(--lake)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--dnt);outline-offset:2px}
+.wrap{max-width:1060px;margin:0 auto;padding:0 20px}
+h1,h2,h3{font-family:'Barlow Condensed',sans-serif;line-height:1.05;margin:0}
+h2{font-size:34px;font-weight:700;text-transform:uppercase;letter-spacing:.03em}
+.mono{font-family:'IBM Plex Mono',monospace}
+
+/* masthead */
+.masthead{padding:42px 0 10px;border-bottom:2px solid var(--ink)}
+.masthead .route-no{
+  display:inline-block;border:2px solid var(--ink);padding:2px 10px;margin-bottom:14px;
+  font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;letter-spacing:.18em;text-transform:uppercase;
+}
+.masthead h1{font-size:clamp(42px,8vw,84px);font-weight:700;text-transform:uppercase;letter-spacing:.01em}
+.masthead h1 .arrow{color:var(--dnt)}
+.masthead .sub{margin:10px 0 18px;max-width:66ch;color:var(--ink-soft)}
+.variant-bar{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 8px}
+.variant-btn{
+  font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:17px;letter-spacing:.08em;text-transform:uppercase;
+  border:2px solid var(--ink);background:var(--card);color:var(--ink);border-radius:2px;
+  padding:8px 18px;cursor:pointer;text-align:left;
+}
+.variant-btn small{display:block;font-family:'IBM Plex Mono',monospace;font-weight:400;font-size:11px;letter-spacing:.04em;text-transform:none;color:var(--ink-soft)}
+.variant-btn[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.variant-btn[aria-pressed="true"] small{color:var(--contour)}
+.decision-hint{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-soft);margin:6px 0 0}
+
+/* elevation ribbon */
+#ribbon{padding:18px 0 6px}
+#ribbon svg{width:100%;height:auto;display:block}
+.rib-area{fill:var(--snow)}
+.rib-line{fill:none;stroke:var(--ink);stroke-width:2}
+.rib-sea{stroke:var(--lake);stroke-width:1;stroke-dasharray:3 4}
+.rib-day{stroke:var(--contour);stroke-width:1}
+.rib-day-no{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:13px;fill:var(--ink-soft)}
+.rib-peak{font-family:'IBM Plex Mono',monospace;font-size:10.5px;fill:var(--ink-soft)}
+.rib-hit{fill:transparent;cursor:pointer}
+.rib-hit:hover{fill:rgba(200,53,31,.08)}
+.rib-hike{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:12px;fill:var(--dnt)}
+.statline{
+  display:flex;flex-wrap:wrap;gap:10px 34px;border-top:1px solid var(--contour);
+  padding:14px 0 26px;margin-top:4px;
+}
+.stat .v{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:34px;display:block;line-height:1}
+.stat .k{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+
+/* nav */
+.crumbs{
+  position:sticky;top:0;z-index:1100;background:var(--paper);
+  border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);
+}
+.crumbs ul{display:flex;gap:4px;list-style:none;margin:0;padding:0 12px;overflow-x:auto}
+.crumbs a{
+  display:block;padding:11px 14px;text-decoration:none;color:var(--ink);
+  font-family:'Barlow Condensed',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.1em;font-size:15px;white-space:nowrap;
+}
+.crumbs a:hover{color:var(--dnt)}
+
+section{padding:46px 0 8px}
+.section-head{display:flex;align-items:baseline;gap:16px;margin-bottom:18px}
+.section-head .tick{width:26px;height:10px;background:var(--dnt);flex:none;transform:translateY(-4px)}
+.section-note{color:var(--ink-soft);max-width:70ch;margin:0 0 18px}
+
+/* map */
+#map{height:62vh;min-height:430px;border:2px solid var(--ink);border-radius:2px;z-index:0}
+.map-controls{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+.chip{
+  font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:15px;letter-spacing:.06em;text-transform:uppercase;
+  border:1.5px solid var(--ink);background:var(--card);color:var(--ink);
+  border-radius:999px;padding:5px 14px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;
+}
+.chip .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.chip[aria-pressed="false"]{opacity:.38}
+.chip.day-chip[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.legend-hint{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-soft);margin:10px 0 0}
+
+/* day cards */
+.day{
+  display:grid;grid-template-columns:118px 1fr;gap:0 26px;
+  border-top:1px solid var(--ink);padding:26px 0 30px;
+}
+.day.is-hike{background:linear-gradient(0deg,rgba(94,122,75,.06),rgba(94,122,75,.06))}
+.day-rail{position:relative}
+.day-rail .day-no{
+  font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:58px;line-height:.9;display:block;color:var(--dnt);
+}
+.day-rail .day-date{
+  font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);display:block;margin-top:6px;
+}
+.day-rail .day-stop{
+  font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:14px;letter-spacing:.1em;text-transform:uppercase;
+  margin-top:14px;display:block;color:var(--ink);
+}
+.day h3{font-size:30px;font-weight:700;text-transform:uppercase}
+.day h3 .arrow{color:var(--dnt)}
+.ride-chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 12px}
+.ride-chips span{
+  font-family:'IBM Plex Mono',monospace;font-size:12.5px;background:var(--snow);
+  border:1px solid var(--contour);border-radius:3px;padding:3px 9px;
+}
+.day .summary{margin:0 0 6px;max-width:74ch}
+.day .notes{font-size:15px;color:var(--ink-soft);margin:6px 0 0;max-width:74ch}
+.day-cols{display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:24px;margin-top:18px}
+.day-cols h4{
+  font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;letter-spacing:.12em;text-transform:uppercase;
+  margin:0 0 8px;padding-bottom:5px;border-bottom:2px solid var(--ink);
+}
+.day-cols ul{list-style:none;margin:0;padding:0}
+.day-cols li{padding:7px 0;border-bottom:1px dotted var(--contour);font-size:15.5px}
+.day-cols li .nm{font-weight:600}
+.day-cols li .nm a{color:inherit;text-decoration:none;border-bottom:1px solid var(--contour)}
+.day-cols li .nm a:hover{color:var(--lake);border-color:var(--lake)}
+.day-cols li .ds{display:block;color:var(--ink-soft);font-size:14px;line-height:1.45}
+.badge{
+  font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+  border-radius:2px;padding:1px 6px;margin-right:6px;color:#fff;display:inline-block;transform:translateY(-1px);
+}
+.b-nature{background:var(--birch)} .b-food{background:var(--amber)} .b-sleep{background:var(--slate)}
+.b-detour{background:transparent;color:var(--dnt);border:1px solid var(--dnt)}
+.price{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-soft)}
+.map-jump{
+  margin-top:16px;background:none;border:1.5px solid var(--ink);border-radius:999px;
+  font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:14px;letter-spacing:.08em;text-transform:uppercase;
+  padding:6px 16px;cursor:pointer;color:var(--ink);
+}
+.map-jump:hover{background:var(--ink);color:var(--paper)}
+
+/* saved places */
+.places-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.place{
+  background:var(--card);border:1px solid var(--contour);border-left:4px solid var(--birch);
+  border-radius:3px;padding:12px 14px;
+}
+.place.cat-food{border-left-color:var(--amber)}
+.place.cat-sleep{border-left-color:var(--slate)}
+.place .nm{font-weight:600}
+.place .ds{color:var(--ink-soft);font-size:14px;display:block;margin:3px 0 6px;line-height:1.45}
+.place .meta{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-soft)}
+.place a.gm{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:13px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none}
+
+/* logistics */
+.log-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.log-card{background:var(--card);border:1px solid var(--contour);border-top:3px solid var(--ink);padding:16px 18px;border-radius:3px}
+.log-card h4{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:18px;letter-spacing:.08em;text-transform:uppercase;margin:0 0 8px}
+.log-card p, .log-card li{font-size:15.5px}
+.log-card ul{padding-left:18px;margin:6px 0}
+.log-card ul.note-cols{columns:2;column-gap:34px}
+.log-card ul.note-cols li{break-inside:avoid;margin-bottom:8px}
+@media (max-width:880px){.log-card ul.note-cols{columns:1}}
+.warn{
+  border:1.5px solid var(--dnt);background:#FDF3F1;border-radius:3px;padding:14px 18px;margin:0 0 22px;
+}
+.warn strong{color:var(--dnt)}
+
+footer{margin-top:60px;border-top:2px solid var(--ink);padding:22px 0 60px;color:var(--ink-soft);font-size:14px}
+footer a{color:var(--ink-soft)}
+
+.leaflet-popup-content{font-family:'Source Serif 4',Georgia,serif;font-size:14px;line-height:1.45}
+.leaflet-popup-content .nm{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:17px;text-transform:uppercase;letter-spacing:.03em}
+.leaflet-popup-content .ds{color:#5C6963}
+.loading-note{padding:60px 0;text-align:center;color:var(--ink-soft);font-style:italic}
+
+@media (max-width:880px){
+  .day{grid-template-columns:1fr;gap:10px}
+  .day-rail{display:flex;align-items:baseline;gap:14px}
+  .day-rail .day-stop{margin-top:0;margin-left:auto}
+  .day-cols{grid-template-columns:1fr}
+  .log-grid{grid-template-columns:1fr}
+}
+@media print{
+  .crumbs,.map-controls,.map-jump,#map-section,.variant-bar{display:none}
+  body{font-size:12px}
+  .day{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <span class="route-no">Setrer og villmark · RideWithGPS #41496641 · July 2026</span>
+    <h1 id="title-h1">Røros <span class="arrow">→</span> Flåm</h1>
+    <p class="sub">Shielings and wilderness: gravel from the UNESCO mining town across Rondane and Dovre, onto Mjølkevegen's high pastures, then down the Rallarvegen to the fjord. Two riders, tents, and a decision to make at Dombås.</p>
+    <div class="variant-bar" id="variant-bar"></div>
+    <p class="decision-hint">Decide on the day: the route crosses a railway at Røros, Alvdal, Dombås, Gol, Geilo, Haugastøl, Finse, Myrdal and Flåm — you can join late or bail early at any of them.</p>
+  </div>
+  <div class="wrap" id="ribbon" aria-label="Elevation profile of the route"></div>
+  <div class="wrap statline" id="statline"></div>
+</header>
+
+<nav class="crumbs" aria-label="Sections">
+  <ul>
+    <li><a href="#map-section">Map</a></li>
+    <li><a href="#days">Day by day</a></li>
+    <li><a href="#places">Saved places</a></li>
+    <li><a href="#logistics">Logistics</a></li>
+  </ul>
+</nav>
+
+<section id="map-section">
+  <div class="wrap">
+    <div class="section-head"><span class="tick"></span><h2>The route &amp; everything on it</h2></div>
+    <p class="section-note">Red line is the actual RideWithGPS track. The dashed red spur is the optional Besseggen detour over Valdresflye (approximate). Grey square markers are the route author's own field notes: groceries, tent spots, bike shops, waffles. Every marker links to Google Maps.</p>
+    <div class="map-controls" id="layer-controls"></div>
+    <div id="map"></div>
+    <p class="legend-hint" id="map-hint">Tip: switch to the Topo base layer for contours and marked trails — the picture you’ll want on the high sections.</p>
+  </div>
+</section>
+
+<section id="days">
+  <div class="wrap">
+    <div class="section-head"><span class="tick"></span><h2 id="days-title">Day by day</h2></div>
+    <div id="day-list"><p class="loading-note">Trip data not loaded.</p></div>
+  </div>
+</section>
+
+<section id="places">
+  <div class="wrap">
+    <div class="section-head"><span class="tick"></span><h2>Saved places</h2></div>
+    <p class="section-note">Everything worth a stop — nature, detours, bakeries, beds — in route order. Tap any link to save it to the shared Google Maps list, or bulk-import <span class="mono">saved_places.kml</span> (pins + route, sitting next to this file) at <a href="https://www.google.com/mymaps" target="_blank" rel="noopener">google.com/mymaps</a> — the layer then shows in the Google Maps app under Saved → Maps.</p>
+    <div class="map-controls" id="places-filter"></div>
+    <div class="places-grid" id="places-grid"></div>
+  </div>
+</section>
+
+<section id="logistics">
+  <div class="wrap">
+    <div class="section-head"><span class="tick"></span><h2>Logistics</h2></div>
+    <div id="warn-slot"></div>
+    <div class="log-grid" id="log-grid"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap" id="foot"></div>
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="tripdata.js"></script>
+<script>
+(function(){
+  if (typeof TRIP === 'undefined') return;
+  var $ = function(id){ return document.getElementById(id); };
+  var esc = function(s){ return String(s==null?'':s).replace(/[&<>"]/g, function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); };
+  var norm = function(s){
+    return String(s||'').toLowerCase()
+      .replace(/å/g,'a').replace(/ø/g,'o').replace(/æ/g,'ae')
+      .replace(/[^a-z]/g,'');
+  };
+  var gmaps = function(p){
+    return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(p.name + ', ' + (p.town || p.nearStop || p.locality || '') + ', Norway');
+  };
+  var fmtKm = function(n){ return (Math.round(n*10)/10).toLocaleString('en-GB'); };
+
+  /* ---------- collect places ---------- */
+  var groupOf = function(p){
+    if (p._kind === 'food') return 'food';
+    if (p._kind === 'sleep') return 'sleep';
+    return 'nature';
+  };
+  var allPois = [];
+  (TRIP.poiGroups||[]).forEach(function(g){
+    (g.pois||[]).forEach(function(p){ p._kind='poi'; allPois.push(p); });
+  });
+  var townIdx = {};
+  (TRIP.towns||[]).forEach(function(t){
+    townIdx[norm(t.town)] = t;
+    (t.food||[]).forEach(function(f){ f._kind='food'; f.town=t.town; });
+    (t.sleep||[]).forEach(function(s){ s._kind='sleep'; s.town=t.town; });
+  });
+
+  /* ---------- variants ---------- */
+  var variants = TRIP.variants || {};
+  var variantKeys = Object.keys(variants);
+  var current = variantKeys[0] || null;
+
+  function stagesOf(k){ return (variants[k] && variants[k].stages) || []; }
+
+  function renderVariantBar(){
+    $('variant-bar').innerHTML = variantKeys.map(function(k){
+      var v = variants[k];
+      return '<button class="variant-btn" aria-pressed="'+(k===current)+'" data-v="'+k+'">'+esc(v.label)+'<small>'+esc(v.sub||'')+'</small></button>';
+    }).join('');
+    $('variant-bar').querySelectorAll('.variant-btn').forEach(function(b){
+      b.addEventListener('click', function(){
+        current = b.getAttribute('data-v');
+        renderVariant();
+      });
+    });
+  }
+
+  /* ---------- ribbon ---------- */
+  function ribbon(){
+    var prof = TRIP.profile || [];
+    var stages = stagesOf(current);
+    if (prof.length < 2 || !stages.length){ $('ribbon').innerHTML=''; return; }
+    var startKm = variants[current].startKm || 0;
+    prof = prof.filter(function(p){ return p.km >= startKm; });
+    var W=1000, H=240, padL=8, padR=8, top=46, base=192;
+    var km0 = prof[0].km, km1 = prof[prof.length-1].km;
+    var maxE = 0; prof.forEach(function(p){ if(p.ele>maxE) maxE=p.ele; });
+    maxE = Math.ceil(maxE/100)*100 + 150;
+    var X=function(km){ return padL + ((km-km0)/(km1-km0))*(W-padL-padR); };
+    var Y=function(e){ return base - (e/maxE)*(base-top); };
+    var line = prof.map(function(p,i){ return (i?'L':'M') + X(p.km).toFixed(1) + ' ' + Y(p.ele).toFixed(1); }).join(' ');
+    var area = line + ' L' + X(km1).toFixed(1) + ' ' + base + ' L' + padL + ' ' + base + ' Z';
+    var s = '<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Elevation profile">';
+    s += '<line class="rib-sea" x1="'+padL+'" y1="'+base+'" x2="'+(W-padR)+'" y2="'+base+'"/>';
+    s += '<path class="rib-area" d="'+area+'"/>';
+    stages.forEach(function(st){
+      var a = Math.max(km0, st.startKm==null?km0:st.startKm), b = Math.min(km1, st.endKm==null?km1:st.endKm);
+      if (st.km > 0 && b > a){
+        var x0=X(a), x1=X(b);
+        s += '<line class="rib-day" x1="'+x1.toFixed(1)+'" y1="'+(top-12)+'" x2="'+x1.toFixed(1)+'" y2="'+base+'"/>';
+        s += '<text class="rib-day-no" x="'+((x0+x1)/2).toFixed(1)+'" y="'+(base+18)+'" text-anchor="middle">'+st.day+'</text>';
+        s += '<rect class="rib-hit" data-day="'+st.day+'" x="'+x0.toFixed(1)+'" y="'+(top-26)+'" width="'+(x1-x0).toFixed(1)+'" height="'+(base-top+26)+'"><title>Day '+st.day+': '+esc(st.from)+' → '+esc(st.to)+'</title></rect>';
+      } else {
+        var x = X(Math.max(km0, st.startKm==null?km0:st.startKm));
+        s += '<text class="rib-hike" x="'+x.toFixed(1)+'" y="'+(top-16)+'" text-anchor="middle">▲'+st.day+'</text>';
+      }
+    });
+    s += '<path class="rib-line" d="'+line+'"/>';
+    var lastLabelX = -1e9, lastLift = false;
+    (TRIP.profileLabels||[]).forEach(function(p){
+      if (p.km < km0) return;
+      var x = X(p.km);
+      var anchor = p.km < km0+(km1-km0)*0.05 ? 'start' : (p.km > km0+(km1-km0)*0.95 ? 'end' : 'middle');
+      var lift = (x - lastLabelX < 95) && !lastLift;
+      var dy = lift ? 24 : 9;
+      lastLabelX = x; lastLift = lift;
+      s += '<circle cx="'+x.toFixed(1)+'" cy="'+Y(p.ele).toFixed(1)+'" r="3" fill="var(--dnt)"/>';
+      s += '<text class="rib-peak" x="'+x.toFixed(1)+'" y="'+(Y(p.ele)-dy)+'" text-anchor="'+anchor+'">'+esc(p.label)+' '+p.ele+'m</text>';
+    });
+    s += '<text class="rib-day-no" x="'+(W/2)+'" y="'+(H-2)+'" text-anchor="middle">DAY — click a segment to jump to it · ▲ = hike day</text>';
+    s += '</svg>';
+    $('ribbon').innerHTML = s;
+    $('ribbon').querySelectorAll('.rib-hit').forEach(function(r){
+      r.addEventListener('click', function(){
+        var el = document.getElementById('day-' + r.getAttribute('data-day'));
+        if (el) el.scrollIntoView({behavior:'smooth'});
+      });
+    });
+  }
+
+  /* ---------- stats ---------- */
+  function renderStats(){
+    var stages = stagesOf(current);
+    var totKm = 0, totUp = 0;
+    stages.forEach(function(s){ totKm += (s.km||0); totUp += (s.ascentM||0); });
+    var v = variants[current];
+    var stats = [
+      {v: Math.round(totKm) + ' km', k:'riding'},
+      {v: '~' + (Math.round(totUp/100)*100).toLocaleString('en-GB') + ' m', k:'total climb'},
+      {v: stages.length + ' days', k: v.dates || ''},
+      {v: (TRIP.maxEle||1322) + ' m', k:'high point · ' + (TRIP.maxEleName||'Rallarvegen crest')},
+      {v: '2 m', k:'finish · aurlandsfjord'}
+    ];
+    $('statline').innerHTML = stats.map(function(s){
+      return '<div class="stat"><span class="v">'+esc(s.v)+'</span><span class="k">'+esc(s.k)+'</span></div>';
+    }).join('');
+  }
+
+  /* ---------- map ---------- */
+  var map = L.map('map', {scrollWheelZoom:false});
+  var topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {maxZoom:16, attribution:'© OpenStreetMap, SRTM · © OpenTopoMap (CC-BY-SA)'});
+  var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:19, attribution:'© OpenStreetMap'});
+  osm.addTo(map);
+  L.control.layers({'Streets':osm,'Topo':topo}, null, {position:'topright'}).addTo(map);
+
+  var track = TRIP.track || []; // [lat,lng,km]
+  var dombasKm = TRIP.dombasKm || 263.7;
+  var preTrack = track.filter(function(p){ return p[2] <= dombasKm; }).map(function(p){ return [p[0],p[1]]; });
+  var mainFrom = function(km){ return track.filter(function(p){ return p[2] >= km; }).map(function(p){ return [p[0],p[1]]; }); };
+  var fullLine = L.polyline(track.map(function(p){return [p[0],p[1]];}), {color:'#C8351F', weight:3.5, opacity:.9});
+  var preLine = L.polyline(preTrack, {color:'#9AA29E', weight:3, opacity:.85, dashArray:'6 6'});
+  var shortLine = L.polyline(mainFrom(dombasKm), {color:'#C8351F', weight:3.5, opacity:.9});
+  var spur = (TRIP.besseggenSpur && TRIP.besseggenSpur.length) ? L.polyline(TRIP.besseggenSpur, {color:'#C8351F', weight:2.5, opacity:.85, dashArray:'4 7'}) : null;
+  if (spur) spur.bindPopup('<div><span class="nm">Besseggen detour (optional)</span><br><span class="ds">Bygdin → Valdresflye (1389 m) → Gjendesheim, return via Beitostølen. Approximate line — it follows Fv51.</span></div>');
+
+  var routeLayer = L.layerGroup().addTo(map);
+  function drawRoute(){
+    routeLayer.clearLayers();
+    if (current === 'short'){ preLine.addTo(routeLayer); shortLine.addTo(routeLayer); }
+    else { fullLine.addTo(routeLayer); }
+    if (spur) spur.addTo(routeLayer);
+  }
+  if (track.length) map.fitBounds(fullLine.getBounds(), {padding:[28,28]});
+  else map.setView([61.5, 9.0], 7);
+
+  var groups = {
+    nature: {label:'Nature & sights', color:'#5E7A4B', layer:L.layerGroup().addTo(map)},
+    food:   {label:'Eat & drink',     color:'#A06B22', layer:L.layerGroup().addTo(map)},
+    sleep:  {label:'Sleep',           color:'#4A5E75', layer:L.layerGroup().addTo(map)},
+    author: {label:"Author's notes",  color:'#6B6F6C', layer:L.layerGroup().addTo(map)}
+  };
+  function popup(p){
+    var sub = [];
+    if (p.type) sub.push(String(p.type).replace('_',' '));
+    if (p.category) sub.push(String(p.category).replace('_',' '));
+    if (p.ptype) sub.push(String(p.ptype).replace(/_/g,' '));
+    if (p.detour && p.detour !== 'on route') sub.push('detour: ' + p.detour);
+    if (p.price) sub.push(p.price);
+    return '<div><span class="nm">'+esc(p.name)+'</span><br>'+
+      (sub.length? '<span class="mono" style="font-size:11px">'+esc(sub.join(' · '))+'</span><br>':'')+
+      '<span class="ds">'+esc(p.description||'')+'</span><br>'+
+      '<a href="'+gmaps(p)+'" target="_blank" rel="noopener">Open in Google Maps ↗</a></div>';
+  }
+  function addMarker(p, kind){
+    if (!(p.lat && p.lng)) return;
+    var m = L.circleMarker([p.lat, p.lng], {
+      radius: kind==='author'?4.5:7, color:'#FBFAF7', weight:1.5,
+      fillColor:groups[kind].color, fillOpacity:.95
+    }).bindPopup(popup(p));
+    m.addTo(groups[kind].layer);
+  }
+  allPois.forEach(function(p){ addMarker(p, 'nature'); });
+  (TRIP.towns||[]).forEach(function(t){
+    (t.food||[]).forEach(function(f){ addMarker(f,'food'); });
+    (t.sleep||[]).forEach(function(s){ addMarker(s,'sleep'); });
+  });
+  (TRIP.authorPois||[]).forEach(function(p){ addMarker(p,'author'); });
+
+  var lc = $('layer-controls');
+  lc.innerHTML = '<button class="chip" aria-pressed="true" data-g="route"><span class="dot" style="background:#C8351F"></span>Route</button>' +
+    Object.keys(groups).map(function(k){
+      return '<button class="chip" aria-pressed="true" data-g="'+k+'"><span class="dot" style="background:'+groups[k].color+'"></span>'+groups[k].label+'</button>';
+    }).join('') +
+    '<button class="chip day-chip" aria-pressed="false" data-g="__all">Whole route</button>';
+  lc.querySelectorAll('.chip[data-g]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var g = b.getAttribute('data-g');
+      if (g === '__all'){ map.fitBounds(fullLine.getBounds(), {padding:[28,28]}); return; }
+      var on = b.getAttribute('aria-pressed') === 'true';
+      b.setAttribute('aria-pressed', on ? 'false' : 'true');
+      if (g === 'route'){ if(on) map.removeLayer(routeLayer); else routeLayer.addTo(map); return; }
+      if (on) map.removeLayer(groups[g].layer); else groups[g].layer.addTo(map);
+    });
+  });
+
+  function zoomDay(dayNo){
+    var st = stagesOf(current).filter(function(s){ return s.day === dayNo; })[0];
+    if (!st) return;
+    if (st.km > 0 && st.startKm != null && st.endKm != null && st.endKm > st.startKm){
+      var pts = track.filter(function(p){ return p[2] >= st.startKm && p[2] <= st.endKm; }).map(function(p){ return [p[0],p[1]]; });
+      if (pts.length >= 2) map.fitBounds(L.latLngBounds(pts), {padding:[40,40]});
+    } else if (TRIP.besseggenSpur && TRIP.besseggenSpur.length){
+      map.fitBounds(L.latLngBounds(TRIP.besseggenSpur), {padding:[60,60]});
+    }
+    document.getElementById('map-section').scrollIntoView({behavior:'smooth'});
+  }
+
+  /* ---------- day cards ---------- */
+  var DOW = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  var MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  function fdate(iso){
+    var d = new Date(iso + 'T12:00:00');
+    return DOW[d.getDay()] + ' ' + d.getDate() + ' ' + MON[d.getMonth()];
+  }
+  function liPlace(p, badgeClass, badgeText){
+    var meta = [];
+    if (p.detour && p.detour !== 'on route') meta.push(p.detour);
+    if (p.price) meta.push(p.price);
+    return '<li><span class="badge '+badgeClass+'">'+esc(badgeText)+'</span>'+
+      '<span class="nm"><a href="'+gmaps(p)+'" target="_blank" rel="noopener">'+esc(p.name)+'</a></span>'+
+      (meta.length? ' <span class="price">'+esc(meta.join(' · '))+'</span>':'')+
+      '<span class="ds">'+esc(p.description||'')+'</span></li>';
+  }
+  function renderDays(){
+    var stages = stagesOf(current);
+    var shownSee = {};
+    var html = stages.map(function(st){
+      var key = norm(st.overnight);
+      var town = townIdx[key];
+      var keys = [key].concat((st.via||[]).map(norm));
+      var see = allPois.filter(function(p){ return keys.indexOf(norm(p.nearStop)) !== -1; });
+      var seeHtml = see.map(function(p){
+        var sk = key + '|' + p.name;
+        if (shownSee[sk]) return ''; shownSee[sk]=1;
+        var cat = (p.category||'').replace('_',' ');
+        return liPlace(p, p.detour && p.detour!=='on route' ? 'b-detour':'b-nature', cat || 'sight');
+      }).join('');
+      if (!seeHtml && (st.highlights||[]).length){
+        seeHtml = st.highlights.map(function(h){ return '<li><span class="ds">'+esc(h)+'</span></li>'; }).join('');
+      }
+      var eatHtml = town ? (town.food||[]).map(function(f){ return liPlace(f,'b-food', f.type||'food'); }).join('') : '';
+      var sleepHtml = town ? (town.sleep||[]).map(function(s){ return liPlace(s,'b-sleep', (s.type||'sleep').replace('_',' ')); }).join('') : '';
+      var isHike = !(st.km > 0);
+      return '<article class="day'+(isHike?' is-hike':'')+'" id="day-'+st.day+'">'+
+        '<div class="day-rail"><span class="day-no">'+(st.day<10?'0':'')+st.day+'</span>'+
+        '<span class="day-date">'+esc(st.date ? fdate(st.date) : '')+'</span>'+
+        '<span class="day-stop">⛺ '+esc(st.overnight)+'</span></div>'+
+        '<div class="day-body">'+
+        '<h3>'+esc(st.from)+' <span class="arrow">→</span> '+esc(st.to)+'</h3>'+
+        '<div class="ride-chips">'+
+          (st.km > 0 ? '<span>'+fmtKm(st.km)+' km</span>':'<span>hike / rest day</span>')+
+          (st.ascentM ? '<span>↑ '+Math.round(st.ascentM).toLocaleString('en-GB')+' m</span>':'')+
+          (st.surface ? '<span>'+esc(st.surface)+'</span>':'')+
+        '</div>'+
+        '<p class="summary">'+esc(st.summary||'')+'</p>'+
+        (st.notes ? '<p class="notes">⚠ '+esc(st.notes)+'</p>':'')+
+        '<div class="day-cols">'+
+          '<div><h4>See &amp; do</h4><ul>'+(seeHtml||'<li><span class="ds">Big views all day — see the map.</span></li>')+'</ul></div>'+
+          '<div><h4>Eat</h4><ul>'+(eatHtml||'<li><span class="ds">Carry food — no reliable services at this stop.</span></li>')+'</ul></div>'+
+          '<div><h4>Sleep</h4><ul>'+(sleepHtml||'<li><span class="ds">Wild camp (allemannsretten): 150 m from houses, max 2 nights.</span></li>')+'</ul></div>'+
+        '</div>'+
+        '<button class="map-jump" data-day="'+st.day+'">Show day '+st.day+' on the map</button>'+
+        '</div></article>';
+    }).join('');
+    $('day-list').innerHTML = html || '<p class="loading-note">No stages in data.</p>';
+    document.querySelectorAll('.map-jump').forEach(function(b){
+      b.addEventListener('click', function(){ zoomDay(parseInt(b.getAttribute('data-day'),10)); });
+    });
+  }
+
+  /* ---------- saved places ---------- */
+  var everything = [];
+  allPois.forEach(function(p){ everything.push(p); });
+  (TRIP.towns||[]).forEach(function(t){
+    (t.food||[]).forEach(function(f){ everything.push(f); });
+    (t.sleep||[]).forEach(function(s){ everything.push(s); });
+  });
+  var stopOrder = (TRIP.stopOrder||[]).map(norm);
+  everything.sort(function(a,b){
+    var ia = stopOrder.indexOf(norm(a.nearStop||a.town)), ib = stopOrder.indexOf(norm(b.nearStop||b.town));
+    return (ia<0?99:ia) - (ib<0?99:ib);
+  });
+  function renderPlaces(filter){
+    $('places-grid').innerHTML = everything.filter(function(p){
+      return filter==='all' || groupOf(p)===filter;
+    }).map(function(p){
+      var kind = groupOf(p);
+      var meta = [p.nearStop||p.town, (p.type||p.category||'').replace('_',' '), (p.detour && p.detour!=='on route') ? p.detour : null, p.price].filter(Boolean).join(' · ');
+      return '<div class="place cat-'+kind+'"><span class="nm">'+esc(p.name)+'</span>'+
+        '<span class="ds">'+esc(p.description||'')+'</span>'+
+        '<span class="meta">'+esc(meta)+'</span><br>'+
+        '<a class="gm" href="'+gmaps(p)+'" target="_blank" rel="noopener">Google Maps ↗</a></div>';
+    }).join('');
+  }
+  $('places-filter').innerHTML = ['all','nature','food','sleep'].map(function(k,i){
+    return '<button class="chip day-chip" aria-pressed="'+(i===0)+'" data-f="'+k+'">'+(k==='all'?'Everything':k)+'</button>';
+  }).join('');
+  $('places-filter').querySelectorAll('.chip').forEach(function(b){
+    b.addEventListener('click', function(){
+      document.querySelectorAll('#places-filter .chip').forEach(function(x){ x.setAttribute('aria-pressed','false'); });
+      b.setAttribute('aria-pressed','true');
+      renderPlaces(b.getAttribute('data-f'));
+    });
+  });
+  renderPlaces('all');
+
+  /* ---------- logistics ---------- */
+  var lg = TRIP.logistics || {};
+  if (lg.rallarvegen){
+    $('warn-slot').innerHTML = '<div class="warn"><strong>Check before you go:</strong> '+esc(lg.rallarvegen)+'</div>';
+  }
+  var cards = [
+    {t:'Getting there', c:lg.gettingThere},
+    {t:'Getting back', c:lg.gettingBack},
+    {t:'Bikes on trains', c:lg.bikeOnTrains},
+    {t:'Join late, bail early', c:lg.bailouts},
+    {t:'July up high', c:lg.julyConditions}
+  ].filter(function(c){ return c.c; }).map(function(c){
+    return '<div class="log-card"><h4>'+esc(c.t)+'</h4><p>'+esc(c.c)+'</p></div>';
+  });
+  if ((lg.practicalNotes||[]).length){
+    cards.push('<div class="log-card" style="grid-column:1/-1"><h4>Know before you ride</h4><ul class="note-cols">'+
+      lg.practicalNotes.map(function(n){ return '<li>'+esc(n)+'</li>'; }).join('')+'</ul></div>');
+  }
+  $('log-grid').innerHTML = cards.join('');
+
+  /* ---------- footer ---------- */
+  var links = TRIP.officialLinks || [];
+  $('foot').innerHTML = 'Route: <a href="https://ridewithgps.com/routes/41496641" target="_blank" rel="noopener">RideWithGPS #41496641 — Setrer og villmark</a> · <a href="https://bikepacking.com/news/bikepacking-norways-best-gravel-mjolkevegen-and-rallarvegen-video/" target="_blank" rel="noopener">bikepacking.com — Norway’s Best Gravel</a>'+
+    (links.length ? ' · ' + links.map(function(u){ var h; try{h=new URL(u).hostname.replace('www.','');}catch(e){h=u;} return '<a href="'+esc(u)+'" target="_blank" rel="noopener">'+esc(h)+'</a>'; }).join(' · ') : '')+
+    '<br>Distances from the GPS track; opening info researched June 2026 — re-check timetables and Rallarvegen conditions the week before departure.';
+
+  /* ---------- variant orchestration ---------- */
+  function renderVariant(){
+    $('variant-bar').querySelectorAll('.variant-btn').forEach(function(b){
+      b.setAttribute('aria-pressed', String(b.getAttribute('data-v') === current));
+    });
+    var v = variants[current] || {};
+    $('title-h1').innerHTML = esc(v.h1from || 'Røros') + ' <span class="arrow">→</span> Flåm';
+    ribbon();
+    renderStats();
+    renderDays();
+    drawRoute();
+  }
+  renderVariantBar();
+  renderVariant();
+})();
+</script>
+</body>
+</html>

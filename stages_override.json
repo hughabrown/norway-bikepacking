@@ -1,0 +1,184 @@
+{
+  "extraNotes": [
+    "Jotunheimvegen toll: nothing for cyclists to pay (number-plate recognition, cars only).",
+    "Water plan for each plateau crossing (Røros–Alvdal, Slådalsvegen, Murudalen–Vinstre, Stølsvidda, Rallarvegen): carry 1.5 L+ and half a day of food; streams are plentiful but treat or avoid those near grazing herds.",
+    "DNT membership verdict: skip it at 2 hut nights; buy it if you add a third hut night or hut dinners (it also unlocks the self-service Ellefsplass cabin on night 1 of the full route).",
+    "Lock strategy: one mid-weight lock shared between two bikes covers the whole route. Gjendesheim has only an unlocked ski room; Flåm is the one real theft-risk node (use the 24/7 lockers at the Visitor Centre for bags, NOK 150–200/day).",
+    "Vy/SJ policy: bikes are refused on rail-replacement buses. If a stretch of Bergensbanen goes over to buses unplanned, you ride or wait. Both Dovrebanen (9 July) and Bergensbanen (17 July) are confirmed clear of planned works for your dates.",
+    "Vinjerock festival runs 16–19 July 2026 at Eidsbugarden (sold out): expect a busy Bygdin area late-week and avoid the 16/19 July M/B Bitihorn sailings if you want a quiet boat.",
+    "Book the Flåm finale early: Nærøyfjord cruises (NOK 520–595 one-way) sell out days ahead in July, and Flåm beds go first in the whole valley.",
+    "Rallarvegen live status: check Rallarvegrapporten (rallarvegen.com) the week before — 2026 is carrying more snow than normal at Finse height."
+  ],
+  "full": [
+    {
+      "day": 1, "date": "2026-07-09", "from": "Røros", "to": "Oversjødalen", "km": 75, "ascentM": 1350,
+      "surface": "≈60% gravel: Grådalen seter road, Fv28, Oversjødalsfjellet mountain road",
+      "overnight": "Oversjødalen", "via": ["Roros", "Tufsingdalen"], "startKm": 0, "endKm": 75,
+      "summary": "Train Oslo S 06:28 → Hamar → Røros 11:38. Shop at Coop Mega 100 m from the station, see the UNESCO mining town for an hour, rolling by ~12:30. South-east up the Grådalen seter valley, down to Tufsingdalen, then over the Oversjødalsfjellet gravel road (~910 m). With daylight past 23:00, a ~19:30 arrival is comfortable.",
+      "highlights": ["Røros: Bergstadens Ziir church, Smelthytta museum, slag heaps", "Grådalen shieling country", "Oversjødalsfjellet crossing", "DNT Ellefsplass cabin (electricity, running water)"],
+      "notes": "Reserve bike spaces on both trains (R60 Rørosbanen has limited slots). Sleep: DNT Ellefsplass self-service cabin exactly on the track (book hyttebestilling.dnt.no, DNT key needed) or wild camp by the lake. Mauritz Landhandel at Tufsingdalen (km 40, 1.4 km off) has a 24/7 self-service section. Bail-out if the train runs late: camp around Tufsingdalen."
+    },
+    {
+      "day": 2, "date": "2026-07-10", "from": "Oversjødalen", "to": "Alvdal", "km": 88, "ascentM": 2000,
+      "surface": "≈60% gravel/track: ~8 km rough cart track over Storlægda (hike-a-bike likely), gravel Sølendalen, paved Rendalen + Rv3",
+      "overnight": "Alvdal", "via": ["Rendalen"], "startKm": 75, "endKm": 163,
+      "summary": "The wilderness crux of the whole route. Up Orvdalen on a cart track to the Storlægda seters and across the Rendalen Østfjell plateau at ~1,000 m, long descent to the Rendalen valley floor, then the climb past the Jutulhogget canyon rim (km 140) and Rv3 into Alvdal.",
+      "highlights": ["Orvdalen and Storlægda seters", "Rendalen Østfjell plateau", "Jutulhogget: northern Europe's largest canyon, viewpoint on route"],
+      "notes": "No shop between Tufsingdalen (km 40) and Alvdal (km 163) — carry a full day's food. Budget walking pace for parts of the 8 km Orvdalen–Storlægda track. Joker at Bergset (3.1 km off, km 121) is the bail-out shop. Rv3 km 141–157 is the Oslo–Trondheim truck route: shoulder riding, care in Friday traffic. Alvdal: SPAR, Coop Extra, bike shop. Gjelten Bru Camping (1.8 km off) or wild camp before town."
+    },
+    {
+      "day": 3, "date": "2026-07-11", "from": "Alvdal", "to": "Grimsdalshytta", "km": 63, "ascentM": 1100,
+      "surface": "Mostly gravel: Sølndalen seter road, then Grimsdalsvegen toll road (free for bikes)",
+      "overnight": "Grimsdalshytta", "via": [], "startKm": 163, "endKm": 226,
+      "summary": "Deliberate short day after the big one. One long climb out of Alvdal on the Sølndalen seter road into the Dovre foothills, skirting Folldal, then up the Grimsdalsvegen into Grimsdalen at 900–1,000 m — one of Norway's finest seter valleys, between Rondane and Dovrefjell.",
+      "highlights": ["Sølndalen seter road", "Grimsdalen protected landscape", "Staffed DNT hut: served dinner and breakfast", "Rondane National Park on the doorstep"],
+      "notes": "Saturday: buy TWO days of food in Alvdal this morning — Sunday closures follow, and the only reliable Sunday shop ahead is Bunnpris Dombås. Grimsdalshytta summer season 19 Jun–13 Sep (confirmed); book online, or tent by the hut and buy meals."
+    },
+    {
+      "day": 4, "date": "2026-07-12", "from": "Grimsdalshytta", "to": "Vågå", "km": 85, "ascentM": 1330,
+      "surface": "≈55% gravel: upper Grimsdalsvegen (1,108 m), paved drop to Dombås, then Slådalsvegen 32 km gravel (1,130 m), paved descent to Vågåmo",
+      "overnight": "Vågå", "via": ["Dombas"], "startKm": 226, "endKm": 311,
+      "summary": "Up Grimsdalen to 1,108 m in morning light, fast 500 m descent to Dombås (km 263 — the railway decision point), across the valley, then Slådalsvegen: 32 km of premier gravel over the wild-reindeer plateau, topping out at ~1,130 m before a 750 m plunge into Vågåmo.",
+      "highlights": ["Upper Grimsdalen", "Slådalsvegen — rated among Norway's best gravel", "750 m descent to Vågåmo", "Vågå church (12th-century timber)"],
+      "notes": "Sunday 12 July: groceries closed in Dombås and Vågå EXCEPT Bunnpris Dombås (11:00–20:00, confirmed). Arrive after 11:00 and buy lunch, dinner and Monday breakfast. Slådalsvegen is exposed with no services for 45 km: water and a wind layer. Smedsmo Camping or Vågåmo hotels."
+    },
+    {
+      "day": 5, "date": "2026-07-13", "from": "Vågå", "to": "Haugseter", "km": 90, "ascentM": 1750,
+      "surface": "Paved Fv51 climb to Randsverk, then gravel: Murudalen, Hinøglslivegen, Jotunheimvegen along Vinstre",
+      "overnight": "Haugseter", "via": [], "startKm": 311, "endKm": 401,
+      "summary": "Hardest start of the trip: 600 m of climbing in the first 9 km out of Vågåmo. Regroup at Randsverk (shop + cafe, km 335), then gravel through Murudalen, climbing gently to the Vinstre lakes at ~1,030 m with the whole Jotunheimen skyline ahead. Joins the Mjølkevegen corridor at the lakes.",
+      "highlights": ["Climb past Lemonsjøen", "Murudalen", "Jotunheimvegen along Vinstre: glacier-and-peak panorama", "Haugseter Fjellstue (restaurant 11:00–20:00)"],
+      "notes": "Coop Marked Randsverk (daily 09–18 in season) is the ONLY shop today — buy tomorrow's breakfast there. Short hike-a-bike at km 372 (2025 storm damage, passable). Haugseter open 19 Jun–27 Sep, book ahead in Besseggen season; wild camping by Vinstre is the no-booking fallback."
+    },
+    {
+      "day": 6, "date": "2026-07-14", "from": "Haugseter", "to": "Gjendesheim", "km": 32, "ascentM": 500,
+      "surface": "Gravel Jotunheimvegen to Bygdin, then paved Fv51 over Valdresflye (1,389 m)",
+      "overnight": "Gjendesheim", "via": [], "startKm": 401, "endKm": 414,
+      "summary": "Short positioning day for Besseggen. Along Vinstre to Bygdin (M/B Bitihorn, fjellhotell cafe), then north on the Fv51 National Tourist Route over the Valdresflye pass at 1,389 m — the trip's highest point — and a 400 m descent to Gjendesheim on emerald Lake Gjende. Afternoon free: Knutshøe, Bitihorn, or a swim.",
+      "highlights": ["Bygdin and the historic M/B Bitihorn", "Valdresflye summit: treeless plateau, full Jotunheimen panorama", "Rjupa viewpoint", "Lake Gjende"],
+      "notes": "Book Gjendesheim beds AND tomorrow's ~08:45 Gjende boat to Memurubu at gjende.no NOW — pre-booking is mandatory and July sells out. Tent pitches by the lodge are the official fallback. Bikes: only an unlocked ski room — lock them and strip valuables."
+    },
+    {
+      "day": 7, "date": "2026-07-15", "from": "Besseggen hike", "to": "Beitostølen", "km": 33, "ascentM": 450,
+      "surface": "Hike 14 km (~1,100 m up), then 33 km paved Fv51 back over Valdresflye",
+      "overnight": "Beitostølen", "via": ["Gjendesheim"], "startKm": 414, "endKm": 427,
+      "summary": "Besseggen day: 20-minute boat to Memurubu, hike the ridge back over Veslfjellet (1,743 m) — green Gjende 400 m directly below blue Bessvatnet, Norway's most famous day-hike view. Then an evening ride back over Valdresflye in the long light (sunset ~22:30) to Beitostølen.",
+      "highlights": ["Gjendebåten boat ride", "Besseggen ridge", "Veslfjellet 1,743 m", "Sunset-lit Valdresflye descent"],
+      "notes": "Easy scrambling, fine in trail shoes in good weather — skip in rain or high wind (then just ride to Beitostølen and bank a rest evening). Memurubu has a cafe. Beitostølen has late-opening supermarkets, sports shops, restaurants."
+    },
+    {
+      "day": 8, "date": "2026-07-16", "from": "Beitostølen", "to": "Vaset", "km": 51, "ascentM": 1250,
+      "surface": "≈60% gravel: Slettefjellvegen toll road (free for bikes), Vang valley tarmac, gravel over Syndisfjellet",
+      "overnight": "Vaset", "via": [], "startKm": 427, "endKm": 478,
+      "summary": "The hardest, prettiest Mjølkevegen leg: Slettefjellvegen climbs steadily to ~1,240 m on the track, plunges 800 m into the Vang valley, then climbs again past the Syndin lakes to Vaset's stølar country.",
+      "highlights": ["Slettefjell summit plateau", "Huge descent into Vang", "Ryfoss (mid-ride resupply)", "Syndinstøga: waffles and hot chocolate", "Syndin lakes"],
+      "notes": "Resupply in Beitostølen before leaving. Watch for cows with calves on the open pasture roads. Vaset: Fjellcamping, cabins, hotels, small grocery."
+    },
+    {
+      "day": 9, "date": "2026-07-17", "from": "Vaset", "to": "Gol", "km": 70, "ascentM": 800,
+      "surface": "≈70% gravel: stølsveg across Stølsvidda and Golsfjellet, tarmac descent into Gol",
+      "overnight": "Gol", "via": [], "startKm": 478, "endKm": 548,
+      "summary": "Gentle pastoral riding across Stølsvidda — Norway's densest summer-farm landscape — past Tisleifjorden and Lykkja to Golsfjellet, then a long descent off the plateau to Gol, the official Mjølkevegen terminus.",
+      "highlights": ["Stølsvidda summer farms: fresh dairy stops", "Lisjordetstølen (daily 12–18 thru 2 Aug)", "Tisleifjorden", "Storefjell views"],
+      "notes": "Recovery day after Slettefjell. Gol is full-service: supermarkets, Intersport (gas canisters, dehydrated meals), campsite and cheap hotels."
+    },
+    {
+      "day": 10, "date": "2026-07-18", "from": "Gol", "to": "Haugastøl", "km": 76, "ascentM": 1300,
+      "surface": "Cycle path + riverside gravel (National Cycle Route 4) to Geilo; 22 km tarmac Rv7 to Haugastøl (train option)",
+      "overnight": "Haugastøl", "via": ["Geilo"], "startKm": 548, "endKm": 623,
+      "summary": "The connector: up Hallingdal on Route 4, riverside gravel criss-crossing the Bergen railway through Torpo and Ål to Geilo (794 m), then the Rv7 to Haugastøl at 988 m — km 0 of the Rallarvegen.",
+      "highlights": ["Torpo stave church (12th century)", "Hallingdalselva gravel", "Geilo under Hallingskarvet", "Arrival at Rallarvegen km 0"],
+      "notes": "Rv7 Geilo→Haugastøl is fast traffic with no cycle path: the local move is to hop the train or bus for that 22 km (book bike space on entur.no). Geilo is the LAST big resupply and bike shop before Flåm — and tomorrow is Sunday, so buy Sunday + Monday food here Saturday."
+    },
+    {
+      "day": 11, "date": "2026-07-19", "from": "Haugastøl", "to": "Finse", "km": 28, "ascentM": 450,
+      "surface": "100% Rallarvegen gravel, car-free",
+      "overnight": "Finse", "via": [], "startKm": 623, "endKm": 652,
+      "summary": "Onto the Rallarvegen proper: 28 traffic-free kilometres climbing gently along the Bergen line to car-free Finse at 1,222 m — the highest station in Norway, under the Hardangerjøkulen glacier (Star Wars' Hoth). Half-day for the Rallarmuseet navvy museum or a guided Blåisen glacier walk.",
+      "highlights": ["Rallarvegen navvies' road", "Finse 1222", "Hardangerjøkulen glacier", "Rallarmuseet"],
+      "notes": "Sunday: no groceries anywhere — run on Geilo supplies; Finse 1222 hotel and DNT Finsehytta both serve food (book a bed ahead, wild-camp outside the station zone otherwise). Check Rallarvegrapporten: 2026 carries more snow than normal, expect snow patches at this height."
+    },
+    {
+      "day": 12, "date": "2026-07-20", "from": "Finse", "to": "Flåm", "km": 54, "ascentM": 500,
+      "surface": "Rallarvegen gravel over the 1,322 m crest, steep switchback descent, paved Flåmsdalen",
+      "overnight": "Flåm", "via": [], "startKm": 652, "endKm": 705.6,
+      "summary": "The finale: over the route's high point at 1,322 m near Fagernut (waffle cabin), past Hallingskeid, then the 21 hairpins of Myrdalsberget, Kjosfossen thundering beside the Flåmsbana, and the green Flåm valley all the way down to the Aurlandsfjord at 2 m.",
+      "highlights": ["Fagernut vokterbolig waffles", "Myrdalsberget 21 switchbacks", "Kjosfossen waterfall", "Aurlandsfjord finish + Ægir BrewPub"],
+      "notes": "Plan B if snow blocks the crest: Bergensbanen Finse→Myrdal carries bikes (15 reservable spaces — reserve ahead), Flåmsbana Myrdal→Flåm too (~NOK 280, mandatory reservation). Walk the steepest hairpins if loose. In Flåm keep bikes locked and in sight."
+    }
+  ],
+  "short": [
+    {
+      "day": 1, "date": "2026-07-09", "from": "Dombås", "to": "Vågå", "km": 48, "ascentM": 950,
+      "surface": "Slådalsvegen: 32 km gravel over the 1,130 m plateau, paved descent to Vågåmo",
+      "overnight": "Vågå", "via": ["Dombas"], "startKm": 263.7, "endKm": 311,
+      "summary": "Morning train Oslo S → Dombås (~4 h on the Dovrebanen), shop, then straight onto Slådalsvegen: 32 km of premier gravel over the wild-reindeer plateau at ~1,130 m, finishing with a 750 m descent into Vågåmo.",
+      "highlights": ["Slådalsvegen — rated among Norway's best gravel", "Wild-reindeer plateau", "750 m descent to Vågåmo", "Vågå church"],
+      "notes": "Buy lunch, dinner and breakfast in Dombås before leaving (Bunnpris/Kiwi, normal Thursday hours). Slådalsvegen is exposed with no services for 45 km: water and a wind layer. Smedsmo Camping or Vågåmo hotels."
+    },
+    {
+      "day": 2, "date": "2026-07-10", "from": "Vågå", "to": "Haugseter", "km": 90, "ascentM": 1750,
+      "surface": "Paved Fv51 climb to Randsverk, then gravel: Murudalen, Hinøglslivegen, Jotunheimvegen along Vinstre",
+      "overnight": "Haugseter", "via": [], "startKm": 311, "endKm": 401,
+      "summary": "Hardest start of the trip: 600 m of climbing in the first 9 km out of Vågåmo. Regroup at Randsverk (shop + cafe), then gravel through Murudalen onto the Vinstre plateau at ~1,030 m with the Jotunheimen skyline ahead. Joins the Mjølkevegen corridor at the lakes.",
+      "highlights": ["Climb past Lemonsjøen", "Murudalen", "Jotunheimvegen along Vinstre", "Haugseter Fjellstue (restaurant 11:00–20:00)"],
+      "notes": "Coop Marked Randsverk (daily 09–18 in season) is the ONLY shop today — buy tomorrow's breakfast there. Short hike-a-bike at km 372 (storm damage, passable). Haugseter open 19 Jun–27 Sep, book ahead; wild camping by Vinstre is the fallback."
+    },
+    {
+      "day": 3, "date": "2026-07-11", "from": "Haugseter", "to": "Gjendesheim", "km": 32, "ascentM": 500,
+      "surface": "Gravel Jotunheimvegen to Bygdin, then paved Fv51 over Valdresflye (1,389 m)",
+      "overnight": "Gjendesheim", "via": [], "startKm": 401, "endKm": 414,
+      "summary": "Short positioning day for Besseggen. Along Vinstre to Bygdin, then north over the Valdresflye pass at 1,389 m — the trip's highest point — and down to Gjendesheim on Lake Gjende. Afternoon free: Knutshøe, Bitihorn, or a swim.",
+      "highlights": ["Bygdin and the M/B Bitihorn", "Valdresflye summit panorama", "Rjupa viewpoint", "Lake Gjende"],
+      "notes": "Book Gjendesheim AND tomorrow's ~08:45 Gjende boat at gjende.no NOW — July weekends sell out. Buy snacks for two days when passing nothing today: rely on Haugseter breakfast + Gjendesheim dinner. Bikes: unlocked ski room only — lock them."
+    },
+    {
+      "day": 4, "date": "2026-07-12", "from": "Besseggen hike", "to": "Beitostølen", "km": 33, "ascentM": 450,
+      "surface": "Hike 14 km (~1,100 m up), then 33 km paved Fv51 back over Valdresflye",
+      "overnight": "Beitostølen", "via": ["Gjendesheim"], "startKm": 414, "endKm": 427,
+      "summary": "Besseggen day: boat to Memurubu, hike the ridge back over Veslfjellet (1,743 m) — green Gjende 400 m below blue Bessvatnet. Then an evening ride over Valdresflye in the long light (sunset ~22:30) to Beitostølen.",
+      "highlights": ["Gjendebåten boat ride", "Besseggen ridge", "Veslfjellet 1,743 m", "Sunset-lit Valdresflye descent"],
+      "notes": "Sunday 12 July: groceries closed everywhere — run on lodge food (Gjendesheim packed lunch, Memurubu cafe); Beitostølen shops reopen Monday morning. Ridge is easy scrambling; skip in rain or high wind."
+    },
+    {
+      "day": 5, "date": "2026-07-13", "from": "Beitostølen", "to": "Vaset", "km": 51, "ascentM": 1250,
+      "surface": "≈60% gravel: Slettefjellvegen toll road (free for bikes), Vang valley tarmac, gravel over Syndisfjellet",
+      "overnight": "Vaset", "via": [], "startKm": 427, "endKm": 478,
+      "summary": "The hardest, prettiest Mjølkevegen leg: shop in Beitostølen at opening, then Slettefjellvegen to ~1,240 m, an 800 m plunge into the Vang valley, and the climb past the Syndin lakes to Vaset.",
+      "highlights": ["Slettefjell summit plateau", "Vang descent", "Ryfoss resupply", "Syndinstøga waffles", "Syndin lakes"],
+      "notes": "Monday: shops open again — restock properly in Beitostølen first thing. Watch for cows with calves on open pasture. Vaset: Fjellcamping, cabins, hotels."
+    },
+    {
+      "day": 6, "date": "2026-07-14", "from": "Vaset", "to": "Gol", "km": 70, "ascentM": 800,
+      "surface": "≈70% gravel: stølsveg across Stølsvidda and Golsfjellet, tarmac descent into Gol",
+      "overnight": "Gol", "via": [], "startKm": 478, "endKm": 548,
+      "summary": "Gentle pastoral riding across Stølsvidda — Norway's densest summer-farm landscape — past Tisleifjorden to Golsfjellet, then a long descent to Gol, the Mjølkevegen terminus.",
+      "highlights": ["Stølsvidda summer farms", "Lisjordetstølen (daily 12–18)", "Tisleifjorden", "Storefjell views"],
+      "notes": "Recovery day. Gol is full-service: supermarkets, Intersport (gas canisters, dehydrated meals), campsite and cheap hotels."
+    },
+    {
+      "day": 7, "date": "2026-07-15", "from": "Gol", "to": "Haugastøl", "km": 76, "ascentM": 1300,
+      "surface": "Cycle path + riverside gravel (Route 4) to Geilo; 22 km tarmac Rv7 to Haugastøl (train option)",
+      "overnight": "Haugastøl", "via": ["Geilo"], "startKm": 548, "endKm": 623,
+      "summary": "Up Hallingdal on National Cycle Route 4 through Torpo and Ål to Geilo (794 m), then the Rv7 to Haugastøl at 988 m — km 0 of the Rallarvegen.",
+      "highlights": ["Torpo stave church", "Hallingdalselva gravel", "Geilo under Hallingskarvet", "Rallarvegen km 0"],
+      "notes": "Rv7 Geilo→Haugastøl is fast traffic with no cycle path: hop the train or bus for that 22 km if you'd rather (book bike space on entur.no). Geilo is the last big resupply and bike shop before Flåm."
+    },
+    {
+      "day": 8, "date": "2026-07-16", "from": "Haugastøl", "to": "Finse", "km": 28, "ascentM": 450,
+      "surface": "100% Rallarvegen gravel, car-free",
+      "overnight": "Finse", "via": [], "startKm": 623, "endKm": 652,
+      "summary": "28 traffic-free kilometres climbing gently along the Bergen line to car-free Finse at 1,222 m, under the Hardangerjøkulen glacier (Star Wars' Hoth). Half-day for the Rallarmuseet or a guided Blåisen glacier walk.",
+      "highlights": ["Rallarvegen navvies' road", "Finse 1222", "Hardangerjøkulen", "Rallarmuseet"],
+      "notes": "Finse 1222 hotel and DNT Finsehytta both serve food — book a bed ahead, or wild-camp outside the station zone. Check Rallarvegrapporten: 2026 carries more snow than normal at this height."
+    },
+    {
+      "day": 9, "date": "2026-07-17", "from": "Finse", "to": "Flåm", "km": 54, "ascentM": 500,
+      "surface": "Rallarvegen gravel over the 1,322 m crest, steep switchback descent, paved Flåmsdalen",
+      "overnight": "Flåm", "via": [], "startKm": 652, "endKm": 705.6,
+      "summary": "The finale: over the high point at 1,322 m near Fagernut (waffle cabin), past Hallingskeid, the 21 hairpins of Myrdalsberget, Kjosfossen, and the green Flåm valley down to the Aurlandsfjord at 2 m.",
+      "highlights": ["Fagernut vokterbolig waffles", "Myrdalsberget 21 switchbacks", "Kjosfossen waterfall", "Aurlandsfjord finish + Ægir BrewPub"],
+      "notes": "Plan B if snow blocks the crest: Bergensbanen Finse→Myrdal carries bikes (15 reservable spaces), Flåmsbana Myrdal→Flåm too (~NOK 280, reserve). Bergensbanen is confirmed clear of works for a 17 July return to Oslo."
+    }
+  ]
+}
