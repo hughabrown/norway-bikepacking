@@ -138,7 +138,8 @@ section{padding:46px 0 8px}
 }
 .day .summary{margin:0 0 6px;max-width:74ch}
 .day .notes{font-size:15px;color:var(--ink-soft);margin:6px 0 0;max-width:74ch}
-.day-cols{display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:24px;margin-top:18px}
+.day-cols{display:grid;grid-template-columns:1fr;gap:8px;margin-top:18px}
+.day-cols>div{min-width:0}
 .day-cols h4{
   font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;letter-spacing:.12em;text-transform:uppercase;
   margin:0 0 8px;padding-bottom:5px;border-bottom:2px solid var(--ink);
@@ -154,7 +155,7 @@ section{padding:46px 0 8px}
 .pl summary:hover .pl-nm{color:var(--lake)}
 .pl summary::after{content:"+";font-family:'Barlow Condensed',sans-serif;font-weight:600;color:var(--ink-soft);flex:none}
 .pl[open] summary::after{content:"−"}
-.pl summary .price{flex:0 1 auto;max-width:32%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pl summary .price{flex:0 1 auto;max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pl .pl-body{padding:0 0 10px}
 .pl .pl-body .ds{display:block;color:var(--ink-soft);font-size:14px;line-height:1.45;margin-bottom:5px}
 .pl .pl-body a{
@@ -175,18 +176,36 @@ section{padding:46px 0 8px}
 }
 .map-jump:hover{background:var(--ink);color:var(--paper)}
 
-/* saved places */
-.places-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+/* saved places gallery */
+.places-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(235px,1fr));gap:16px}
 .place{
-  background:var(--card);border:1px solid var(--contour);border-left:4px solid var(--birch);
-  border-radius:3px;padding:12px 14px;
+  background:var(--card);border:1px solid var(--contour);border-top:3px solid var(--birch);
+  border-radius:3px;overflow:hidden;
 }
-.place.cat-food{border-left-color:var(--amber)}
-.place.cat-sleep{border-left-color:var(--slate)}
-.place .nm{font-weight:600}
-.place .ds{color:var(--ink-soft);font-size:14px;display:block;margin:3px 0 6px;line-height:1.45}
-.place .meta{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-soft)}
-.place a.gm{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:13px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none}
+.place.cat-food{border-top-color:var(--amber)}
+.place.cat-sleep{border-top-color:var(--slate)}
+.place .ph{position:relative;aspect-ratio:4/3;background:var(--snow);cursor:pointer}
+.place .ph img{width:100%;height:100%;object-fit:cover;display:block}
+.place .ph .ph-fb{width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+.place .ph .ph-fb svg{width:64px;height:64px;fill:none;stroke:var(--contour);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.place .ph-badge{
+  position:absolute;top:8px;left:8px;z-index:2;
+  font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;
+  background:var(--paper);border:1px solid var(--contour);border-radius:2px;padding:1px 6px;color:var(--ink);
+}
+.place .ov{
+  position:absolute;inset:0;z-index:3;background:rgba(251,250,247,.97);
+  opacity:0;pointer-events:none;transition:opacity .18s ease;
+  padding:12px 13px;overflow:auto;display:flex;flex-direction:column;gap:8px;
+}
+@media (prefers-reduced-motion: reduce){.place .ov{transition:none}}
+.place:hover .ov, .place:focus-within .ov, .place.open .ov{opacity:1;pointer-events:auto}
+.place .ov .ds{color:var(--ink);font-size:13px;line-height:1.5;margin:0}
+.place .ov .credit{font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:var(--ink-soft);margin-top:auto}
+.place .ov a.gm{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:13px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none}
+.place .pc{padding:9px 12px 11px}
+.place .nm{font-weight:600;font-size:15px;line-height:1.3;display:block}
+.place .meta{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-soft);display:block;margin-top:3px}
 
 /* logistics */
 .log-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
@@ -417,7 +436,7 @@ footer a{color:var(--ink-soft)}
 </footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-<script src="tripdata.js?v=33e55b67"></script>
+<script src="tripdata.js?v=3688db8d"></script>
 <script>
 (function(){
   if (typeof TRIP === 'undefined') return;
@@ -587,7 +606,9 @@ footer a{color:var(--ink-soft)}
     if (p.ptype) sub.push(String(p.ptype).replace(/_/g,' '));
     if (p.detour && p.detour !== 'on route') sub.push('detour: ' + p.detour);
     if (p.price) sub.push(p.price);
-    return '<div><span class="nm">'+esc(p.name)+'</span><br>'+
+    return '<div>'+
+      (p.img? '<img loading="lazy" src="'+esc(p.img)+'" alt="" style="width:100%;border-radius:2px;margin-bottom:6px;max-height:130px;object-fit:cover">':'')+
+      '<span class="nm">'+esc(p.name)+'</span><br>'+
       (sub.length? '<span class="mono" style="font-size:11px">'+esc(sub.join(' · '))+'</span><br>':'')+
       '<span class="ds">'+esc(p.description||'')+'</span><br>'+
       '<a href="'+gmaps(p)+'" target="_blank" rel="noopener">Open in Google Maps ↗</a></div>';
@@ -758,17 +779,44 @@ footer a{color:var(--ink-soft)}
     var ia = stopOrder.indexOf(norm(a.nearStop||a.town)), ib = stopOrder.indexOf(norm(b.nearStop||b.town));
     return (ia<0?99:ia) - (ib<0?99:ib);
   });
+  var FB = {
+    nature: '<svg viewBox="0 0 64 64"><path d="M6 46 L24 18 L33 31 L40 22 L58 46 Z"/><circle cx="14" cy="14" r="5"/></svg>',
+    food: '<svg viewBox="0 0 64 64"><path d="M14 24 h28 v14 a10 10 0 0 1 -10 10 h-8 a10 10 0 0 1 -10 -10 Z"/><path d="M42 27 h5 a6 6 0 0 1 0 12 h-6"/><path d="M22 16 q-2 -3 0 -6 M30 16 q-2 -3 0 -6"/></svg>',
+    sleep: '<svg viewBox="0 0 64 64"><path d="M8 48 L32 14 L56 48 Z"/><path d="M32 48 L32 34 L24 48"/></svg>',
+    grocery: '<svg viewBox="0 0 64 64"><path d="M12 26 h40 l-5 22 H17 Z"/><path d="M22 26 q0 -12 10 -12 q10 0 10 12"/></svg>'
+  };
   function renderPlaces(filter){
     $('places-grid').innerHTML = everything.filter(function(p){
       return filter==='all' || groupOf(p)===filter;
     }).map(function(p){
       var kind = groupOf(p);
-      var meta = [p.nearStop||p.town, (p.type||p.category||'').replace('_',' '), (p.detour && p.detour!=='on route') ? p.detour : null, p.price].filter(Boolean).join(' · ');
-      return '<div class="place cat-'+kind+'"><span class="nm">'+esc(p.name)+'</span>'+
-        '<span class="ds">'+esc(p.description||'')+'</span>'+
-        '<span class="meta">'+esc(meta)+'</span><br>'+
-        '<a class="gm" href="'+gmaps(p)+'" target="_blank" rel="noopener">Google Maps ↗</a></div>';
+      var badge = (p.type||p.category||'').replace(/_/g,' ');
+      var meta = [p.nearStop||p.town, isDetour(p) ? p.detour : null, p.price].filter(Boolean).join(' · ');
+      var fbKind = p.type==='grocery' ? 'grocery' : kind;
+      var photo = p.img
+        ? '<img loading="lazy" src="'+esc(p.img)+'" alt="'+esc(p.name)+'">'
+        : '<div class="ph-fb">'+(FB[fbKind]||FB.nature)+'</div>';
+      return '<div class="place cat-'+kind+'" tabindex="0">'+
+        '<div class="ph">'+photo+
+          '<span class="ph-badge">'+esc(badge)+'</span>'+
+          '<div class="ov"><p class="ds">'+esc(p.description||'')+'</p>'+
+            '<a class="gm" href="'+gmaps(p)+'" target="_blank" rel="noopener">Google Maps ↗</a>'+
+            (p.imgCredit? '<span class="credit">'+esc(p.imgCredit)+'</span>':'')+
+          '</div>'+
+        '</div>'+
+        '<div class="pc"><span class="nm">'+esc(p.name)+'</span>'+
+        '<span class="meta">'+esc(meta)+'</span></div>'+
+        '</div>';
     }).join('');
+    $('places-grid').querySelectorAll('.place .ph').forEach(function(ph){
+      ph.addEventListener('click', function(e){
+        if (e.target.closest('a')) return;
+        var card = ph.closest('.place');
+        var was = card.classList.contains('open');
+        document.querySelectorAll('.place.open').forEach(function(c){ c.classList.remove('open'); });
+        if (!was) card.classList.add('open');
+      });
+    });
   }
   $('places-filter').innerHTML = ['all','nature','food','sleep'].map(function(k,i){
     return '<button class="chip day-chip" aria-pressed="'+(i===0)+'" data-f="'+k+'">'+(k==='all'?'Everything':k)+'</button>';

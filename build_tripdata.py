@@ -30,6 +30,23 @@ rw = load("rwgps_extract.json", required=True)
 south = load("research_south.json")
 north = load("research_north.json")
 override = load("stages_override.json")
+images = load("images.json") or {}
+
+import re
+import unicodedata
+
+
+def slugify(name):
+    s = unicodedata.normalize("NFKD", name).encode("ascii", "ignore").decode()
+    return re.sub(r"-+", "-", re.sub(r"[^a-z0-9]+", "-", s.lower())).strip("-")[:60]
+
+
+def attach_image(place):
+    rec = images.get(slugify(place.get("name", "")))
+    if rec and rec.get("file"):
+        place["img"] = "images/" + rec["file"]
+        if rec.get("credit"):
+            place["imgCredit"] = rec["credit"]
 
 # ---------------------------------------------------------------- stages
 # Draft plan derived from track kilometre marks; replaced by stages_override.json
@@ -169,6 +186,15 @@ for blob in (south, north):
             towns.append(t)
     for g in blob.get("poiGroups", []):
         poi_groups.append(g)
+
+for t in towns:
+    for f in t.get("food", []):
+        attach_image(f)
+    for s in t.get("sleep", []):
+        attach_image(s)
+for g in poi_groups:
+    for p in g.get("pois", []):
+        attach_image(p)
 
 logistics = {}
 if south and south.get("logistics"):
