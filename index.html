@@ -202,6 +202,46 @@ section{padding:46px 0 8px}
 }
 .warn strong{color:var(--dnt)}
 
+/* packing */
+.loadout{border:1.5px solid var(--contour);background:var(--card);border-radius:3px;padding:10px 14px 4px;margin:0 0 26px}
+.loadout svg{width:100%;height:auto;display:block}
+.bk{fill:none;stroke:var(--ink);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.bk-thin{fill:none;stroke:var(--ink);stroke-width:1.6;stroke-linecap:round}
+.bk-soft{fill:none;stroke:var(--contour);stroke-width:1.4}
+.bag-have{fill:var(--snow);stroke:var(--ink);stroke-width:2.5}
+.bag-buy{fill:#FBEAE6;stroke:var(--dnt);stroke-width:2.5}
+.lab{font-family:'IBM Plex Mono',monospace;font-size:12.5px;fill:var(--ink)}
+.lab-buy{fill:var(--dnt)}
+.lab-big{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:24px;letter-spacing:.08em;fill:var(--ink)}
+.lead{stroke:var(--ink-soft);stroke-width:1;stroke-dasharray:2 3;fill:none}
+.shop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;margin:0 0 34px}
+.shop{background:var(--card);border:1px solid var(--contour);border-top:3px solid var(--dnt);border-radius:3px;padding:14px}
+.shop svg{width:54px;height:54px;display:block;margin-bottom:8px}
+.shop .ic{fill:none;stroke:var(--ink);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.shop .ic-acc{fill:none;stroke:var(--dnt);stroke-width:2.4;stroke-linecap:round}
+.shop .nm{font-weight:600;font-size:15.5px}
+.shop .ds{display:block;color:var(--ink-soft);font-size:13.5px;line-height:1.45;margin:3px 0 6px}
+.shop .pr{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-soft)}
+.pack-cols{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.pack-col>h3{font-size:24px;font-weight:700;text-transform:uppercase;border-bottom:2px solid var(--ink);padding-bottom:6px;margin-bottom:4px}
+.pack-col .sub{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.05em}
+.pack-cat{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin:18px 0 4px}
+.pk{display:flex;align-items:baseline;gap:10px;padding:6px 0;border-bottom:1px dotted var(--contour);cursor:pointer;font-size:15px}
+.pk input{accent-color:var(--dnt);transform:translateY(2px);flex:none;width:16px;height:16px}
+.pk.done .pk-l{text-decoration:line-through;color:var(--ink-soft)}
+.pk .pk-l{flex:1 1 auto}
+.pk .pk-n{font-size:12.5px;color:var(--ink-soft)}
+.pk-badge{
+  font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;
+  border:1px solid var(--dnt);color:var(--dnt);border-radius:2px;padding:0 5px;flex:none;
+}
+.pk-badge.have{border-color:var(--birch);color:var(--birch)}
+.pack-meta{display:flex;gap:14px;align-items:center;margin:18px 0 0}
+.pack-meta .chip{font-size:13px}
+#pack-progress{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-soft)}
+@media (max-width:880px){.pack-cols{grid-template-columns:1fr}}
+@media print{.pk input{display:none}}
+
 footer{margin-top:60px;border-top:2px solid var(--ink);padding:22px 0 60px;color:var(--ink-soft);font-size:14px}
 footer a{color:var(--ink-soft)}
 
@@ -245,6 +285,7 @@ footer a{color:var(--ink-soft)}
     <li><a href="#map-section">Map</a></li>
     <li><a href="#days">Day by day</a></li>
     <li><a href="#places">Saved places</a></li>
+    <li><a href="#packing">Packing</a></li>
     <li><a href="#logistics">Logistics</a></li>
   </ul>
 </nav>
@@ -274,6 +315,92 @@ footer a{color:var(--ink-soft)}
     <p class="section-note">Everything worth a stop — nature, detours, bakeries, beds — in route order. Tap any link to save it to the shared Google Maps list, or bulk-import <span class="mono">saved_places.kml</span> (pins + route, sitting next to this file) at <a href="https://www.google.com/mymaps" target="_blank" rel="noopener">google.com/mymaps</a> — the layer then shows in the Google Maps app under Saved → Maps.</p>
     <div class="map-controls" id="places-filter"></div>
     <div class="places-grid" id="places-grid"></div>
+  </div>
+</section>
+
+<section id="packing">
+  <div class="wrap">
+    <div class="section-head"><span class="tick"></span><h2>Packing</h2></div>
+    <p class="section-note">Pack for 5–20 °C, rain that will find you, near-20-hour daylight and mosquitoes on the plateaus; Finse nights can dip to ~3 °C. Red on the bike = still to buy. Two rear panniers (≈40 L) plus the red bags ≈ 55 L per rider — enough.</p>
+
+    <div class="loadout">
+      <svg viewBox="0 0 980 530" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cannondale Topstone loadout: rear panniers owned; handlebar roll, frame bag, top tube bag and Garmin to buy">
+        <line class="bk-soft" x1="30" y1="478" x2="950" y2="478"/>
+        <!-- wheels -->
+        <circle class="bk" cx="200" cy="368" r="105" stroke-width="7"/>
+        <circle class="bk-thin" cx="200" cy="368" r="86"/>
+        <circle class="bk" cx="200" cy="368" r="10"/>
+        <g class="bk-soft">
+          <line x1="200" y1="284" x2="200" y2="452"/><line x1="116" y1="368" x2="284" y2="368"/>
+          <line x1="141" y1="309" x2="259" y2="427"/><line x1="259" y1="309" x2="141" y2="427"/>
+        </g>
+        <circle class="bk" cx="780" cy="368" r="105" stroke-width="7"/>
+        <circle class="bk-thin" cx="780" cy="368" r="86"/>
+        <circle class="bk" cx="780" cy="368" r="10"/>
+        <g class="bk-soft">
+          <line x1="780" y1="284" x2="780" y2="452"/><line x1="696" y1="368" x2="864" y2="368"/>
+          <line x1="721" y1="309" x2="839" y2="427"/><line x1="839" y1="309" x2="721" y2="427"/>
+        </g>
+        <!-- drivetrain -->
+        <circle class="bk-thin" cx="470" cy="368" r="33"/>
+        <circle class="bk-thin" cx="200" cy="368" r="17"/>
+        <line class="bk-thin" x1="470" y1="335" x2="200" y2="351"/>
+        <line class="bk-thin" x1="470" y1="401" x2="200" y2="385"/>
+        <line class="bk" x1="470" y1="368" x2="503" y2="412"/>
+        <line class="bk" x1="493" y1="412" x2="513" y2="412"/>
+        <!-- frame -->
+        <line class="bk" x1="470" y1="368" x2="435" y2="208"/>
+        <line class="bk" x1="435" y1="208" x2="655" y2="183"/>
+        <line class="bk" x1="470" y1="368" x2="672" y2="228"/>
+        <line class="bk" x1="655" y1="183" x2="672" y2="228"/>
+        <line class="bk" x1="200" y1="368" x2="446" y2="256"/>
+        <line class="bk" x1="200" y1="368" x2="470" y2="368"/>
+        <path class="bk" d="M672,228 Q700,290 780,368"/>
+        <!-- seatpost + saddle -->
+        <line class="bk" x1="435" y1="208" x2="424" y2="162"/>
+        <line class="bk" x1="392" y1="158" x2="462" y2="151" stroke-width="6"/>
+        <!-- stem + bar + garmin -->
+        <line class="bk" x1="655" y1="183" x2="688" y2="172"/>
+        <path class="bk" d="M688,172 C 722,170 734,188 726,208 C 720,224 707,226 701,221"/>
+        <line class="bk-thin" x1="688" y1="170" x2="712" y2="152"/>
+        <rect class="bag-buy" x="697" y="131" width="38" height="24" rx="4"/>
+        <!-- rack + panniers -->
+        <line class="bk-thin" x1="430" y1="244" x2="185" y2="240"/>
+        <line class="bk-thin" x1="205" y1="240" x2="200" y2="285"/>
+        <rect class="bag-have" x="118" y="246" width="142" height="138" rx="16"/>
+        <line class="bk-thin" x1="118" y1="286" x2="260" y2="286"/>
+        <!-- handlebar roll -->
+        <rect class="bag-buy" x="700" y="190" width="102" height="50" rx="25"/>
+        <line class="bk-thin" x1="728" y1="190" x2="728" y2="240" stroke="var(--dnt)"/>
+        <line class="bk-thin" x1="774" y1="190" x2="774" y2="240" stroke="var(--dnt)"/>
+        <!-- frame bag -->
+        <path class="bag-buy" d="M482,242 L638,234 Q650,234 646,246 L634,282 Q630,292 618,290 L498,272 Q486,270 484,258 Z"/>
+        <!-- top tube bag -->
+        <rect class="bag-buy" x="560" y="167" width="62" height="25" rx="9"/>
+        <!-- labels -->
+        <text class="lab" x="40" y="212">2× REAR PANNIERS — HAVE</text>
+        <path class="lead" d="M150,220 L165,244"/>
+        <text class="lab lab-buy" x="640" y="84">GARMIN EDGE — BUY</text>
+        <path class="lead" d="M716,92 L716,128"/>
+        <text class="lab lab-buy" x="806" y="170">BAR ROLL 9–11 L — BUY</text>
+        <path class="lead" d="M812,178 L806,196"/>
+        <text class="lab lab-buy" x="430" y="120">TOP TUBE BAG 1 L — BUY</text>
+        <path class="lead" d="M560,128 L585,164"/>
+        <text class="lab lab-buy" x="430" y="452">FRAME BAG 3–4 L — BUY</text>
+        <path class="lead" d="M540,440 L560,294"/>
+        <text class="lab-big" x="40" y="510">CANNONDALE TOPSTONE</text>
+        <text class="lab" x="330" y="510" fill="var(--ink-soft)">tubeless checked · fresh chain &amp; brake pads before departure</text>
+      </svg>
+    </div>
+
+    <h3 style="font-size:24px;text-transform:uppercase;margin:0 0 12px">Still to buy</h3>
+    <div class="shop-grid" id="shop-grid"></div>
+
+    <div class="pack-cols" id="pack-cols"></div>
+    <div class="pack-meta">
+      <span id="pack-progress"></span>
+      <button class="chip" id="pack-reset">Reset ticks</button>
+    </div>
   </div>
 </section>
 
@@ -680,6 +807,153 @@ footer a{color:var(--ink-soft)}
   $('foot').innerHTML = 'Route: <a href="https://ridewithgps.com/routes/41496641" target="_blank" rel="noopener">RideWithGPS #41496641 — Setrer og villmark</a> · <a href="https://bikepacking.com/news/bikepacking-norways-best-gravel-mjolkevegen-and-rallarvegen-video/" target="_blank" rel="noopener">bikepacking.com — Norway’s Best Gravel</a>'+
     (links.length ? ' · ' + links.map(function(u){ var h; try{h=new URL(u).hostname.replace('www.','');}catch(e){h=u;} return '<a href="'+esc(u)+'" target="_blank" rel="noopener">'+esc(h)+'</a>'; }).join(' · ') : '')+
     '<br>Distances from the GPS track; opening info researched June 2026 — re-check timetables and Rallarvegen conditions the week before departure.';
+
+  /* ---------- packing ---------- */
+  var IC = {
+    garmin: '<svg viewBox="0 0 64 64"><rect class="ic" x="16" y="8" width="32" height="48" rx="7"/><rect class="ic-acc" x="22" y="16" width="20" height="26" rx="2"/><line class="ic" x1="28" y1="50" x2="36" y2="50"/><path class="ic-acc" d="M26 28 l5 6 7-10"/></svg>',
+    roll: '<svg viewBox="0 0 64 64"><rect class="ic" x="6" y="22" width="52" height="22" rx="11"/><line class="ic-acc" x1="20" y1="22" x2="20" y2="44"/><line class="ic-acc" x1="44" y1="22" x2="44" y2="44"/><path class="ic" d="M20 50 q12 6 24 0"/></svg>',
+    frame: '<svg viewBox="0 0 64 64"><path class="ic" d="M8 20 L56 16 L48 42 Q46 48 38 46 L14 32 Q8 28 8 20 Z"/><line class="ic-acc" x1="14" y1="22" x2="50" y2="20"/><circle class="ic-acc" cx="30" cy="33" r="2"/></svg>',
+    toptube: '<svg viewBox="0 0 64 64"><rect class="ic" x="10" y="24" width="44" height="20" rx="9"/><line class="ic-acc" x1="32" y1="24" x2="32" y2="44"/><line class="ic" x1="18" y1="50" x2="26" y2="50"/><line class="ic" x1="38" y1="50" x2="46" y2="50"/></svg>',
+    power: '<svg viewBox="0 0 64 64"><rect class="ic" x="14" y="10" width="36" height="44" rx="8"/><path class="ic-acc" d="M34 18 L26 34 h7 L29 46 L40 30 h-8 Z"/></svg>',
+    filter: '<svg viewBox="0 0 64 64"><path class="ic" d="M24 8 h16 v10 q6 4 6 12 v18 q0 8 -8 8 H26 q-8 0 -8 -8 V30 q0-8 6-12 Z"/><path class="ic-acc" d="M32 30 q-6 8 0 13 q6 -5 0 -13 Z"/></svg>',
+    lock: '<svg viewBox="0 0 64 64"><rect class="ic" x="14" y="28" width="36" height="26" rx="6"/><path class="ic" d="M22 28 v-6 a10 10 0 0 1 20 0 v6"/><circle class="ic-acc" cx="32" cy="40" r="4"/><line class="ic-acc" x1="32" y1="44" x2="32" y2="48"/></svg>',
+    gas: '<svg viewBox="0 0 64 64"><path class="ic" d="M20 22 h24 v26 a8 8 0 0 1 -8 8 h-8 a8 8 0 0 1 -8 -8 Z"/><path class="ic" d="M26 22 v-4 h12 v4"/><rect class="ic-acc" x="29" y="10" width="6" height="6" rx="2"/><path class="ic-acc" d="M26 36 q6 -8 12 0 q-6 8 -12 0 Z"/></svg>'
+  };
+  var SHOP = [
+    {ic:'garmin', nm:'Garmin Edge 840 Solar', ds:'Multi-day battery (solar tops it up on 20 h days), ClimbPro for the passes, offline maps, loads the route GPX. The 540 does the same for less if you skip touch.', pr:'~€400–450 · + out-front mount'},
+    {ic:'roll', nm:'Handlebar roll 9–11 L', ds:'Tent or sleeping bag lives here. Ortlieb Handlebar-Pack (waterproof, tool-free) fits the Topstone drop bar; check 2–3 cm clearance over the front tyre.', pr:'~€110'},
+    {ic:'frame', nm:'Half-frame bag 3–4 L', ds:'Tools, spares and lock low in the main triangle; half-size keeps both bottle cages usable — you want the bottles on the plateau crossings.', pr:'~€60–80'},
+    {ic:'toptube', nm:'Top tube bag 1 L', ds:'Snacks, phone, lip balm — riding fuel without stopping. Bolt-on if the Topstone has the mounts (it does on recent ones), strap-on otherwise.', pr:'~€35'},
+    {ic:'power', nm:'Power bank 20,000 mAh', ds:'Charges two phones + a Garmin for ~3 days between sockets. You pass mains roughly every other night (huts, campsites).', pr:'~€40 · one each'},
+    {ic:'filter', nm:'Water filter (Katadyn BeFree 1 L)', ds:'Streams are everywhere but graze country argues for filtering. One shared filter + purification tabs as backup.', pr:'~€45 · shared'},
+    {ic:'lock', nm:'Light café lock', ds:'One mid-weight lock shared between both bikes covers the whole route — Flåm is the only real theft-risk stop.', pr:'~€30–40 · shared'},
+    {ic:'gas', nm:'Gas canister (buy in Norway)', ds:'Cannot fly with it. Sport shops in Røros (or Dombås on the short start) sell screw-top canisters — first stop after the train.', pr:'~NOK 130 · shared'}
+  ];
+
+  var PACKING = {
+    shared: {
+      sub: 'split across both bikes',
+      cats: [
+        {c:'Camp', items:[
+          {l:'2-person tent', b:'have'},
+          {l:'Tent footprint / groundsheet'},
+          {l:'Trowel (leave no trace)'}
+        ]},
+        {c:'Kitchen', items:[
+          {l:'Gas stove + windscreen'},
+          {l:'Gas canister', b:'buy in Norway'},
+          {l:'Pot 1.5 L + lid'},
+          {l:'Lighter ×2'},
+          {l:'Coffee kit + 2 mugs'},
+          {l:'1 day emergency rations', n:'refill before each wilderness leg'}
+        ]},
+        {c:'Tools & spares', items:[
+          {l:'Multitool with chain breaker'},
+          {l:'Mini pump + tyre levers'},
+          {l:'Tubeless plug kit', b:'buy'},
+          {l:'2× inner tubes + patches'},
+          {l:'Quick links ×2 (match both chains)'},
+          {l:'Brake pads ×2 pairs'},
+          {l:'Derailleur hangers', n:'bike-specific — one per bike'},
+          {l:'Chain lube + rag'},
+          {l:'Zip ties, Voile strap, tape wrap'},
+          {l:'Gear-repair tape + sewing kit'}
+        ]},
+        {c:'Safety & shared kit', items:[
+          {l:'First aid kit + tick remover'},
+          {l:'Water filter', b:'buy'},
+          {l:'Café lock', b:'buy'},
+          {l:'Wall charger 2× USB-C 30 W+'},
+          {l:'Sunscreen + mosquito repellent'},
+          {l:'Paper map backup (Jotunheimen sheet)'}
+        ]}
+      ]
+    },
+    personal: {
+      sub: 'each rider',
+      cats: [
+        {c:'Sleep', items:[
+          {l:'Sleeping bag, comfort ≈ 0–5 °C', n:'Finse nights ~3 °C'},
+          {l:'Sleeping mat'},
+          {l:'Sheet liner', n:'required in DNT huts'},
+          {l:'Earplugs'}
+        ]},
+        {c:'On the bike', items:[
+          {l:'Helmet + glasses (clear & dark)'},
+          {l:'Bib shorts ×2, jerseys ×2'},
+          {l:'Base layer + arm/knee warmers'},
+          {l:'Rain jacket (proper 3-layer)'},
+          {l:'Rain pants (light)'},
+          {l:'Waterproof gloves', n:'Rallarvegen descent is cold'},
+          {l:'Summer gloves, cap, buff'},
+          {l:'Socks ×3 + riding shoes'},
+          {l:'2 bottles + capacity for 1.5 L+', n:'plateau crossings'}
+        ]},
+        {c:'Off the bike', items:[
+          {l:'Puffy jacket (down/synthetic)', n:'1,222 m evenings'},
+          {l:'Merino tee + camp trousers'},
+          {l:'Underwear ×3, beanie'},
+          {l:'Camp sandals'},
+          {l:'Swim shorts + small towel', n:'the lakes earn it'}
+        ]},
+        {c:'Other', items:[
+          {l:'Garmin / bike computer', b:'buy'},
+          {l:'Front + rear light (snow sheds, tunnels)'},
+          {l:'Power bank 20,000 mAh', b:'buy'},
+          {l:'Phone + cables'},
+          {l:'Bank card ×2 (Norway is card-only) + passport'},
+          {l:'Toiletries + personal meds'},
+          {l:'DNT membership card', n:'if you buy one for the huts'}
+        ]}
+      ]
+    }
+  };
+
+  $('shop-grid').innerHTML = SHOP.map(function(s){
+    return '<div class="shop">'+IC[s.ic]+'<span class="nm">'+esc(s.nm)+'</span><span class="ds">'+esc(s.ds)+'</span><span class="pr">'+esc(s.pr)+'</span></div>';
+  }).join('');
+
+  var packState = {};
+  try { packState = JSON.parse(localStorage.getItem('packing-v1') || '{}'); } catch(e){ packState = {}; }
+  function packId(side, ci, ii){ return side + '-' + ci + '-' + ii; }
+  function renderPacking(){
+    $('pack-cols').innerHTML = ['shared','personal'].map(function(side){
+      var col = PACKING[side];
+      return '<div class="pack-col"><h3>'+(side==='shared'?'Shared':'Personal')+'</h3><span class="sub">'+esc(col.sub)+'</span>'+
+        col.cats.map(function(cat, ci){
+          return '<div class="pack-cat">'+esc(cat.c)+'</div>'+cat.items.map(function(it, ii){
+            var id = packId(side, ci, ii);
+            var done = !!packState[id];
+            return '<label class="pk'+(done?' done':'')+'"><input type="checkbox" data-id="'+id+'"'+(done?' checked':'')+'>'+
+              '<span class="pk-l">'+esc(it.l)+(it.n? ' <span class="pk-n">— '+esc(it.n)+'</span>':'')+'</span>'+
+              (it.b? '<span class="pk-badge'+(it.b==='have'?' have':'')+'">'+esc(it.b)+'</span>':'')+
+              '</label>';
+          }).join('');
+        }).join('')+'</div>';
+    }).join('');
+    var boxes = document.querySelectorAll('.pk input');
+    boxes.forEach(function(cb){
+      cb.addEventListener('change', function(){
+        packState[cb.getAttribute('data-id')] = cb.checked;
+        if (!cb.checked) delete packState[cb.getAttribute('data-id')];
+        try { localStorage.setItem('packing-v1', JSON.stringify(packState)); } catch(e){}
+        cb.closest('.pk').classList.toggle('done', cb.checked);
+        packProgress();
+      });
+    });
+    packProgress();
+  }
+  function packProgress(){
+    var all = document.querySelectorAll('.pk input').length;
+    var done = document.querySelectorAll('.pk input:checked').length;
+    $('pack-progress').textContent = done + ' / ' + all + ' packed';
+  }
+  $('pack-reset').addEventListener('click', function(){
+    packState = {};
+    try { localStorage.removeItem('packing-v1'); } catch(e){}
+    renderPacking();
+  });
+  renderPacking();
 
   /* ---------- variant orchestration ---------- */
   function renderVariant(){
