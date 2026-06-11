@@ -106,24 +106,30 @@ section{padding:46px 0 8px}
 .legend-hint{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-soft);margin:10px 0 0}
 
 /* day cards */
-.day{
-  display:grid;grid-template-columns:118px 1fr;gap:0 26px;
-  border-top:1px solid var(--ink);padding:26px 0 30px;
-}
+.day{border-top:1px solid var(--ink)}
 .day.is-hike{background:linear-gradient(0deg,rgba(94,122,75,.06),rgba(94,122,75,.06))}
-.day-rail{position:relative}
-.day-rail .day-no{
-  font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:58px;line-height:.9;display:block;color:var(--dnt);
+.day-head{
+  display:flex;align-items:center;gap:20px;width:100%;
+  background:none;border:0;padding:15px 0;cursor:pointer;text-align:left;color:inherit;
 }
-.day-rail .day-date{
-  font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);display:block;margin-top:6px;
+.day-head .dh-no{
+  font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:42px;line-height:.9;color:var(--dnt);min-width:64px;
 }
-.day-rail .day-stop{
-  font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:14px;letter-spacing:.1em;text-transform:uppercase;
-  margin-top:14px;display:block;color:var(--ink);
+.day-head .dh-route{
+  font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:25px;line-height:1.05;text-transform:uppercase;letter-spacing:.02em;display:block;
 }
-.day h3{font-size:30px;font-weight:700;text-transform:uppercase}
-.day h3 .arrow{color:var(--dnt)}
+.day-head .dh-route .arrow{color:var(--dnt)}
+.day-head:hover .dh-route{color:var(--lake)}
+.day-head .dh-meta{
+  font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);display:block;margin-top:4px;
+}
+.day-head .dh-caret{
+  margin-left:auto;flex:none;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:28px;color:var(--ink-soft);
+  width:34px;height:34px;border:1.5px solid var(--contour);border-radius:50%;display:flex;align-items:center;justify-content:center;
+}
+.day-head[aria-expanded="true"] .dh-caret{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.day-body{padding:2px 0 28px 84px}
+.day-body[hidden]{display:none}
 .ride-chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 12px}
 .ride-chips span{
   font-family:'IBM Plex Mono',monospace;font-size:12.5px;background:var(--snow);
@@ -192,16 +198,18 @@ footer a{color:var(--ink-soft)}
 .loading-note{padding:60px 0;text-align:center;color:var(--ink-soft);font-style:italic}
 
 @media (max-width:880px){
-  .day{grid-template-columns:1fr;gap:10px}
-  .day-rail{display:flex;align-items:baseline;gap:14px}
-  .day-rail .day-stop{margin-top:0;margin-left:auto}
+  .day-head{gap:12px}
+  .day-head .dh-no{min-width:44px;font-size:32px}
+  .day-head .dh-route{font-size:19px}
+  .day-body{padding-left:0}
   .day-cols{grid-template-columns:1fr}
   .log-grid{grid-template-columns:1fr}
 }
 @media print{
-  .crumbs,.map-controls,.map-jump,#map-section,.variant-bar{display:none}
+  .crumbs,.map-controls,.map-jump,#map-section,.variant-bar,.dh-caret,#days-controls{display:none}
   body{font-size:12px}
   .day{break-inside:avoid}
+  .day-body[hidden]{display:block}
 }
 </style>
 </head>
@@ -240,7 +248,9 @@ footer a{color:var(--ink-soft)}
 
 <section id="days">
   <div class="wrap">
-    <div class="section-head"><span class="tick"></span><h2 id="days-title">Day by day</h2></div>
+    <div class="section-head"><span class="tick"></span><h2 id="days-title">Day by day</h2>
+      <span id="days-controls" style="margin-left:auto"><button class="chip" id="toggle-all" aria-pressed="false">Expand all</button></span>
+    </div>
     <div id="day-list"><p class="loading-note">Trip data not loaded.</p></div>
   </div>
 </section>
@@ -267,7 +277,7 @@ footer a{color:var(--ink-soft)}
 </footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-<script src="tripdata.js"></script>
+<script src="tripdata.js?v=33e55b67"></script>
 <script>
 (function(){
   if (typeof TRIP === 'undefined') return;
@@ -279,6 +289,12 @@ footer a{color:var(--ink-soft)}
       .replace(/[^a-z]/g,'');
   };
   var gmaps = function(p){
+    // Sights often have descriptive names Google can't match; their verified
+    // coordinates always resolve. Businesses keep name search (place card, hours).
+    var isBusiness = p._kind === 'food' || p._kind === 'sleep' || p.ptype;
+    if (!isBusiness && p.lat && p.lng){
+      return 'https://www.google.com/maps/search/?api=1&query=' + p.lat + ',' + p.lng;
+    }
     return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(p.name + ', ' + (p.town || p.nearStop || p.locality || '') + ', Norway');
   };
   var fmtKm = function(n){ return (Math.round(n*10)/10).toLocaleString('en-GB'); };
@@ -367,7 +383,7 @@ footer a{color:var(--ink-soft)}
     $('ribbon').innerHTML = s;
     $('ribbon').querySelectorAll('.rib-hit').forEach(function(r){
       r.addEventListener('click', function(){
-        var el = document.getElementById('day-' + r.getAttribute('data-day'));
+        var el = expandDay(parseInt(r.getAttribute('data-day'), 10));
         if (el) el.scrollIntoView({behavior:'smooth'});
       });
     });
@@ -505,7 +521,7 @@ footer a{color:var(--ink-soft)}
       var keys = [key].concat((st.via||[]).map(norm));
       var see = allPois.filter(function(p){ return keys.indexOf(norm(p.nearStop)) !== -1; });
       var seeHtml = see.map(function(p){
-        var sk = key + '|' + p.name;
+        var sk = p.name;
         if (shownSee[sk]) return ''; shownSee[sk]=1;
         var cat = (p.category||'').replace('_',' ');
         return liPlace(p, p.detour && p.detour!=='on route' ? 'b-detour':'b-nature', cat || 'sight');
@@ -516,17 +532,23 @@ footer a{color:var(--ink-soft)}
       var eatHtml = town ? (town.food||[]).map(function(f){ return liPlace(f,'b-food', f.type||'food'); }).join('') : '';
       var sleepHtml = town ? (town.sleep||[]).map(function(s){ return liPlace(s,'b-sleep', (s.type||'sleep').replace('_',' ')); }).join('') : '';
       var isHike = !(st.km > 0);
+      var meta = [
+        st.date ? fdate(st.date) : null,
+        st.km > 0 ? fmtKm(st.km) + ' km' : 'hike day',
+        st.ascentM ? '↑ ' + Math.round(st.ascentM).toLocaleString('en-GB') + ' m' : null,
+        '⛺ ' + st.overnight
+      ].filter(Boolean).join(' · ');
       return '<article class="day'+(isHike?' is-hike':'')+'" id="day-'+st.day+'">'+
-        '<div class="day-rail"><span class="day-no">'+(st.day<10?'0':'')+st.day+'</span>'+
-        '<span class="day-date">'+esc(st.date ? fdate(st.date) : '')+'</span>'+
-        '<span class="day-stop">⛺ '+esc(st.overnight)+'</span></div>'+
-        '<div class="day-body">'+
-        '<h3>'+esc(st.from)+' <span class="arrow">→</span> '+esc(st.to)+'</h3>'+
-        '<div class="ride-chips">'+
-          (st.km > 0 ? '<span>'+fmtKm(st.km)+' km</span>':'<span>hike / rest day</span>')+
-          (st.ascentM ? '<span>↑ '+Math.round(st.ascentM).toLocaleString('en-GB')+' m</span>':'')+
-          (st.surface ? '<span>'+esc(st.surface)+'</span>':'')+
-        '</div>'+
+        '<button class="day-head" aria-expanded="false" data-day="'+st.day+'">'+
+          '<span class="dh-no">'+(st.day<10?'0':'')+st.day+'</span>'+
+          '<span class="dh-main">'+
+            '<span class="dh-route">'+esc(st.from)+' <span class="arrow">→</span> '+esc(st.to)+'</span>'+
+            '<span class="dh-meta">'+esc(meta)+'</span>'+
+          '</span>'+
+          '<span class="dh-caret" aria-hidden="true">+</span>'+
+        '</button>'+
+        '<div class="day-body" hidden>'+
+        (st.surface ? '<div class="ride-chips"><span>'+esc(st.surface)+'</span></div>':'')+
         '<p class="summary">'+esc(st.summary||'')+'</p>'+
         (st.notes ? '<p class="notes">⚠ '+esc(st.notes)+'</p>':'')+
         '<div class="day-cols">'+
@@ -541,7 +563,31 @@ footer a{color:var(--ink-soft)}
     document.querySelectorAll('.map-jump').forEach(function(b){
       b.addEventListener('click', function(){ zoomDay(parseInt(b.getAttribute('data-day'),10)); });
     });
+    document.querySelectorAll('.day-head').forEach(function(h){
+      h.addEventListener('click', function(){ setDayOpen(h, h.getAttribute('aria-expanded') !== 'true'); });
+    });
+    var ta = $('toggle-all');
+    ta.setAttribute('aria-pressed','false');
+    ta.textContent = 'Expand all';
   }
+  function setDayOpen(head, open){
+    head.setAttribute('aria-expanded', open ? 'true' : 'false');
+    head.querySelector('.dh-caret').textContent = open ? '−' : '+';
+    var body = head.parentNode.querySelector('.day-body');
+    if (open) body.removeAttribute('hidden'); else body.setAttribute('hidden','');
+  }
+  function expandDay(dayNo){
+    var el = document.getElementById('day-' + dayNo);
+    if (!el) return null;
+    setDayOpen(el.querySelector('.day-head'), true);
+    return el;
+  }
+  $('toggle-all').addEventListener('click', function(){
+    var open = this.getAttribute('aria-pressed') !== 'true';
+    this.setAttribute('aria-pressed', open ? 'true' : 'false');
+    this.textContent = open ? 'Collapse all' : 'Expand all';
+    document.querySelectorAll('.day-head').forEach(function(h){ setDayOpen(h, open); });
+  });
 
   /* ---------- saved places ---------- */
   var everything = [];

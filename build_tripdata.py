@@ -250,5 +250,17 @@ with open(out, "w") as f:
     f.write(";\n")
 
 size = os.path.getsize(out)
-print(f"wrote {out} ({size/1024:.0f} KB) — towns: {len(towns)}, poi groups: {len(poi_groups)}, "
+
+# Stamp a content-hash version onto the script tag so browsers (and GitHub
+# Pages caches) pick up new data immediately.
+import hashlib
+import re
+ver = hashlib.md5(open(out, "rb").read()).hexdigest()[:8]
+idx_path = os.path.join(HERE, "index.html")
+idx = open(idx_path).read()
+idx_new = re.sub(r'src="tripdata\.js(\?v=[0-9a-f]*)?"', f'src="tripdata.js?v={ver}"', idx)
+if idx_new != idx:
+    open(idx_path, "w").write(idx_new)
+
+print(f"wrote {out} ({size/1024:.0f} KB, v={ver}) — towns: {len(towns)}, poi groups: {len(poi_groups)}, "
       f"logistics keys: {sorted(logistics)}")
