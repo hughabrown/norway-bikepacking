@@ -31,6 +31,7 @@ south = load("research_south.json")
 north = load("research_north.json")
 override = load("stages_override.json")
 images = load("images.json") or {}
+gimages = load("gimages.json") or {}
 
 import re
 import unicodedata
@@ -42,7 +43,13 @@ def slugify(name):
 
 
 def attach_image(place):
-    rec = images.get(slugify(place.get("name", "")))
+    slug = slugify(place.get("name", ""))
+    grec = gimages.get(slug)
+    if grec and grec.get("file"):
+        place["img"] = "gimages/" + grec["file"]
+        place["imgCredit"] = "Photo: Google Maps"
+        return
+    rec = images.get(slug)
     if rec and rec.get("file"):
         place["img"] = "images/" + rec["file"]
         if rec.get("credit"):
@@ -186,6 +193,19 @@ for blob in (south, north):
             towns.append(t)
     for g in blob.get("poiGroups", []):
         poi_groups.append(g)
+
+# drop POIs that are the same place under reshuffled names (e.g.
+# "Aukrustsenteret (Huset Aukrust)" vs "Huset Aukrust (Aukrustsenteret)")
+seen_poi_keys = set()
+for g in poi_groups:
+    kept = []
+    for p in g.get("pois", []):
+        key = "-".join(sorted(slugify(p.get("name", "")).split("-")))
+        if key in seen_poi_keys:
+            continue
+        seen_poi_keys.add(key)
+        kept.append(p)
+    g["pois"] = kept
 
 for t in towns:
     for f in t.get("food", []):

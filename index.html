@@ -436,7 +436,7 @@ footer a{color:var(--ink-soft)}
 </footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-<script src="tripdata.js?v=3688db8d"></script>
+<script src="tripdata.js?v=75e4ac4c"></script>
 <script>
 (function(){
   if (typeof TRIP === 'undefined') return;
@@ -769,10 +769,21 @@ footer a{color:var(--ink-soft)}
 
   /* ---------- saved places ---------- */
   var everything = [];
-  allPois.forEach(function(p){ everything.push(p); });
+  var seenPlace = {};
+  function pushPlace(p){
+    var k = norm(p.name);
+    if (seenPlace[k] !== undefined){
+      // duplicate listing (same place from two research passes): keep the better card
+      if (!everything[seenPlace[k]].img && p.img) everything[seenPlace[k]] = p;
+      return;
+    }
+    seenPlace[k] = everything.length;
+    everything.push(p);
+  }
+  allPois.forEach(pushPlace);
   (TRIP.towns||[]).forEach(function(t){
-    (t.food||[]).forEach(function(f){ everything.push(f); });
-    (t.sleep||[]).forEach(function(s){ everything.push(s); });
+    (t.food||[]).forEach(pushPlace);
+    (t.sleep||[]).forEach(pushPlace);
   });
   var stopOrder = (TRIP.stopOrder||[]).map(norm);
   everything.sort(function(a,b){
