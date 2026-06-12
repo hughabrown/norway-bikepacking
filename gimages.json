@@ -146,10 +146,6 @@
 "file": "guided-glacier-hike-with-joklagutane.jpg",
 "pid": "gps-cs-s/APNQkAFcO8V6cvhdoCtadO_N3Y4l6subW_6g57OhkbDqHla0-eJItTPvCJUgckYo06mIyu1r49IEUWodxRfZGVweAkY0vUZdbVzO58fHpea3RUFRODj4dKXMjcrJQprfXhJfuIhcN3DyiF3Kx_Dw"
 },
-"fagernut-vokterbolig-waffle-cottage": {
-"file": "fagernut-vokterbolig-waffle-cottage.jpg",
-"pid": "gps-cs-s/APNQkAFvHecQc8VV55865VcjXJ_XH64YM_CjknyOx4HD1w4c2gzR3-bAGR9vLKRAndv7-Xang906rb6DxWdO5CqQ_w9zdjRzpBHHB9E4pdOgYk48Q9HVYR7RuqTt3c5YXWznHuxr2iwaPg"
-},
 "kleivabrua-stone-bridge-kleivagjelet": {
 "file": "kleivabrua-stone-bridge-kleivagjelet.jpg",
 "pid": "gps-cs-s/APNQkAGpAPw17mMVeFiW9oQDqAZqS5PE6QCNW0uCBLsZyMVt2dD8-w37reThtzTWQUCY6-Vf_pJk02exREtTHh7Fu8dysO8gXoOWkR9uI3zFBTUsn9P7zWrgCYB5CjOYqk6SlAiGWhRV"
@@ -195,9 +191,8 @@
 "pid": "gps-cs-s/APNQkAEWmbF_hhal_rA8rCrpl0pD1j3vOBvBik1bMtE81HxtRJIT8ixHd8dcm1pWth5EcY6Co2-kA7a7E6NbUpDaQrrBsgVZkwuaKK5z79dm-wKN9kDaHjN8wPaiTuXbtthLWwJm6PU"
 },
 "hardangerjokulen-blaisen-guided-glacier-walk-from-finse": {
-"file": "hardangerjokulen-glacier-blaisen-midtdalsbreen-views.jpg",
-"pid": "gps-cs-s/APNQkAFXsYWF0tA6lVtNU-jepsN20a8AbbmuBshGo0Aqw9IU8fedTCIW7DW7AxjwyXnGLXQUapkWY40AkgZIfZMDXJik2dAm1R4azDA5RtmTFDh7cQBX0kPxHuQGnOKzKAiGxK8FM5P2",
-"sharedWith": "hardangerjokulen-glacier-blaisen-midtdalsbreen-views"
+"file": "hardangerjokulen-blaisen-guided-glacier-walk-from-finse.jpg",
+"area": true
 },
 "stegastein-viewpoint-ride-the-bjorgavegen-climb-or-shuttle-f": {
 "file": "stegastein-viewpoint-ride-the-bjorgavegen-climb-or-shuttle-f.jpg",
@@ -218,7 +213,7 @@
 },
 "gjende-boat-gjendebatane-ticket-logistics-gjendesheim-quay": {
 "file": "gjende-boat-gjendebatane-ticket-logistics-gjendesheim-quay.jpg",
-"pid": "gps-cs-s/APNQkAHcopfkqxTGy1UBHJor8GuCEmppBbV6LjYgxlINK4rHl1MJcPV07b5851hi4E5urhLa9B5yH9bODcZixCazY9iM7sXwumEqtt-R-OLY1DOjKlUGZMJQy05lreY7jZTodHbnX_ktFQ"
+"pid": "gps-cs-s/APNQkAEV5HkmeABzgsL2COg0j3kYv8LXzZNcYZQarW3DMWpDTBLGD4fyMfdiRI3hoS6ieahuQw3BPIkznb-wGa5-9scnOSlpZCZZ5TR1fMJGnHwnK1DthQzgdkJkgAhVlcgEtnWmpyq5"
 },
 "rros-bergstaden-rros-kirke-bergstadens-ziir": {
 "file": "rros-bergstaden-rros-kirke-bergstadens-ziir.jpg",
@@ -268,19 +263,13 @@
 "file": "aukrustsenteret-huset-aukrust-alvdal.jpg",
 "pid": "gps-cs-s/APNQkAGSd-r_AGOSAL2mugS4IOyq97-a_wrAMhhdMbW0iOr4bu3M3JtkxzJViTI9BuEH47TMPMQb6BS9g61wfsTVuG9ekacXvQwFm41e2m3yE8T9ILuE8vrt0Ammb9Kb_nSnlrKqIp_n6Zg7Ndk"
 },
-"huset-aukrust-aukrustsenteret": {
-"file": "aukrustsenteret-huset-aukrust-alvdal.jpg",
-"pid": "gps-cs-s/APNQkAGSd-r_AGOSAL2mugS4IOyq97-a_wrAMhhdMbW0iOr4bu3M3JtkxzJViTI9BuEH47TMPMQb6BS9g61wfsTVuG9ekacXvQwFm41e2m3yE8T9ILuE8vrt0Ammb9Kb_nSnlrKqIp_n6Zg7Ndk",
-"sharedWith": "aukrustsenteret-huset-aukrust-alvdal"
-},
 "grimsdalen-protected-landscape-and-grimsdalsvegen-toll-road": {
 "file": "grimsdalen-protected-landscape-and-grimsdalsvegen-toll-road.jpg",
 "pid": "gps-cs-s/APNQkAEHuUconDrqD3dvLrR0YAL2SrCSxDQSA367Gw7H1bWbcaHXZk0HH8JTwZDMCEB380GVNEyVPfXNgcbf9A-IEGn6TtIqFS9Sc2tmfydFY1_Z8Lw4iKi4mkhl9WywqbEVtR6UWqn1"
 },
 "grimsdalshytta-dnt-with-rondane-panorama": {
-"file": "grimsdalen-protected-landscape-and-grimsdalsvegen-toll-road.jpg",
-"pid": "gps-cs-s/APNQkAEHuUconDrqD3dvLrR0YAL2SrCSxDQSA367Gw7H1bWbcaHXZk0HH8JTwZDMCEB380GVNEyVPfXNgcbf9A-IEGn6TtIqFS9Sc2tmfydFY1_Z8Lw4iKi4mkhl9WywqbEVtR6UWqn1",
-"sharedWith": "grimsdalen-protected-landscape-and-grimsdalsvegen-toll-road"
+"file": "grimsdalshytta-dnt-with-rondane-panorama.jpg",
+"pid": "gps-cs-s/APNQkAEjz9gRw-3YYTHwlLE4c0G6iAQGQ8dBcY40C6r5OxHkP04zzCUyAlYCdaTDAlOLcNg_S74rIeU745rbXXiZas2WsEw_yGNs4ZsBQSb8lsawEkQhRxy6pnyLUgsZECvY1KmbCnCu"
 },
 "vegaskillet-rest-area-grimsdalsvegen-haverdalsvegen-fork": {
 "file": "vegaskillet-rest-area-grimsdalsvegen-haverdalsvegen-fork.jpg",
@@ -356,9 +345,8 @@
 "area": true
 },
 "first-camp-beitostolen-valdres-ex-beitostolen-hytter-camping": {
-"file": "tutjerne-tarns-wild-camp-plateau-above-beitostolen.jpg",
-"pid": "gps-cs-s/APNQkAHujwprzRh0kuCc49mE4zDFPmyJKbJqrzl4SExOdmysjTCn_Q9GjncQX_TizLwrm-18mBCt2wvwL9kHpoTUWXhnIM7rnuZvt6-ddsxkCDTP5Fh4iFL42uRNArj_HJHwgdWzK19lOA",
-"sharedWith": "tutjerne-tarns-wild-camp-plateau-above-beitostolen"
+"file": "first-camp-beitostolen-valdres-ex-beitostolen-hytter-camping.jpg",
+"pid": "gps-cs-s/APNQkAHwiXEETB3etFFae4CXkjcbLKj7PLhrS2f74nOlSrdg0EhRbI1yan7YpuFM0F8zBhN0_jcESLJTOewvRH_bOQZAQYi8DXa4DZ-NM4l0_JMKDJJMIMLVwRHppJaiRP2XFTeiaRXi4Q"
 },
 "bergo-hotell-bergo-rom": {
 "file": "bergo-hotell-bergo-rom.jpg",
@@ -369,9 +357,8 @@
 "pid": "gps-cs-s/APNQkAEbm0UTrAlBgDYMkcIKjp8v1ToQvjmz_L5ZKs54HXaZ2yw-HWSYNAbFiQijHeVosBLxUdSa0fwjBLUmfOaxsGZ4Hs36xwuyERQEf9jAudkahqRXcKQs4ZqbT5jJTKiDl_8oa_s"
 },
 "gjendesheim-turisthytte-dnt-dinner": {
-"file": "gjendesheim-jotunheimen-np-eastern-gateway.jpg",
-"pid": "gps-cs-s/APNQkAFwG9mhI0zH92FqP8t9dbEtEtaIFxagFlg5kb8xo3vHs9ExlB9KHikjp1OWcy_eXu90UZYRCDqG1JIgoXey50AUAQiHrPqD2Cieq9kK8279QwG1eR8B_E21TYituz6yx2550Ufh",
-"sharedWith": "gjendesheim-jotunheimen-np-eastern-gateway"
+"file": "gjendesheim-turisthytte-dnt-dinner.jpg",
+"pid": "gps-cs-s/APNQkAFVpGXu92vYs2LQHHELrUWya_iGHZuUNo2Le4txWn1bFGddZgtmru_5G6YKkpwLZ3V_WpnJdJXqg1aJwFZRvmxxeAnLvM2NVNkSnt6iAdK1WgCXPGKHPUzyIyvDyF6VFrFVxLCz"
 },
 "bessheim-fjellstue-restaurant": {
 "file": "bessheim-fjellstue-restaurant.jpg",
@@ -390,14 +377,12 @@
 "pid": "gps-cs-s/APNQkAE74we2qzon-A151dKwYKwpsHo0-Zy1pq43jxi_1M3p2NqrjLT_SfYyaPmFryqwqXDX_xV4exmvdxVWXo2MIWlZXmqjKwUA49EWfYQWcw0kBBbI_mRt7fOTbW6L36D9H29wxWKPw4pPDyW6"
 },
 "gjendesheim-turisthytte-dnt": {
-"file": "gjendesheim-jotunheimen-np-eastern-gateway.jpg",
-"pid": "gps-cs-s/APNQkAFwG9mhI0zH92FqP8t9dbEtEtaIFxagFlg5kb8xo3vHs9ExlB9KHikjp1OWcy_eXu90UZYRCDqG1JIgoXey50AUAQiHrPqD2Cieq9kK8279QwG1eR8B_E21TYituz6yx2550Ufh",
-"sharedWith": "gjendesheim-jotunheimen-np-eastern-gateway"
+"file": "gjendesheim-turisthytte-dnt.jpg",
+"pid": "gps-cs-s/APNQkAG88786JqeLmCtgK-LU1yK42YTll2KskHf7EqGrS4RiU5DAJJGDX8Uu5PH2f245udb81dFIwFnKkwzpL13P_Dt_awav_Rd8PXZ7cSbFUbgeotvET0xyBUP5SPDcTosWxRywBpPv"
 },
 "bessheim-fjellstue-og-hytter": {
-"file": "bessheim-fjellstue-restaurant.jpg",
-"pid": "gps-cs-s/APNQkAFdMo3aqXOC0XG_ED4eDVsG8yq5-2p2eUJ1IGk1TtOMC7gW6qSJ6ERmoj2n22dTo3QtQN4s32hDpivSGmMg22IrEXy_lzveSlK93VlmHBsUMoTT8JAdGE4mLiLxmVsMdrG7GmpFuXoF-EdX",
-"sharedWith": "bessheim-fjellstue-restaurant"
+"file": "bessheim-fjellstue-og-hytter.jpg",
+"pid": "gps-cs-s/APNQkAFqHXU-E2KJJiNI7spL_Wn01yQup6A8OAEyDM0ztzjGEVZV0fYlH9Ed53PywpJdsCSlxATEv1-X45zIxrud8dwoJFUBLSSNV2Qlpk7Pbr4kAa6Y8dmLvjRBcfpB-OQ0atjCDHla328fh7FV"
 },
 "vasetstlen": {
 "file": "vasetstlen.jpg",
@@ -421,9 +406,8 @@
 "area": true
 },
 "vaset-camping-vasetsenteret": {
-"file": "joker-vaset-vasetsenteret.jpg",
-"pid": "gps-cs-s/APNQkAENcMXD0OinPM2vBZ0-8ZMtU2dXlPMQowcaLpAqH8pINb3gJT9SrKrqCRNsepPruEHNt4vGU6OWWuyJJuvm2w3b8qwA-0DRwcDABjQYSBMlSWZjIMvMWn7Mlkh7UwuqBD3xvK0e",
-"sharedWith": "joker-vaset-vasetsenteret"
+"file": "vaset-camping-vasetsenteret.jpg",
+"pid": "gps-cs-s/APNQkAFd3iA-PzCR60GvjNAkVxVUJqNn2sUnQiKzH5atXhD_bpka0VEYaJvPyXN7gIzlKAKWG1MU-pAZfQEmkQ3yAG5u_8nEeT0sR3COuuLUZag9TbW8Ds0mTC9Lx7d7SnA4_72gZYb7Jg"
 },
 "vasetstlen-hytter": {
 "file": "vasetstlen-hytter.jpg",
@@ -462,18 +446,16 @@
 "pid": "gps-cs-s/APNQkAF2uRTzqM4TsRofjpwKVDQ5yEkifXDx1ORYCx3syGNdT8pdzNM8U77jvjtYA6yJwdIJsJM3SS468Z7-RdjRhwjy8cUpKmORojI8VNgpaZvAPhfT5KKQ1IqLl-A9uZMzTkP_9IE"
 },
 "first-camp-gol-hallingdal": {
-"file": "bistro-at-first-camp-gol-hallingdal.jpg",
-"pid": "gps-cs-s/APNQkAFjqdfxqUIeR78jwsEXdPBSmoS4XnrZ98xCcDuiiuLwXpEmxkL8dAS_ABC1sgB3GnVzwtr8QSF4hHw9G6uWu5N_ff6D-Aa7gJSNWTuYE9h6MwVAlY9FMfrh98O-0X6lcTqn_1skKTNDQOEP",
-"sharedWith": "bistro-at-first-camp-gol-hallingdal"
+"file": "first-camp-gol-hallingdal.jpg",
+"pid": "gps-cs-s/APNQkAF2YaJGWVApcCp34Vg4qxUsvRx2h_eIlhMYm5yl-VAKejvdeefdBR1ZGrcA4vCD0ajrXYB8cLMnn-CO_sHYPSd0kWm6DBZ7JjPlDMFXQbezscBMidZIkhHFgv3V5SWbJL2Yvbj2"
 },
 "pers-hotell": {
 "file": "pers-hotell.jpg",
 "pid": "gps-cs-s/APNQkAG83vqgYuu249Wqe5Egxc2xR4YNtyGRF32dNrOyv3ADcNINxMZOCFnbPodfawgFIkLsXfs8Nyl1FDIDQlehvmYBur_isqpsbx0db7XId_0f-PFJZ5rLgsFst176FMG3QWbABs4"
 },
 "haugastol-turistsenter-cafe-restaurant": {
-"file": "haugastol-rallarvegen-kilometre-zero.jpg",
-"pid": "gps-cs-s/APNQkAHX3CpD1eRebLtNaDTa1R85N9FTPlwLIcmaEHt16winLngOhQ35ACj3vo9Nr_Gv2iElDAja5q35YM92X5xO0zx-1LZF5nB_xPwLVe5KM4onT3eBBI5-ZfiElq2hCHqHp37N6r3g",
-"sharedWith": "haugastol-rallarvegen-kilometre-zero"
+"file": "haugastol-turistsenter-cafe-restaurant.jpg",
+"pid": "gps-cs-s/APNQkAGo1sKBZJT-C0xgOhSCJ-BlJbe1XPBQubwKKExw_HFRQ2pBpvacGMW5OcERKpuj1JBZuTUU5W7PLYVyMxXuUXkrDEovoF8Tzwtk8Aj8W03ADDI4y8Fey1lzfngoerkIrvLvZ2U"
 },
 "joker-ustaoset": {
 "file": "joker-ustaoset.jpg",
@@ -492,9 +474,8 @@
 "pid": "gps-cs-s/APNQkAEI2db6ZeAnwHaPheAgs6F37RpAidEk_gXsuXUU2Rub6gUQXzNM2ZTcrePZ1mdfE101RH49j7uIxt2t4z7eXEogJ452CNMy2roYsqB4w8fDJ1PGjtFYzDfjjcHYZ79jg4Utr7jt"
 },
 "fagerheim-fjellstugu": {
-"file": "fagerheim-fjellstugu-cafe.jpg",
-"pid": "gps-cs-s/APNQkAG0U8WejuR-0m1E_Ugp1HoXHzsYpY3Clf5yrCWXyXX7MFNelicfCe8l_mcZIlVstCymA3q4AcwrHG-sxfhM11wekv_0uIpfIwVEvTcn6RQMMIUS_-wsguQHAtSC1TZoYS6X32gatHqa77lY",
-"sharedWith": "fagerheim-fjellstugu-cafe"
+"file": "fagerheim-fjellstugu.jpg",
+"pid": "gps-cs-s/APNQkAHCc_9UBBzuftZzf6lA3Svt5GAiPTJsx03pasyyzGN316nCs-b605NmxM53W37ZCHZ2IMlgFamXoKFQ3GVBkL4rIyPHnxZBFtpmANhlhs-HdFTt1xC54W-ZH7ZMFlo29UD3kHQNrl9R6siA"
 },
 "wild-camp-open-heath-off-rv7-toward-fagerheim": {
 "file": "wild-camp-open-heath-off-rv7-toward-fagerheim.jpg",
@@ -505,14 +486,12 @@
 "pid": "gps-cs-s/APNQkAFpQgEPd_XbZGQxE0JhUrQ6jmutPwboRNvg67HU7HRj1getF9h7qVvQPRH7uGbS54Dj6MUDcQ7Q6DR-q20Y61vCbDC5izKl0g3qlPNqWSkIieXlL2GDG-YPkujdK3T8uTbdVfYi"
 },
 "hotel-finse-1222-restaurant-bar": {
-"file": "finse-and-finse-1222-star-wars-hoth-location.jpg",
-"pid": "gps-cs-s/APNQkAGZYU1sOF_HFCegJ4tmVBESueVo56F-pHgL0TFQRZ-EeycwaYZJSySlUiLbI8zEspaCgob_ncqHeyJKh43Ppkcn3CcW9qiOE6iXqwyyvGD-zR0LW7pzaZrGFtn1d6hqS7FJG3z3",
-"sharedWith": "finse-and-finse-1222-star-wars-hoth-location"
+"file": "hotel-finse-1222-restaurant-bar.jpg",
+"pid": "gps-cs-s/APNQkAHeH1eoA5MRtFHiXkao8FVcUCJ_rlFQDm0d0rwsAjAWMlZiScK8EL3yknC7w-eomX_5lVf4dxVQU4Y_DhapFMAJHFVD5QYyWNAsBEymrqGlN6AWDuUjm43KLtZ1nz2lwBsoGfaUDQ"
 },
 "fagernut-vokterbolig-cafe-rallarvaffel-stop": {
 "file": "fagernut-vokterbolig-waffle-cottage.jpg",
-"pid": "gps-cs-s/APNQkAFvHecQc8VV55865VcjXJ_XH64YM_CjknyOx4HD1w4c2gzR3-bAGR9vLKRAndv7-Xang906rb6DxWdO5CqQ_w9zdjRzpBHHB9E4pdOgYk48Q9HVYR7RuqTt3c5YXWznHuxr2iwaPg",
-"sharedWith": "fagernut-vokterbolig-waffle-cottage"
+"pid": "gps-cs-s/APNQkAFvHecQc8VV55865VcjXJ_XH64YM_CjknyOx4HD1w4c2gzR3-bAGR9vLKRAndv7-Xang906rb6DxWdO5CqQ_w9zdjRzpBHHB9E4pdOgYk48Q9HVYR7RuqTt3c5YXWznHuxr2iwaPg"
 },
 "no-grocery-store-at-finse-resupply-in-geilo": {
 "file": "no-grocery-store-at-finse-resupply-in-geilo.jpg",
@@ -523,14 +502,12 @@
 "area": true
 },
 "finsehytta-dnt-staffed-lodge": {
-"file": "finsehytta-cafe-restaurant-dnt.jpg",
-"pid": "gps-cs-s/APNQkAFpQgEPd_XbZGQxE0JhUrQ6jmutPwboRNvg67HU7HRj1getF9h7qVvQPRH7uGbS54Dj6MUDcQ7Q6DR-q20Y61vCbDC5izKl0g3qlPNqWSkIieXlL2GDG-YPkujdK3T8uTbdVfYi",
-"sharedWith": "finsehytta-cafe-restaurant-dnt"
+"file": "finsehytta-dnt-staffed-lodge.jpg",
+"pid": "gps-cs-s/APNQkAERj1DSyUROd6AwhUtHjZfmGFbFI8mofyHvg9oDsfwJdX-ZPznF-u1PEm1wza8Bsxf0fUNcoROKBJQ3bUgNvfZ2dM_P3BD84xxVnw0xGMLmDtjqytSbrN7jNESGgxw9wyYn-ZSa"
 },
 "hotel-finse-1222": {
-"file": "finse-and-finse-1222-star-wars-hoth-location.jpg",
-"pid": "gps-cs-s/APNQkAGZYU1sOF_HFCegJ4tmVBESueVo56F-pHgL0TFQRZ-EeycwaYZJSySlUiLbI8zEspaCgob_ncqHeyJKh43Ppkcn3CcW9qiOE6iXqwyyvGD-zR0LW7pzaZrGFtn1d6hqS7FJG3z3",
-"sharedWith": "finse-and-finse-1222-star-wars-hoth-location"
+"file": "hotel-finse-1222.jpg",
+"pid": "gps-cs-s/APNQkAEVk3nmPynzpoy0riQUufudjFaqgHVJLvEpA_cSLgQ_RHnmWQumNoFj-xW3C3ubhBtvW6UDHRLMKEUnQGVHBLOu_0s49mJW692XukaqttRHNU0wItT0BHg50YNpFPLV9NxsdKya"
 },
 "flam-bakeri": {
 "file": "flam-bakeri.jpg",
@@ -597,27 +574,24 @@
 "pid": "gps-cs-s/APNQkAGnFy9qXoBj0Gg1qHjXOaRB87Nv4wmAqI98aFWuKcVok5fF9WcD6nxE0xW8t085Zj5kmTc9a3GSJZ-RzCwDywFHeF1_rfW0hdNpSpZ8ERLOb-0dKo2O9cE8dvEtW06fePs7F0ng0A"
 },
 "vertshuset-roros-rooms": {
-"file": "vertshuset-roros.jpg",
-"pid": "gps-cs-s/APNQkAEhSwds0SxB1RZMuDaLULoowJrqXyTOy50ezq3w8Ss1ejfnzYOWHx2ZhBHlgXVHnsy8M_X5YzJYDHImlV8Ir0tDECzoXHY1nz141qKgWO4XmEfYkAhNoMGZxJ0Rw5fuGZ0Bh4Aqt6eFUy4",
-"sharedWith": "vertshuset-roros"
+"file": "vertshuset-roros-rooms.jpg",
+"pid": "gps-cs-s/APNQkAHTjF83geMFfXz7Pzc8BRHwEQv8qszV9ZYrqZHkvVKC9A_psrBydNyztJyCfHFk3sBbLKJ5VB2eAEWOa-PyEntkQtv_XBAxunjoLH4nibKzZ2q1wdnm574Vac_ksoRGf02DR7qRQe3UwJZD"
 },
 "ellefsplass-provisions-room-dnt-matlager": {
 "file": "ellefsplass-provisions-room-dnt-matlager.jpg",
 "pid": "gps-cs-s/APNQkAFHEtcSk08GCk4vxCZJbD8LzDXxf_P-W711EiLv5SlD64XEwO4zCj22sX3FD5cnp-N0GQjIvlEVTQclu7rRkuK6L_AhZgDJeepmRIKRtuK-1aVSUG6S0ohr9K-kSEi9w-BwCQOn"
 },
 "naerbutikken-tufsingdal-mauritz-landhandel": {
-"file": "tufsingdalen-mauritz-landhandel.jpg",
-"pid": "gps-cs-s/APNQkAE6p_t7DU3VRwg4rVilpjsqvSdqUE3g5fC7XqqZild-xqfk2h4hHnkj4JGVRlFdRfmY73SsrfX8vp6fpKdAvuoyIiXX4DBhUTPj_li8gkZE3NF_Dr7k9AWKxbbV6YQ5oZakwVJN-A",
-"sharedWith": "tufsingdalen-mauritz-landhandel"
+"file": "naerbutikken-tufsingdal-mauritz-landhandel.jpg",
+"pid": "gps-cs-s/APNQkAGtNVXOIfao30hoQ0-eCd88t_kD88SrHhw1UQcIU7BZsuwirZuxC_vQoQ5hD5jm9HOf3NUEjo1xI0JOnWQ1w_z6jRwHPLEz6aE0Y24AhvRm2v99V1LzI47j8oelfi0jEtRBsr7R_A"
 },
 "jonasvollen-camping-kiosk-femundsenden": {
 "file": "jonasvollen-camping-kiosk-femundsenden.jpg",
 "pid": "gps-cs-s/APNQkAF2gP-j7r7ZpBzIHBnSUyfxku9ucicoRUyEYJ9FT8cpAfN8FDnYuJnQtKMfygfObdMAGqNBTrrbWdmApgxVwKF1nUvwxrXfLqzx-4P8276BAgvZpQAj7a2pV00ZJFwjmSrQqkwyOA"
 },
 "dnt-ellefsplass-self-service-cabin": {
-"file": "ellefsplass-provisions-room-dnt-matlager.jpg",
-"pid": "gps-cs-s/APNQkAFHEtcSk08GCk4vxCZJbD8LzDXxf_P-W711EiLv5SlD64XEwO4zCj22sX3FD5cnp-N0GQjIvlEVTQclu7rRkuK6L_AhZgDJeepmRIKRtuK-1aVSUG6S0ohr9K-kSEi9w-BwCQOn",
-"sharedWith": "ellefsplass-provisions-room-dnt-matlager"
+"file": "dnt-ellefsplass-self-service-cabin.jpg",
+"pid": "gps-cs-s/APNQkAHTaKlfObUkec8ItCnFyl3NXuwCjt7OBWNbndxHDGvioV7040cdjk_lfTg-WqU2RSDXwg5btorMqLOzJSyvhb3VZe7UQFhiWDnLVrNtfxanwwGyUt47ULn99_m4pj5u41thxNph"
 },
 "wild-camp-south-shore-of-oversjoen-tarn": {
 "file": "wild-camp-south-shore-of-oversjoen-tarn.jpg",
@@ -628,9 +602,8 @@
 "area": true
 },
 "jonasvollen-camping": {
-"file": "jonasvollen-camping-kiosk-femundsenden.jpg",
-"pid": "gps-cs-s/APNQkAF2gP-j7r7ZpBzIHBnSUyfxku9ucicoRUyEYJ9FT8cpAfN8FDnYuJnQtKMfygfObdMAGqNBTrrbWdmApgxVwKF1nUvwxrXfLqzx-4P8276BAgvZpQAj7a2pV00ZJFwjmSrQqkwyOA",
-"sharedWith": "jonasvollen-camping-kiosk-femundsenden"
+"file": "jonasvollen-camping.jpg",
+"pid": "gps-cs-s/APNQkAGdNy60cBQv0nYzkkMCFbw8gAaiG37VUhxhkOxfwNR64dHogA6OC4sxs76HQaTmjZtdrnQPAUTsntYevp1xj2Inf660zGle8BYqtx8t85-RPzgB_Qc49_84oWfEuLE3azRw5DBj"
 },
 "frich-s-spiseri-alvdal": {
 "file": "frich-s-spiseri-alvdal.jpg",
@@ -665,14 +638,12 @@
 "pid": "gps-cs-s/APNQkAHHkRyFg8qXCS-C5P_Fk1cth5h010-0VdugoEKsMsjcXxFj1zYyb2GxRzZbLqjvU0Gm0Ev7v2rIat6UpPXnBBZkNt0wybToJjb8r--4B0UctOW8FX4Tualh77AdmCrJxqnS0ppF"
 },
 "frich-s-hotell-og-spiseri-alvdal": {
-"file": "frich-s-spiseri-alvdal.jpg",
-"pid": "gps-cs-s/APNQkAHAM5I7OMXLLvvPOIVDJOgR1GKlLqsEUqLworJAeQmyqbYfZ-G9a5dmy4z-LcpOwRpnQagzQqWoWFUNfjA3mNCwYZ4ieugcxfTf5_QaR-S-A6VIkh-ndoE1yuw1kjEOKMiYyon37yTEynrL",
-"sharedWith": "frich-s-spiseri-alvdal"
+"file": "frich-s-hotell-og-spiseri-alvdal.jpg",
+"pid": "gps-cs-s/APNQkAFGhS9CMj5FKQL0iOjOLzInHEnIb9fiwry2aD8X0b_iupOfbeK2gssowSWPA_fl35MzY7zpVyKJUB9Kd6RiD3682HWfMyE33geI_hXKtuowiSHhzMt-dfO2ZNxvp-I_nrfqXymNEg"
 },
 "grimsdalshytta-dining-room-dnt-staffed-hut": {
-"file": "grimsdalen-protected-landscape-and-grimsdalsvegen-toll-road.jpg",
-"pid": "gps-cs-s/APNQkAEHuUconDrqD3dvLrR0YAL2SrCSxDQSA367Gw7H1bWbcaHXZk0HH8JTwZDMCEB380GVNEyVPfXNgcbf9A-IEGn6TtIqFS9Sc2tmfydFY1_Z8Lw4iKi4mkhl9WywqbEVtR6UWqn1",
-"sharedWith": "grimsdalen-protected-landscape-and-grimsdalsvegen-toll-road"
+"file": "grimsdalshytta-dining-room-dnt-staffed-hut.jpg",
+"pid": "gps-cs-s/APNQkAEZwromPkAD-HoAI8X9Dj6HuPlgNO3SzdezYIw_S_dydXQFd57ZG-5Nrf2dgtM7z9O7LsD8JUvyqNuCOwv2FhP1wKm5iSFC1AuThs3yootTO8_9_Db3sqHqW_PolyD56Y_9agE"
 },
 "grimsbu-turistsenter-kafeteria": {
 "file": "grimsbu-turistsenter-kafeteria.jpg",
@@ -692,23 +663,20 @@
 "pid": "gps-cs-s/APNQkAE9q98oHNyU8NCcK8KPXBmqC1ZobsButP-C_u_C2iFF7V19iBDyTMESWS5ZmEXs5KDqXr4ISrdwpUi1DnmkaBy6uEfP21UoV9Ggum2rYSu8HnqPBDlMjZhWixN7isH6Uq_3Tag"
 },
 "grimsdalshytta-dnt-oslo-og-omegn-staffed-hut": {
-"file": "grimsdalen-protected-landscape-and-grimsdalsvegen-toll-road.jpg",
-"pid": "gps-cs-s/APNQkAEHuUconDrqD3dvLrR0YAL2SrCSxDQSA367Gw7H1bWbcaHXZk0HH8JTwZDMCEB380GVNEyVPfXNgcbf9A-IEGn6TtIqFS9Sc2tmfydFY1_Z8Lw4iKi4mkhl9WywqbEVtR6UWqn1",
-"sharedWith": "grimsdalen-protected-landscape-and-grimsdalsvegen-toll-road"
+"file": "grimsdalshytta-dnt-oslo-og-omegn-staffed-hut.jpg",
+"pid": "gps-cs-s/APNQkAG6xRdqGkC7vWEi28s2c3iEcVxM2ito-L2H4rH6g1xn9fEM0b4KB_-FCkd-HiDl4bryK_z8usEKdcD9CQrW_kpkOD4-L1Dv7FqM9f1pR_RkPBf6Z8Ax7uS2haIOkffn-M45vt-b"
 },
 "grimsdalshytta-teltplass-tent-pitch-at-the-hut": {
-"file": "grimsdalen-protected-landscape-and-grimsdalsvegen-toll-road.jpg",
-"pid": "gps-cs-s/APNQkAEHuUconDrqD3dvLrR0YAL2SrCSxDQSA367Gw7H1bWbcaHXZk0HH8JTwZDMCEB380GVNEyVPfXNgcbf9A-IEGn6TtIqFS9Sc2tmfydFY1_Z8Lw4iKi4mkhl9WywqbEVtR6UWqn1",
-"sharedWith": "grimsdalen-protected-landscape-and-grimsdalsvegen-toll-road"
+"file": "grimsdalshytta-teltplass-tent-pitch-at-the-hut.jpg",
+"pid": "gps-cs-s/APNQkAEDEj_oWQVkXk6uB_2vQicXx7XCYZymqc3ZY5lHuQ-HENs-0gr5Qc4CVhejuuiDAIg928uxQmWw6ngwCGgxw8KFcFywpQZdMO98QFA6hYvlYenHl_3QxfVgIpg69bMf52lX8UGv-g"
 },
 "wild-camp-grimsa-riverbank-flats-east-of-the-hut": {
 "file": "wild-camp-grimsa-riverbank-flats-east-of-the-hut.jpg",
 "area": true
 },
 "grimsbu-turistsenter-motell-camp": {
-"file": "grimsbu-turistsenter-kafeteria.jpg",
-"pid": "gps-cs-s/APNQkAHEWZST6l4A2tLK2D1PWGAGPoAflagfzp9IN2eW7g4_OefrTSpMjyHF8j21y25Gl9R5MMDWcSXeRTzMIvub7Vm_jscEXQx5w-8ODR1P7pM8zCc94RZrda9LUwI1Kp91O_elQivs",
-"sharedWith": "grimsbu-turistsenter-kafeteria"
+"file": "grimsbu-turistsenter-motell-camp.jpg",
+"pid": "gps-cs-s/APNQkAFOWa4Bol-oYbW0bSOWyszJZkP2M9jeEi52ESFW-zxPWsSQzoPXJ9G_wdZ-nENhuBvxt6IaU8dN9n9JngcgXBTKV5d5DXL8YxnNnX6FXhxe_dChmh0mLkxWDItAs2me61qM99r2"
 },
 "bokhandel-n-bakeri-mathus-gjestehus": {
 "file": "bokhandel-n-bakeri-mathus-gjestehus.jpg",
@@ -739,24 +707,20 @@
 "area": true
 },
 "villa-vaga-classic-norway-hotels": {
-"file": "villa-vaga-restaurant.jpg",
-"pid": "gps-cs-s/APNQkAHtltmCiUhle3dBSC-1-45ntAQIOXyA6nbtb2t7l7tlxwCx--bG0lyLtLtuo0AA6llg2eV1z5aKmVZPJcvPsBkxOzKyHkN8FL-jlsDjVle-GVhscwcry3qNkoLXTBDnGMIsCfvIGw",
-"sharedWith": "villa-vaga-restaurant"
+"file": "villa-vaga-classic-norway-hotels.jpg",
+"pid": "gps-cs-s/APNQkAFQP7r_KfdFTBLPaxx7sPmWQKGaa3In3E8Dqk7pRep_XwjQt4V7514B4VIGw6W6OBEGDoFWzoBPuAjwY9JM44sj1SjMQeJaQXgabEKgu4UK5cAOjgEeQLgHeILBjRIXAb-3Pwz1CFiKyer_"
 },
 "bokhandel-n-gjestehus": {
-"file": "bokhandel-n-bakeri-mathus-gjestehus.jpg",
-"pid": "gps-cs-s/APNQkAG58tlmpFXGh78AW7DofL0BQoxdgUZkYj9zGhl4fDU67OGyIVO2naCRuLjqG-mLQKz5qfa6Iz1uOZpF3dAJyhsa90-d5V3yYnxQ4B4daUaA0QwURt6nJp4PmOvb0fT1Ra4s1Kjz",
-"sharedWith": "bokhandel-n-bakeri-mathus-gjestehus"
+"file": "bokhandel-n-gjestehus.jpg",
+"pid": "gps-cs-s/APNQkAGqKb0clTmuupAdrPAY4suv4WuRpZsZQ8gAsle5_j6WQuCJbzhbENMmMoBN9MxcYY1WoXjxPEezO-kDonvgHjXdabuB4hmZasRijdXaGWVSV4ygB6jym6owsd6WSP6VFrSaVpaDmg"
 },
 "haugseter-fjellstue-restaurant": {
-"file": "lake-vinstre-and-haugseter-fjellstue.jpg",
-"pid": "gps-cs-s/APNQkAHdNNgMKGIMzK1_rkEEpYWJ9mBE7yDZ78w6ZIXqHLj5it4OLiXYiPOK6Hj613B6crCF4_z74DfjPdd8RWdDFNYk_Aqm7yURRqH53oIZ3SWqTpp0kTDX62IueCA4givQgvIl6ywv",
-"sharedWith": "lake-vinstre-and-haugseter-fjellstue"
+"file": "haugseter-fjellstue-restaurant.jpg",
+"pid": "gps-cs-s/APNQkAGBFYT4lcE4MAC0VuHucTWAcbF4nhp299RWE9EoiDTtdPUZtIodLSAUyzuT6tQAg3JPOorAq-C81H3OW1zhrvevTJg6SvdV_Pb0HHWop6uQaFqV3_BMsl1QJ6S45KKS38up-yI"
 },
 "bygdin-sommerkafe-bygdin-hoifieldshotel": {
-"file": "bygdin-quay-and-m-b-bitihorn.jpg",
-"pid": "gps-cs-s/APNQkAE4UQ5EAECWzB9JN-5d1Y3vEHI_v2PuhbfA1-xMajBXH_YY6_civ63j6BgFg4shbcOKcv1IyZDYasyZOc04oaR1sIsJgGrFS_6XkRUN1ARKt2oar8svskcMGwlCNHGYTzmzqFA",
-"sharedWith": "bygdin-quay-and-m-b-bitihorn"
+"file": "bygdin-sommerkafe-bygdin-hoifieldshotel.jpg",
+"pid": "gps-cs-s/APNQkAG9VaFOyUwH86aoe7CytW6_2DPSksf4QhTI1Sfz8zJnvNOIwdMSAeROlFhscTgvjUJLjhktKN7BZLXl0e6mmU2oIUUYSs_ftQvDODKwLNFw2jbunZRWomh9wkd6YhPVfDVgpl9n"
 },
 "kiwi-243-beitostolen": {
 "file": "kiwi-243-beitostlen.jpg",
@@ -772,13 +736,11 @@
 "pid": "gps-cs-s/APNQkAH7Qfxnn8In0-YvzB2bjgOPCqVr1XjKpyfrHvubt03mMjNAPEDZ02VYDzZgkaek-Zi7GwjiYfU3E5IPh1MZiTby-FOlNa9yEAoIozFmD9b8qmMVMwtUBF4jwqg-w93wpeMEyDY4"
 },
 "haugseter-fjellstue-rooms-and-cabins": {
-"file": "lake-vinstre-and-haugseter-fjellstue.jpg",
-"pid": "gps-cs-s/APNQkAHdNNgMKGIMzK1_rkEEpYWJ9mBE7yDZ78w6ZIXqHLj5it4OLiXYiPOK6Hj613B6crCF4_z74DfjPdd8RWdDFNYk_Aqm7yURRqH53oIZ3SWqTpp0kTDX62IueCA4givQgvIl6ywv",
-"sharedWith": "lake-vinstre-and-haugseter-fjellstue"
+"file": "haugseter-fjellstue-rooms-and-cabins.jpg",
+"pid": "gps-cs-s/APNQkAEZFFnvqK7LS1Ya4hLBcX3O973wGuDZVAoDIY7vzeTEZKE6LWtxbbyd2zhiJSHaFsaaKyGcCrF24gyOhP8RWFWTKnfxZW0eXP5-4TuDhsQqzHG3-m43rZSLmRdGw2cOt9uZfqko"
 },
 "bygdin-hoifieldshotel": {
-"file": "bygdin-quay-and-m-b-bitihorn.jpg",
-"pid": "gps-cs-s/APNQkAE4UQ5EAECWzB9JN-5d1Y3vEHI_v2PuhbfA1-xMajBXH_YY6_civ63j6BgFg4shbcOKcv1IyZDYasyZOc04oaR1sIsJgGrFS_6XkRUN1ARKt2oar8svskcMGwlCNHGYTzmzqFA",
-"sharedWith": "bygdin-quay-and-m-b-bitihorn"
+"file": "bygdin-hoifieldshotel.jpg",
+"pid": "gps-cs-s/APNQkAHv5ujhONKOeXw5b9-b8mNdn06PEHiDl6rGhWrTA72wfDhRz6SYaAAdk4yqXL-9xgyhXcwcDgTZ6o7YNleVNqLS3KMg-DU0WrMoYQnmNMwgG6gdB-WyEin8fx_u_HcLoMcUwi3y"
 }
 }
