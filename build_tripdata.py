@@ -47,7 +47,8 @@ def attach_image(place):
     grec = gimages.get(slug)
     if grec and grec.get("file"):
         place["img"] = "gimages/" + grec["file"]
-        place["imgCredit"] = "Photo: Google Maps"
+        place["imgCredit"] = ("Photo: image search · area impression" if grec.get("area")
+                              else "Photo: Google Maps")
         return
     rec = images.get(slug)
     if rec and rec.get("file"):
