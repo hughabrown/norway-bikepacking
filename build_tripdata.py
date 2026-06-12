@@ -255,7 +255,17 @@ profile_labels = [
     {"km": 705, "ele": 1, "label": "Flåm"},
 ]
 
+import hashlib as _h
+_sig = _h.md5()
+for d in ("gimages", "images"):
+    dp = os.path.join(HERE, d)
+    if os.path.isdir(dp):
+        for fn in sorted(os.listdir(dp)):
+            _sig.update(f"{fn}:{os.path.getsize(os.path.join(dp, fn))};".encode())
+img_version = _sig.hexdigest()[:8]
+
 trip = {
+    "imgV": img_version,
     "name": rw["name"],
     "url": rw["url"],
     "totalKm": rw["totalKm"],

@@ -436,7 +436,7 @@ footer a{color:var(--ink-soft)}
 </footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-<script src="tripdata.js?v=5babb062"></script>
+<script src="tripdata.js?v=cc29124c"></script>
 <script>
 (function(){
   if (typeof TRIP === 'undefined') return;
@@ -607,7 +607,7 @@ footer a{color:var(--ink-soft)}
     if (p.detour && p.detour !== 'on route') sub.push('detour: ' + p.detour);
     if (p.price) sub.push(p.price);
     return '<div>'+
-      (p.img? '<img loading="lazy" src="'+esc(p.img)+'" alt="" style="width:100%;border-radius:2px;margin-bottom:6px;max-height:130px;object-fit:cover">':'')+
+      (p.img? '<img loading="lazy" src="'+esc(p.img)+'?v='+(TRIP.imgV||'1')+'" alt="" style="width:100%;border-radius:2px;margin-bottom:6px;max-height:130px;object-fit:cover">':'')+
       '<span class="nm">'+esc(p.name)+'</span><br>'+
       (sub.length? '<span class="mono" style="font-size:11px">'+esc(sub.join(' · '))+'</span><br>':'')+
       '<span class="ds">'+esc(p.description||'')+'</span><br>'+
@@ -805,7 +805,7 @@ footer a{color:var(--ink-soft)}
       var meta = [p.nearStop||p.town, isDetour(p) ? p.detour : null, p.price].filter(Boolean).join(' · ');
       var fbKind = p.type==='grocery' ? 'grocery' : kind;
       var photo = p.img
-        ? '<img loading="lazy" src="'+esc(p.img)+'" alt="'+esc(p.name)+'">'
+        ? '<img loading="lazy" src="'+esc(p.img)+'?v='+(TRIP.imgV||'1')+'" alt="'+esc(p.name)+'">'
         : '<div class="ph-fb">'+(FB[fbKind]||FB.nature)+'</div>';
       return '<div class="place cat-'+kind+'" tabindex="0">'+
         '<div class="ph">'+photo+
