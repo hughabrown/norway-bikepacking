@@ -156,10 +156,17 @@ section{padding:46px 0 8px}
 .pl summary::after{content:"+";font-family:'Barlow Condensed',sans-serif;font-weight:600;color:var(--ink-soft);flex:none}
 .pl[open] summary::after{content:"−"}
 .pl summary .price{flex:0 1 auto;max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pl .pl-body{padding:0 0 10px}
-.pl .pl-body .ds{display:block;color:var(--ink-soft);font-size:14px;line-height:1.45;margin-bottom:5px}
+.pl .pl-body{padding:0 0 12px;display:flex;gap:14px;align-items:flex-start}
+.pl .pl-photo{flex:none;width:150px;aspect-ratio:4/3;border-radius:3px;overflow:hidden;background:var(--snow);border:1px solid var(--contour)}
+.pl .pl-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.pl .pl-text{flex:1 1 auto;min-width:0}
+.pl .pl-body .ds{display:block;color:var(--ink-soft);font-size:14px;line-height:1.45;margin-bottom:6px}
 .pl .pl-body a{
   font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:13px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;
+}
+@media (max-width:430px){
+  .pl .pl-body{flex-direction:column}
+  .pl .pl-photo{width:100%;aspect-ratio:16/9}
 }
 .pl-static{padding:8px 0;border-bottom:1px dotted var(--contour);color:var(--ink-soft);font-size:14.5px}
 .badge{
@@ -676,9 +683,11 @@ footer a{color:var(--ink-soft)}
       (meta.length? '<span class="price">'+esc(meta.join(' · '))+'</span>':'')+
       '</summary>'+
       '<div class="pl-body">'+
+      (p.img? '<span class="pl-photo"><img loading="lazy" src="'+esc(p.img)+'?v='+(TRIP.imgV||'1')+'" alt="'+esc(p.name)+'"></span>':'')+
+      '<span class="pl-text">'+
       (bodyMeta? '<span class="ds mono" style="font-size:12px">'+esc(bodyMeta)+'</span>':'')+
       '<span class="ds">'+esc(p.description||'')+'</span>'+
-      '<a href="'+gmaps(p)+'" target="_blank" rel="noopener">Open in Google Maps ↗</a></div>'+
+      '<a href="'+gmaps(p)+'" target="_blank" rel="noopener">Open in Google Maps ↗</a></span></div>'+
       '</details>';
   }
   function renderDays(){
