@@ -275,6 +275,38 @@ besseggen_spur = [
     [61.2470, 8.9130],   # Beitostølen
 ]
 
+# Day 8 ferry Flåm -> Bergen (down Aurlandsfjord, Sognefjord, out to the coast).
+ferry_line = [
+    [60.8626, 7.1133],   # Flåm
+    [60.9068, 7.1875],   # Aurland
+    [60.9670, 7.1450],   # out of Aurlandsfjord
+    [61.0900, 6.9000],   # into the Sognefjord (Frønningen)
+    [61.1550, 6.7000],
+    [61.2000, 6.5300],   # Balestrand (call)
+    [61.1300, 6.2000],
+    [61.0600, 5.7500],   # toward the fjord mouth (Rutledal)
+    [60.9700, 5.2500],   # out to the coast
+    [60.7400, 5.0400],
+    [60.5500, 5.0600],
+    [60.3950, 5.3240],   # Bergen
+]
+
+# Day 9 train Bergen -> Oslo on the Bergensbanen (passes Finse/Geilo/Gol again).
+train_line = [
+    [60.3950, 5.3240],   # Bergen
+    [60.4250, 5.4800],   # Arna
+    [60.6300, 6.4200],   # Voss
+    [60.7340, 7.1230],   # Myrdal
+    [60.6020, 7.5040],   # Finse
+    [60.5100, 7.8710],   # Haugastøl
+    [60.5340, 8.2060],   # Geilo
+    [60.6300, 8.5600],   # Ål
+    [60.7000, 8.9490],   # Gol
+    [60.5670, 9.1000],   # Nesbyen
+    [60.1670, 10.2600],  # Hønefoss
+    [59.9100, 10.7500],  # Oslo
+]
+
 profile_labels = [
     {"km": 0, "ele": 622, "label": "Røros"},
     {"km": 241, "ele": 1164, "label": "Grimsdalen"},
@@ -308,6 +340,8 @@ trip = {
     "profile": rw["profile"],
     "profileLabels": profile_labels,
     "besseggenSpur": besseggen_spur,
+    "ferryLine": ferry_line,
+    "trainLine": train_line,
     "authorPois": rw["authorPois"],
     "variants": variants_built,
     "stopOrder": ["Roros", "Tufsingdalen", "Oversjodalen", "Rendalen", "Alvdal",

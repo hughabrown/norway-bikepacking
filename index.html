@@ -327,7 +327,7 @@ footer a{color:var(--ink-soft)}
 <section id="map-section">
   <div class="wrap">
     <div class="section-head"><span class="tick"></span><h2>The route &amp; everything on it</h2></div>
-    <p class="section-note">Solid red line is the RideWithGPS gravel track (the all-gravel variant). The dashed red line is the Besseggen variant's Fv51 route up Sjodalen and over Valdresflye (approximate). Grey square markers are the route author's own field notes: groceries, tent spots, bike shops, waffles. Every marker links to Google Maps.</p>
+    <p class="section-note">Red line is the gravel ride (Dombås → Flåm); the dashed red line is the Besseggen variant's Fv51 route up Sjodalen and over Valdresflye. The teal dotted line is the Day 8 ferry down the Sognefjord to Bergen, and the slate dashed line is the Day 9 Bergensbanen back to Oslo — the whole loop is on the map. Grey square markers are the route author's own field notes. Every marker links to Google Maps.</p>
     <div class="map-controls" id="layer-controls"></div>
     <div id="map"></div>
     <p class="legend-hint" id="map-hint">Tip: switch to the Topo base layer for contours and marked trails — the picture you’ll want on the high sections.</p>
@@ -451,7 +451,7 @@ footer a{color:var(--ink-soft)}
 </footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-<script src="tripdata.js?v=3e2263ab"></script>
+<script src="tripdata.js?v=aebf85d9"></script>
 <script>
 (function(){
   if (typeof TRIP === 'undefined') return;
@@ -593,23 +593,34 @@ footer a{color:var(--ink-soft)}
 
   var track = TRIP.track || []; // [lat,lng,km]
   var dombasKm = TRIP.dombasKm || 263.7;
-  var preTrack = track.filter(function(p){ return p[2] <= dombasKm; }).map(function(p){ return [p[0],p[1]]; });
-  var mainFrom = function(km){ return track.filter(function(p){ return p[2] >= km; }).map(function(p){ return [p[0],p[1]]; }); };
-  var fullLine = L.polyline(track.map(function(p){return [p[0],p[1]];}), {color:'#C8351F', weight:3.5, opacity:.9});
-  var preLine = L.polyline(preTrack, {color:'#9AA29E', weight:3, opacity:.85, dashArray:'6 6'});
-  var shortLine = L.polyline(mainFrom(dombasKm), {color:'#C8351F', weight:3.5, opacity:.9});
+  var rideLine = L.polyline(track.filter(function(p){return p[2] >= dombasKm;}).map(function(p){ return [p[0],p[1]]; }), {color:'#C8351F', weight:3.5, opacity:.9});
   var spur = (TRIP.besseggenSpur && TRIP.besseggenSpur.length) ? L.polyline(TRIP.besseggenSpur, {color:'#C8351F', weight:2.5, opacity:.85, dashArray:'4 7'}) : null;
-  if (spur) spur.bindPopup('<div><span class="nm">Besseggen detour (optional)</span><br><span class="ds">Bygdin → Valdresflye (1389 m) → Gjendesheim, return via Beitostølen. Approximate line — it follows Fv51.</span></div>');
+  if (spur) spur.bindPopup('<div><span class="nm">Besseggen variant — Fv51</span><br><span class="ds">Vågå → Sjodalen → Gjendesheim → Valdresflye (1389 m) → Beitostølen. Approximate line.</span></div>');
+
+  // Journey home (shown on the map so the whole loop is visible)
+  var ferryLn = (TRIP.ferryLine && TRIP.ferryLine.length) ? L.polyline(TRIP.ferryLine, {color:'#2E6E73', weight:3.5, opacity:.95, dashArray:'1 7', lineCap:'round'}) : null;
+  if (ferryLn) ferryLn.bindPopup('<div><span class="nm">Day 8 · Ferry Flåm → Bergen</span><br><span class="ds">Norled express boat down the Aurlandsfjord & Sognefjord, ~5.5 h. Dep Flåm 15:30.</span></div>');
+  var trainLn = (TRIP.trainLine && TRIP.trainLine.length) ? L.polyline(TRIP.trainLine, {color:'#4A5E75', weight:3.5, opacity:.95, dashArray:'9 8'}) : null;
+  if (trainLn) trainLn.bindPopup('<div><span class="nm">Day 9 · Train Bergen → Oslo</span><br><span class="ds">Bergensbanen, ~7 h. Climbs back over Hardangervidda past Finse, Geilo and Gol — the line you just rode.</span></div>');
 
   var routeLayer = L.layerGroup().addTo(map);
+  var ferryLayer = L.layerGroup().addTo(map);
+  var trainLayer = L.layerGroup().addTo(map);
   function drawRoute(){
     routeLayer.clearLayers();
-    if (current === 'short'){ preLine.addTo(routeLayer); shortLine.addTo(routeLayer); }
-    else { fullLine.addTo(routeLayer); }
+    rideLine.addTo(routeLayer);
     if (spur) spur.addTo(routeLayer);
+    ferryLayer.clearLayers(); if (ferryLn) ferryLn.addTo(ferryLayer);
+    trainLayer.clearLayers(); if (trainLn) trainLn.addTo(trainLayer);
   }
-  if (track.length) map.fitBounds(fullLine.getBounds(), {padding:[28,28]});
-  else map.setView([61.5, 9.0], 7);
+  function journeyBounds(){
+    var b = rideLine.getBounds();
+    if (ferryLn) b.extend(ferryLn.getBounds());
+    if (trainLn) b.extend(trainLn.getBounds());
+    return b;
+  }
+  if (track.length) map.fitBounds(journeyBounds(), {padding:[24,24]});
+  else map.setView([60.6, 8.0], 7);
 
   var groups = {
     nature: {label:'Nature & sights', color:'#5E7A4B', layer:L.layerGroup().addTo(map)},
@@ -647,18 +658,24 @@ footer a{color:var(--ink-soft)}
   (TRIP.authorPois||[]).forEach(function(p){ addMarker(p,'author'); });
 
   var lc = $('layer-controls');
-  lc.innerHTML = '<button class="chip" aria-pressed="true" data-g="route"><span class="dot" style="background:#C8351F"></span>Route</button>' +
+  lc.innerHTML = '<button class="chip" aria-pressed="true" data-g="route"><span class="dot" style="background:#C8351F"></span>Ride</button>' +
+    '<button class="chip" aria-pressed="true" data-g="ferry"><span class="dot" style="background:#2E6E73"></span>Ferry</button>' +
+    '<button class="chip" aria-pressed="true" data-g="train"><span class="dot" style="background:#4A5E75"></span>Train</button>' +
     Object.keys(groups).map(function(k){
       return '<button class="chip" aria-pressed="true" data-g="'+k+'"><span class="dot" style="background:'+groups[k].color+'"></span>'+groups[k].label+'</button>';
     }).join('') +
-    '<button class="chip day-chip" aria-pressed="false" data-g="__all">Whole route</button>';
+    '<button class="chip day-chip" aria-pressed="false" data-g="__all">Whole journey</button>' +
+    '<button class="chip day-chip" aria-pressed="false" data-g="__ride">Riding only</button>';
   lc.querySelectorAll('.chip[data-g]').forEach(function(b){
     b.addEventListener('click', function(){
       var g = b.getAttribute('data-g');
-      if (g === '__all'){ map.fitBounds(fullLine.getBounds(), {padding:[28,28]}); return; }
+      if (g === '__all'){ map.fitBounds(journeyBounds(), {padding:[24,24]}); return; }
+      if (g === '__ride'){ map.fitBounds(rideLine.getBounds(), {padding:[28,28]}); return; }
       var on = b.getAttribute('aria-pressed') === 'true';
       b.setAttribute('aria-pressed', on ? 'false' : 'true');
       if (g === 'route'){ if(on) map.removeLayer(routeLayer); else routeLayer.addTo(map); return; }
+      if (g === 'ferry'){ if(on) map.removeLayer(ferryLayer); else ferryLayer.addTo(map); return; }
+      if (g === 'train'){ if(on) map.removeLayer(trainLayer); else trainLayer.addTo(map); return; }
       if (on) map.removeLayer(groups[g].layer); else groups[g].layer.addTo(map);
     });
   });
