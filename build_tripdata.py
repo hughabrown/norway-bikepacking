@@ -291,20 +291,33 @@ ferry_line = [
     [60.3950, 5.3240],   # Bergen
 ]
 
-# Day 9 train Bergen -> Oslo on the Bergensbanen (passes Finse/Geilo/Gol again).
+# Day 9 train Bergen -> Oslo on the Bergensbanen. Real passenger routing:
+# Bergen hugs the fjords to Voss, crosses the Hardangervidda high section
+# (Myrdal-Finse-Geilo), down Hallingdal to Hønefoss, then SW to Drammen and
+# back up the Oslofjord to Oslo (NOT a straight Hønefoss->Oslo line).
 train_line = [
-    [60.3950, 5.3240],   # Bergen
-    [60.4250, 5.4800],   # Arna
-    [60.6300, 6.4200],   # Voss
+    [60.3913, 5.3242],   # Bergen
+    [60.4220, 5.4790],   # Arna
+    [60.4470, 5.6200],   # Trengereid (Sørfjorden)
+    [60.4830, 5.7400],   # Vaksdal
+    [60.5900, 5.8150],   # Dale
+    [60.6520, 5.9700],   # Bolstadøyri
+    [60.6300, 6.4250],   # Voss
     [60.7340, 7.1230],   # Myrdal
-    [60.6020, 7.5040],   # Finse
+    [60.6020, 7.5040],   # Finse (high point of the line, 1222 m)
     [60.5100, 7.8710],   # Haugastøl
+    [60.5130, 8.0400],   # Ustaoset
     [60.5340, 8.2060],   # Geilo
     [60.6300, 8.5600],   # Ål
     [60.7000, 8.9490],   # Gol
-    [60.5670, 9.1000],   # Nesbyen
+    [60.5670, 9.1080],   # Nesbyen
+    [60.4300, 9.4600],   # Flå (down Hallingdal)
     [60.1670, 10.2600],  # Hønefoss
-    [59.9100, 10.7500],  # Oslo
+    [59.9670, 10.0200],  # Vikersund (Randsfjord line, SW toward Drammen)
+    [59.7750, 9.9100],   # Hokksund
+    [59.7440, 10.2050],  # Drammen
+    [59.8350, 10.4350],  # Asker (up the Oslofjord)
+    [59.9110, 10.7520],  # Oslo S
 ]
 
 profile_labels = [
