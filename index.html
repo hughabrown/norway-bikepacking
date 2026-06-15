@@ -109,6 +109,14 @@ section{padding:46px 0 8px}
 /* day cards */
 .day{border-top:1px solid var(--ink)}
 .day.is-hike{background:linear-gradient(0deg,rgba(94,122,75,.06),rgba(94,122,75,.06))}
+.day.is-transit{background:linear-gradient(0deg,rgba(74,94,117,.06),rgba(74,94,117,.06))}
+.day.is-transit .dh-no{color:var(--slate)}
+.day.is-sidequest .dh-no{color:var(--birch)}
+.dh-flag{
+  display:inline-block;vertical-align:middle;margin-left:8px;
+  font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:.1em;
+  text-transform:uppercase;color:#fff;background:var(--birch);border-radius:2px;padding:1px 8px;
+}
 .day-head{
   display:flex;align-items:center;gap:20px;width:100%;
   background:none;border:0;padding:15px 0;cursor:pointer;text-align:left;color:inherit;
@@ -298,9 +306,9 @@ footer a{color:var(--ink-soft)}
   <div class="wrap">
     <span class="route-no">Setrer og villmark · RideWithGPS #41496641 · July 2026</span>
     <h1 id="title-h1">Røros <span class="arrow">→</span> Flåm</h1>
-    <p class="sub">Shielings and wilderness: gravel from the UNESCO mining town across Rondane and Dovre, onto Mjølkevegen's high pastures, then down the Rallarvegen to the fjord. Two riders, tents, and a decision to make at Dombås.</p>
+    <p class="sub">Train to Dombås, then gravel across the wild-reindeer plateaus onto Mjølkevegen's summer-farm country and down the Rallarvegen to the fjord at Flåm. Home the scenic way: express boat down the Sognefjord to Bergen, then the Bergensbanen back to Oslo.</p>
     <div class="variant-bar" id="variant-bar"></div>
-    <p class="decision-hint">Decide on the day: the route crosses a railway at Røros, Alvdal, Dombås, Gol, Geilo, Haugastøl, Finse, Myrdal and Flåm — you can join late or bail early at any of them.</p>
+    <p class="decision-hint">Fri 10 → Thu 16 riding (avg ~75 km/day) · Fri 17 Flåm→Bergen ferry · Sat 18 Bergen→Oslo train · fly out Sun 19. Pick your flavour above.</p>
   </div>
   <div class="wrap" id="ribbon" aria-label="Elevation profile of the route"></div>
   <div class="wrap statline" id="statline"></div>
@@ -319,7 +327,7 @@ footer a{color:var(--ink-soft)}
 <section id="map-section">
   <div class="wrap">
     <div class="section-head"><span class="tick"></span><h2>The route &amp; everything on it</h2></div>
-    <p class="section-note">Red line is the actual RideWithGPS track. The dashed red spur is the optional Besseggen detour over Valdresflye (approximate). Grey square markers are the route author's own field notes: groceries, tent spots, bike shops, waffles. Every marker links to Google Maps.</p>
+    <p class="section-note">Solid red line is the RideWithGPS gravel track (the all-gravel variant). The dashed red line is the Besseggen variant's Fv51 route up Sjodalen and over Valdresflye (approximate). Grey square markers are the route author's own field notes: groceries, tent spots, bike shops, waffles. Every marker links to Google Maps.</p>
     <div class="map-controls" id="layer-controls"></div>
     <div id="map"></div>
     <p class="legend-hint" id="map-hint">Tip: switch to the Topo base layer for contours and marked trails — the picture you’ll want on the high sections.</p>
@@ -443,7 +451,7 @@ footer a{color:var(--ink-soft)}
 </footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-<script src="tripdata.js?v=d6e4dbf3"></script>
+<script src="tripdata.js?v=3e2263ab"></script>
 <script>
 (function(){
   if (typeof TRIP === 'undefined') return;
@@ -521,15 +529,17 @@ footer a{color:var(--ink-soft)}
     s += '<line class="rib-sea" x1="'+padL+'" y1="'+base+'" x2="'+(W-padR)+'" y2="'+base+'"/>';
     s += '<path class="rib-area" d="'+area+'"/>';
     stages.forEach(function(st){
+      if (st.kind === 'transit' || st.kind === 'rest') return; // not on the riding profile
       var a = Math.max(km0, st.startKm==null?km0:st.startKm), b = Math.min(km1, st.endKm==null?km1:st.endKm);
       if (st.km > 0 && b > a){
         var x0=X(a), x1=X(b);
         s += '<line class="rib-day" x1="'+x1.toFixed(1)+'" y1="'+(top-12)+'" x2="'+x1.toFixed(1)+'" y2="'+base+'"/>';
         s += '<text class="rib-day-no" x="'+((x0+x1)/2).toFixed(1)+'" y="'+(base+18)+'" text-anchor="middle">'+st.day+'</text>';
         s += '<rect class="rib-hit" data-day="'+st.day+'" x="'+x0.toFixed(1)+'" y="'+(top-26)+'" width="'+(x1-x0).toFixed(1)+'" height="'+(base-top+26)+'"><title>Day '+st.day+': '+esc(st.from)+' → '+esc(st.to)+'</title></rect>';
-      } else {
-        var x = X(Math.max(km0, st.startKm==null?km0:st.startKm));
+      } else if (st.startKm != null) {
+        var x = X(Math.max(km0, st.startKm));
         s += '<text class="rib-hike" x="'+x.toFixed(1)+'" y="'+(top-16)+'" text-anchor="middle">▲'+st.day+'</text>';
+        s += '<rect class="rib-hit" data-day="'+st.day+'" x="'+(x-14)+'" y="'+(top-26)+'" width="28" height="'+(base-top+26)+'"><title>Day '+st.day+': '+esc(st.from)+'</title></rect>';
       }
     });
     s += '<path class="rib-line" d="'+line+'"/>';
@@ -558,14 +568,15 @@ footer a{color:var(--ink-soft)}
   /* ---------- stats ---------- */
   function renderStats(){
     var stages = stagesOf(current);
-    var totKm = 0, totUp = 0;
-    stages.forEach(function(s){ totKm += (s.km||0); totUp += (s.ascentM||0); });
+    var totKm = 0, totUp = 0, rideDays = 0;
+    stages.forEach(function(s){ totKm += (s.km||0); totUp += (s.ascentM||0); if (s.kind==='ride') rideDays++; });
     var v = variants[current];
+    var hi = v.high || {m: TRIP.maxEle||1322, name: TRIP.maxEleName||'Rallarvegen crest'};
     var stats = [
       {v: Math.round(totKm) + ' km', k:'riding'},
       {v: '~' + (Math.round(totUp/100)*100).toLocaleString('en-GB') + ' m', k:'total climb'},
-      {v: stages.length + ' days', k: v.dates || ''},
-      {v: (TRIP.maxEle||1322) + ' m', k:'high point · ' + (TRIP.maxEleName||'Rallarvegen crest')},
+      {v: rideDays + ' ride days', k: v.dates || ''},
+      {v: hi.m + ' m', k:'high point · ' + hi.name},
       {v: '2 m', k:'finish · aurlandsfjord'}
     ];
     $('statline').innerHTML = stats.map(function(s){
@@ -655,11 +666,12 @@ footer a{color:var(--ink-soft)}
   function zoomDay(dayNo){
     var st = stagesOf(current).filter(function(s){ return s.day === dayNo; })[0];
     if (!st) return;
-    if (st.km > 0 && st.startKm != null && st.endKm != null && st.endKm > st.startKm){
-      var pts = track.filter(function(p){ return p[2] >= st.startKm && p[2] <= st.endKm; }).map(function(p){ return [p[0],p[1]]; });
-      if (pts.length >= 2) map.fitBounds(L.latLngBounds(pts), {padding:[40,40]});
-    } else if (TRIP.besseggenSpur && TRIP.besseggenSpur.length){
-      map.fitBounds(L.latLngBounds(TRIP.besseggenSpur), {padding:[60,60]});
+    if (st.mapView && st.mapView.length === 3){
+      map.setView([st.mapView[0], st.mapView[1]], st.mapView[2], {animate:false});
+    } else if (st.startKm != null && st.endKm != null && st.endKm > st.startKm){
+      var pts = [];
+      track.forEach(function(p){ if (p[2] >= st.startKm && p[2] <= st.endKm) pts.push([p[0],p[1]]); });
+      if (pts.length >= 2) map.fitBounds(L.latLngBounds(pts), {padding:[45,45], animate:false, maxZoom:12});
     }
     document.getElementById('map-section').scrollIntoView({behavior:'smooth'});
   }
@@ -709,18 +721,26 @@ footer a{color:var(--ink-soft)}
       }
       var eatHtml = town ? (town.food||[]).map(function(f){ return liPlace(f,'b-food', f.type||'food'); }).join('') : '';
       var sleepHtml = town ? (town.sleep||[]).map(function(s){ return liPlace(s,'b-sleep', (s.type||'sleep').replace('_',' ')); }).join('') : '';
-      var isHike = !(st.km > 0);
+      var kind = st.kind || 'ride';
+      var isTransit = (kind === 'transit' || kind === 'rest');
+      var distLabel = kind === 'ride' ? fmtKm(st.km) + ' km'
+                    : kind === 'hike' ? 'hike day'
+                    : kind === 'rest' ? 'rest day'
+                    : 'travel day';
       var meta = [
         st.date ? fdate(st.date) : null,
-        st.km > 0 ? fmtKm(st.km) + ' km' : 'hike day',
+        distLabel,
         st.ascentM ? '↑ ' + Math.round(st.ascentM).toLocaleString('en-GB') + ' m' : null,
-        '⛺ ' + st.overnight
+        st.overnight ? '⛺ ' + st.overnight : null
       ].filter(Boolean).join(' · ');
-      return '<article class="day'+(isHike?' is-hike':'')+'" id="day-'+st.day+'">'+
+      var cls = 'day' + (kind==='hike'?' is-hike':'') + (isTransit?' is-transit':'') + (st.sideQuest?' is-sidequest':'');
+      var showCols = !isTransit; // ferry/train/arrive/rest: just summary + notes
+      return '<article class="'+cls+'" id="day-'+st.day+'">'+
         '<button class="day-head" aria-expanded="false" data-day="'+st.day+'">'+
           '<span class="dh-no">'+(st.day<10?'0':'')+st.day+'</span>'+
           '<span class="dh-main">'+
-            '<span class="dh-route">'+esc(st.from)+' <span class="arrow">→</span> '+esc(st.to)+'</span>'+
+            '<span class="dh-route">'+esc(st.from)+' <span class="arrow">→</span> '+esc(st.to)+
+              (st.sideQuest?' <span class="dh-flag">★ Side quest</span>':'')+'</span>'+
             '<span class="dh-meta">'+esc(meta)+'</span>'+
           '</span>'+
           '<span class="dh-caret" aria-hidden="true">+</span>'+
@@ -729,12 +749,12 @@ footer a{color:var(--ink-soft)}
         (st.surface ? '<div class="ride-chips"><span>'+esc(st.surface)+'</span></div>':'')+
         '<p class="summary">'+esc(st.summary||'')+'</p>'+
         (st.notes ? '<p class="notes">⚠ '+esc(st.notes)+'</p>':'')+
-        '<div class="day-cols">'+
+        (showCols ? '<div class="day-cols">'+
           '<div><h4>See &amp; do</h4><div class="plist">'+(seeHtml||'<div class="pl-static">Big views all day — see the map.</div>')+'</div></div>'+
           '<div><h4>Eat</h4><div class="plist">'+(eatHtml||'<div class="pl-static">Carry food — no reliable services at this stop.</div>')+'</div></div>'+
           '<div><h4>Sleep</h4><div class="plist">'+(sleepHtml||'<div class="pl-static">Wild camp (allemannsretten): 150 m from houses, max 2 nights.</div>')+'</div></div>'+
-        '</div>'+
-        '<button class="map-jump" data-day="'+st.day+'">Show day '+st.day+' on the map</button>'+
+        '</div>' : (st.highlights&&st.highlights.length ? '<div class="plist">'+st.highlights.map(function(h){return '<div class="pl-static">'+esc(h)+'</div>';}).join('')+'</div>' : ''))+
+        ((st.startKm!=null || st.mapRef) ? '<button class="map-jump" data-day="'+st.day+'">Show on the map</button>' : '')+
         '</div></article>';
     }).join('');
     $('day-list').innerHTML = html || '<p class="loading-note">No stages in data.</p>';

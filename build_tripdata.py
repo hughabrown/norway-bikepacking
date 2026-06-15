@@ -162,13 +162,27 @@ def stage_out(s):
     }
 
 
-full_stages = [stage_out(s) for s in FULL_STAGES]
-short_stages = [stage_out(s) for s in SHORT_STAGES]
-if override:
-    if override.get("full"):
-        full_stages = override["full"]
-    if override.get("short"):
-        short_stages = override["short"]
+def norm_stage(s):
+    return {
+        "day": s["day"], "date": s.get("date", ""), "from": s.get("from", ""), "to": s.get("to", ""),
+        "km": s.get("km", 0), "ascentM": s.get("ascentM", 0), "surface": s.get("surface", ""),
+        "overnight": s.get("overnight", ""), "summary": s.get("summary", ""),
+        "highlights": s.get("highlights", []), "notes": s.get("notes", ""),
+        "startKm": s.get("startKm"), "endKm": s.get("endKm"),
+        "kind": s.get("kind", "ride"), "sideQuest": bool(s.get("sideQuest", False)),
+        "mapRef": s.get("mapRef"), "mapView": s.get("mapView"), "via": s.get("via", []),
+    }
+
+
+variants_built = {}
+if override and override.get("variants"):
+    for vkey, v in override["variants"].items():
+        variants_built[vkey] = {
+            "label": v["label"], "sub": v.get("sub", ""), "dates": v.get("dates", ""),
+            "startKm": v.get("startKm", 0), "h1from": v.get("h1from", "Røros"),
+            "high": v.get("high", {"m": 1322, "name": "Rallarvegen crest"}),
+            "stages": [norm_stage(s) for s in v.get("stages", [])],
+        }
 
 # ---------------------------------------------------------------- research merge
 # Long workflow stop labels -> canonical town keys the site matches on.
@@ -232,16 +246,33 @@ if north and north.get("logisticsNorth"):
     if ln.get("bailouts"):
         logistics["bailouts"] = ln["bailouts"]
     logistics["practicalNotes"] = logistics.get("practicalNotes", []) + ln.get("practicalNotes", [])
-if override and override.get("extraNotes"):
-    logistics["practicalNotes"] = logistics.get("practicalNotes", []) + override["extraNotes"]
+# Override logistics (firmed-up dates: Dombås start, ferry + train ending)
+ov_log = (override or {}).get("logistics", {})
+if ov_log.get("gettingThere"):
+    logistics["gettingThere"] = ov_log["gettingThere"]
+if ov_log.get("gettingBack"):
+    logistics["gettingBack"] = ov_log["gettingBack"]
+    logistics.pop("bailouts", None)  # bail-out points no longer the story; ferry+train is fixed
+extra = ov_log.get("extraNotes") or (override or {}).get("extraNotes") or []
+if extra:
+    logistics["practicalNotes"] = extra + logistics.get("practicalNotes", [])
 
 # ---------------------------------------------------------------- assemble
+# Fv51 line for the Besseggen variant: Vågåmo -> Sjodalen -> Gjendesheim ->
+# Valdresflye pass -> Beitostølen. Approximate, traces the real road.
 besseggen_spur = [
-    [61.4937, 8.8035], [61.4795, 8.8060], [61.4632, 8.8042], [61.4435, 8.7964],
-    [61.4247, 8.7869], [61.4095, 8.7831], [61.3909, 8.7920], [61.3756, 8.7894],
-    [61.3610, 8.7821], [61.3489, 8.7806], [61.3357, 8.7930],  # Gjendesheim -> Bygdin
-    [61.3199, 8.8233], [61.3001, 8.8503], [61.2806, 8.8678], [61.2624, 8.8870],
-    [61.2470, 8.9130],  # Bygdin -> Beitostolen
+    [61.8745, 9.0985],   # Vågåmo
+    [61.8090, 9.1450],   # Randsverk
+    [61.7250, 9.0600],   # Lemonsjøen
+    [61.6450, 8.9700],   # Maurvangen (Sjodalen)
+    [61.5550, 8.8500],   # Bessheim
+    [61.5050, 8.8150],   # near Gjende outlet
+    [61.4937, 8.8035],   # Gjendesheim
+    [61.4520, 8.8250],   # climb onto Valdresflye
+    [61.4050, 8.8520],   # Valdresflye pass (~1389 m)
+    [61.3560, 8.8650],   # Rjupa rest area
+    [61.3050, 8.8950],   # descent
+    [61.2470, 8.9130],   # Beitostølen
 ]
 
 profile_labels = [
@@ -278,18 +309,7 @@ trip = {
     "profileLabels": profile_labels,
     "besseggenSpur": besseggen_spur,
     "authorPois": rw["authorPois"],
-    "variants": {
-        "full": {
-            "label": "Full · Røros start", "sub": "706 km · 12 days · 9 → 20 July",
-            "dates": "thu 9 – mon 20 july", "startKm": 0, "h1from": "Røros",
-            "stages": full_stages,
-        },
-        "short": {
-            "label": "Short · Dombås start", "sub": "≈ 480 km · 9 days · 9 → 17 July",
-            "dates": "thu 9 – fri 17 july", "startKm": 263.7, "h1from": "Dombås",
-            "stages": short_stages,
-        },
-    },
+    "variants": variants_built,
     "stopOrder": ["Roros", "Tufsingdalen", "Oversjodalen", "Rendalen", "Alvdal",
                    "Grimsdalshytta", "Dombas", "Vaga", "Haugseter", "Gjendesheim",
                    "Beitostolen", "Vaset", "Gol", "Geilo", "Haugastol", "Finse", "Flam"],
