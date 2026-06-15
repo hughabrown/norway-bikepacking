@@ -287,13 +287,15 @@ ferry_line = [
     [61.1980, 6.5350],   # Balestrand (call, north shore)
     [61.0900, 6.3300],   # back to the main channel
     [61.0850, 6.0400],
-    [61.0750, 5.7600],   # fjord narrows toward the mouth (Rutledal)
-    [61.0000, 5.4700],   # Sognefjord mouth, out to the coast
-    [60.8400, 5.1500],   # S along the coast (Fensfjorden / Mongstad)
-    [60.6400, 5.0100],   # outside Øygarden
-    [60.4900, 5.0200],   # west of Sotra
-    [60.4200, 5.2300],   # into Byfjorden from the NW
-    [60.3950, 5.3240],   # Bergen
+    [61.0700, 5.6500],   # outer Sognefjord
+    [61.0500, 5.2000],   # Sognesjøen (the fjord mouth)
+    [61.0200, 4.9600],   # out to the open coast, west of the mouth islands
+    [60.8200, 4.9100],   # S down the coast, west of Fedje
+    [60.6800, 4.9700],   # Vardetangen (westernmost mainland point)
+    [60.5500, 5.0400],   # into the Hjeltefjorden lead
+    [60.4900, 5.1700],   # rounding the north of Askøy
+    [60.4350, 5.2850],   # down the Byfjorden toward Bergen
+    [60.3950, 5.3240],   # Bergen (Vågen)
 ]
 
 # Day 9 train Bergen -> Oslo on the Bergensbanen. Real passenger routing:
