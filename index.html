@@ -451,7 +451,7 @@ footer a{color:var(--ink-soft)}
 </footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-<script src="tripdata.js?v=5362f6b0"></script>
+<script src="tripdata.js?v=40791022"></script>
 <script>
 (function(){
   if (typeof TRIP === 'undefined') return;
@@ -771,7 +771,7 @@ footer a{color:var(--ink-soft)}
           '<div><h4>Eat</h4><div class="plist">'+(eatHtml||'<div class="pl-static">Carry food — no reliable services at this stop.</div>')+'</div></div>'+
           '<div><h4>Sleep</h4><div class="plist">'+(sleepHtml||'<div class="pl-static">Wild camp (allemannsretten): 150 m from houses, max 2 nights.</div>')+'</div></div>'+
         '</div>' : (st.highlights&&st.highlights.length ? '<div class="plist">'+st.highlights.map(function(h){return '<div class="pl-static">'+esc(h)+'</div>';}).join('')+'</div>' : ''))+
-        ((st.startKm!=null || st.mapRef) ? '<button class="map-jump" data-day="'+st.day+'">Show on the map</button>' : '')+
+        ((st.startKm!=null || st.mapRef || st.mapView) ? '<button class="map-jump" data-day="'+st.day+'">Show on the map</button>' : '')+
         '</div></article>';
     }).join('');
     $('day-list').innerHTML = html || '<p class="loading-note">No stages in data.</p>';

@@ -275,19 +275,24 @@ besseggen_spur = [
     [61.2470, 8.9130],   # Beitostølen
 ]
 
-# Day 8 ferry Flåm -> Bergen (down Aurlandsfjord, Sognefjord, out to the coast).
+# Day 8 ferry Flåm -> Bergen, following the actual water: N up the
+# Aurlandsfjord, W down the Sognefjord (calling Balestrand), out the mouth,
+# then S through the coastal leads into Bergen.
 ferry_line = [
-    [60.8626, 7.1133],   # Flåm
-    [60.9068, 7.1875],   # Aurland
-    [60.9670, 7.1450],   # out of Aurlandsfjord
-    [61.0900, 6.9000],   # into the Sognefjord (Frønningen)
-    [61.1550, 6.7000],
-    [61.2000, 6.5300],   # Balestrand (call)
-    [61.1300, 6.2000],
-    [61.0600, 5.7500],   # toward the fjord mouth (Rutledal)
-    [60.9700, 5.2500],   # out to the coast
-    [60.7400, 5.0400],
-    [60.5500, 5.0600],
+    [60.8626, 7.1133],   # Flåm (head of Aurlandsfjord)
+    [60.9080, 7.1820],   # Aurland (call)
+    [60.9450, 7.0550],   # Aurlandsfjord heading NW
+    [60.9680, 6.9450],   # junction with the Sognefjord (Frønningen)
+    [61.0600, 6.7200],   # main Sognefjord, W
+    [61.1980, 6.5350],   # Balestrand (call, north shore)
+    [61.0900, 6.3300],   # back to the main channel
+    [61.0850, 6.0400],
+    [61.0750, 5.7600],   # fjord narrows toward the mouth (Rutledal)
+    [61.0000, 5.4700],   # Sognefjord mouth, out to the coast
+    [60.8400, 5.1500],   # S along the coast (Fensfjorden / Mongstad)
+    [60.6400, 5.0100],   # outside Øygarden
+    [60.4900, 5.0200],   # west of Sotra
+    [60.4200, 5.2300],   # into Byfjorden from the NW
     [60.3950, 5.3240],   # Bergen
 ]
 
