@@ -450,6 +450,7 @@ footer a{color:var(--ink-soft)}
   <div class="wrap" id="foot"></div>
 </footer>
 
+<elevenlabs-convai id="norway-convai" agent-id="agent_2701kvfdp91hew6vyh90mbx3ha39" dynamic-variables="{}"></elevenlabs-convai>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script src="tripdata.js?v=bd6dc231"></script>
 <script>
@@ -494,8 +495,40 @@ footer a{color:var(--ink-soft)}
   var variants = TRIP.variants || {};
   var variantKeys = Object.keys(variants);
   var current = variantKeys[0] || null;
+  var currentFocusDay = '';
 
   function stagesOf(k){ return (variants[k] && variants[k].stages) || []; }
+  function stageContextLine(st){
+    return [
+      'Day ' + st.day,
+      st.date ? fdate(st.date) : null,
+      (st.from || '') + ' -> ' + (st.to || ''),
+      st.kind || 'ride',
+      st.km ? fmtKm(st.km) + ' km' : null,
+      st.ascentM ? 'up ' + Math.round(st.ascentM) + ' m' : null,
+      st.sideQuest ? 'side quest' : null,
+      st.summary || null,
+      st.notes ? 'Watch-out: ' + st.notes : null
+    ].filter(Boolean).join(' | ');
+  }
+  function getAgentRouteContext(){
+    var v = variants[current] || {};
+    return {
+      selected_variant_key: current || '',
+      selected_variant_label: v.label || '',
+      selected_variant_subtitle: v.sub || '',
+      selected_variant_focused_day: currentFocusDay ? String(currentFocusDay) : '',
+      selected_variant_stage_table: stagesOf(current).map(stageContextLine).join('\n'),
+      route_context_rule: 'Treat selected_variant_stage_table as authoritative for day numbers. If the user asks about a day, match that exact day in this selected variant before answering. If the user might mean another variant, ask which variant.',
+      route_page_url: window.location.href,
+      route_context_version: '2026-06-19-route-context-v1'
+    };
+  }
+  function syncAgentContext(){
+    var widget = $('norway-convai');
+    if (!widget) return;
+    widget.setAttribute('dynamic-variables', JSON.stringify(getAgentRouteContext()));
+  }
 
   function renderVariantBar(){
     $('variant-bar').innerHTML = variantKeys.map(function(k){
@@ -505,6 +538,7 @@ footer a{color:var(--ink-soft)}
     $('variant-bar').querySelectorAll('.variant-btn').forEach(function(b){
       b.addEventListener('click', function(){
         current = b.getAttribute('data-v');
+        currentFocusDay = '';
         renderVariant();
       });
     });
@@ -790,6 +824,10 @@ footer a{color:var(--ink-soft)}
     head.querySelector('.dh-caret').textContent = open ? '−' : '+';
     var body = head.parentNode.querySelector('.day-body');
     if (open) body.removeAttribute('hidden'); else body.setAttribute('hidden','');
+    if (open) {
+      currentFocusDay = head.getAttribute('data-day') || '';
+      syncAgentContext();
+    }
   }
   function expandDay(dayNo){
     var el = document.getElementById('day-' + dayNo);
@@ -1071,12 +1109,12 @@ footer a{color:var(--ink-soft)}
     renderStats();
     renderDays();
     drawRoute();
+    syncAgentContext();
   }
   renderVariantBar();
   renderVariant();
 })();
 </script>
-<elevenlabs-convai agent-id="agent_2701kvfdp91hew6vyh90mbx3ha39"></elevenlabs-convai>
 <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 </body>
 </html>
