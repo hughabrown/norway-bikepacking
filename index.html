@@ -498,18 +498,29 @@ footer a{color:var(--ink-soft)}
   var currentFocusDay = '';
 
   function stagesOf(k){ return (variants[k] && variants[k].stages) || []; }
-  function stageContextLine(st){
+  function compactStageContextLine(st){
     return [
       'Day ' + st.day,
       st.date ? fdate(st.date) : null,
       (st.from || '') + ' -> ' + (st.to || ''),
       st.kind || 'ride',
-      st.km ? fmtKm(st.km) + ' km' : null,
-      st.ascentM ? 'up ' + Math.round(st.ascentM) + ' m' : null,
-      st.sideQuest ? 'side quest' : null,
+      st.km != null ? fmtKm(st.km) + ' km' : null,
+      st.ascentM != null ? 'up ' + Math.round(st.ascentM) + ' m' : null,
+      st.sideQuest ? 'side quest' : null
+    ].filter(Boolean).join(' | ');
+  }
+  function detailedStageContextLine(st){
+    return [
+      compactStageContextLine(st),
       st.summary || null,
       st.notes ? 'Watch-out: ' + st.notes : null
     ].filter(Boolean).join(' | ');
+  }
+  function focusedStageContextLine(){
+    if (!currentFocusDay) return '';
+    var day = String(currentFocusDay);
+    var st = stagesOf(current).find(function(stage){ return String(stage.day) === day; });
+    return st ? detailedStageContextLine(st) : '';
   }
   function getAgentRouteContext(){
     var v = variants[current] || {};
@@ -518,10 +529,11 @@ footer a{color:var(--ink-soft)}
       selected_variant_label: v.label || '',
       selected_variant_subtitle: v.sub || '',
       selected_variant_focused_day: currentFocusDay ? String(currentFocusDay) : '',
-      selected_variant_stage_table: stagesOf(current).map(stageContextLine).join('\n'),
-      route_context_rule: 'Treat selected_variant_stage_table as authoritative for day numbers. If the user asks about a day, match that exact day in this selected variant before answering. If the user might mean another variant, ask which variant.',
+      selected_variant_focused_day_detail: focusedStageContextLine(),
+      selected_variant_stage_table: stagesOf(current).map(compactStageContextLine).join('\n'),
+      route_context_rule: 'Treat selected_variant_stage_table as authoritative for day numbers. Use selected_variant_focused_day_detail for details about the opened day. If the user asks about a day, match that exact day in this selected variant before answering. If the user might mean another variant, ask which variant.',
       route_page_url: window.location.href,
-      route_context_version: '2026-06-19-route-context-v1'
+      route_context_version: '2026-06-19-route-context-v2'
     };
   }
   function syncAgentContext(){
