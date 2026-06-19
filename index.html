@@ -541,6 +541,26 @@ footer a{color:var(--ink-soft)}
     if (!widget) return;
     widget.setAttribute('dynamic-variables', JSON.stringify(getAgentRouteContext()));
   }
+  function googleMapsSearchUrl(query){
+    return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(query);
+  }
+  function registerMapsClientTool(){
+    var widget = $('norway-convai');
+    if (!widget) return;
+    widget.addEventListener('elevenlabs-convai:call', function(event){
+      var config = event.detail && event.detail.config;
+      if (!config) return;
+      config.clientTools = config.clientTools || {};
+      config.clientTools.openGoogleMapsUrl = function(params){
+        var query = params && params.query ? String(params.query).trim() : '';
+        var label = params && params.label ? String(params.label).trim() : query;
+        if (!query) return { opened: false, error: 'Missing Google Maps query' };
+        var url = googleMapsSearchUrl(query);
+        var opened = !!window.open(url, '_blank', 'noopener,noreferrer');
+        return { opened: opened, url: url, label: label };
+      };
+    });
+  }
 
   function renderVariantBar(){
     $('variant-bar').innerHTML = variantKeys.map(function(k){
@@ -1124,6 +1144,7 @@ footer a{color:var(--ink-soft)}
     syncAgentContext();
   }
   renderVariantBar();
+  registerMapsClientTool();
   renderVariant();
 })();
 </script>
