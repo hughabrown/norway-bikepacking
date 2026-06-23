@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { lookupItineraryDay, resolveItineraryDayFromDate } from "../../src/fjordpilot/trip-data";
+import { TRIP_TIMEZONE } from "../../src/fjordpilot/types";
 
 describe("lookupItineraryDay", () => {
   it("defaults to the besseggen variant", () => {
@@ -55,5 +56,11 @@ describe("resolveItineraryDayFromDate", () => {
       expect(result.error).toContain("does not match");
       expect(result.validDateRange).toEqual({ start: "2026-07-09", end: "2026-07-19" });
     }
+  });
+});
+
+describe("trip timezone constant", () => {
+  it("uses Europe/Oslo for relative trip dates", () => {
+    expect(TRIP_TIMEZONE).toBe("Europe/Oslo");
   });
 });
