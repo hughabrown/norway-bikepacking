@@ -130,3 +130,9 @@ Inspect stored trip notes:
 ```bash
 npx wrangler d1 execute fjordpilot --remote --command "SELECT created_at, variant, day, location, category, note FROM trip_notes ORDER BY created_at DESC LIMIT 20"
 ```
+
+Inspect queued deep itinerary analyses:
+
+```bash
+npx wrangler d1 execute fjordpilot --remote --command "SELECT created_at, status, variant, analysis_type, question FROM deep_trip_analysis_jobs ORDER BY created_at DESC LIMIT 20"
+```

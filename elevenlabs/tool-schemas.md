@@ -86,3 +86,53 @@ Request schema:
   "additionalProperties": false
 }
 ```
+
+## `start_deep_trip_analysis`
+
+- Method: `POST`
+- Path: `/api/fjordpilot/tools/start_deep_trip_analysis`
+- Description: Queue an async deep itinerary analysis request for broad planning questions that need whole-itinerary reasoning, slower compute, or a more capable model.
+
+Request schema:
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "question": { "type": "string" },
+    "analysis_type": {
+      "type": "string",
+      "enum": [
+        "route_improvement",
+        "multi_day_highlights",
+        "variant_comparison",
+        "weather_replan",
+        "general_planning"
+      ]
+    },
+    "variant": { "type": "string", "description": "Defaults to besseggen when omitted." },
+    "start_day": { "type": "integer", "minimum": 0 },
+    "end_day": { "type": "integer", "minimum": 0 },
+    "constraints": { "type": "string" },
+    "current_date": { "type": "string" },
+    "current_itinerary_date": { "type": "string" },
+    "conversation_id": { "type": "string" }
+  },
+  "required": ["question"],
+  "additionalProperties": false
+}
+```
+
+Response shape:
+
+```json
+{
+  "ok": true,
+  "handoff": "deep_trip_analysis",
+  "request_id": "uuid",
+  "status": "queued",
+  "variant": "besseggen",
+  "analysis_type": "multi_day_highlights",
+  "message": "Queued handoff status."
+}
+```

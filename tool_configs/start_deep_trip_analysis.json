@@ -1,0 +1,126 @@
+{
+    "type": "webhook",
+    "name": "start_deep_trip_analysis",
+    "description": "MANDATORY for broad Norway trip-planning questions that need whole-itinerary reasoning, slower compute, or a more capable async model. Use for questions like whether there is a better way to do the trip, highlights of the next five days, route improvement, variant comparison, weather-driven replanning, or substantial tradeoff analysis. Returns quickly with a queued request id; do not invent the final deep answer until an async runner completes it.",
+    "response_timeout_secs": 15,
+    "disable_interruptions": false,
+    "force_pre_tool_speech": false,
+    "pre_tool_speech": "auto",
+    "assignments": [],
+    "tool_call_sound_behavior": "auto",
+    "tool_error_handling_mode": "auto",
+    "dynamic_variables": {
+        "dynamic_variable_placeholders": {}
+    },
+    "execution_mode": "immediate",
+    "api_schema": {
+        "request_headers": {
+            "Content-Type": "application/json",
+            "Authorization": {
+                "secret_id": "sxigwRMBXvRlxnpJCM1a"
+            }
+        },
+        "url": "https://fjordpilot-api.hughbrown.workers.dev/api/fjordpilot/tools/start_deep_trip_analysis",
+        "method": "POST",
+        "path_params_schema": {},
+        "request_body_schema": {
+            "type": "object",
+            "required": [
+                "question"
+            ],
+            "description": "Queue an async deep itinerary analysis request for a stronger runner.",
+            "properties": {
+                "question": {
+                    "type": "string",
+                    "description": "Hugh's broad planning question, preserved as close to verbatim as possible.",
+                    "is_system_provided": false,
+                    "dynamic_variable": "",
+                    "allowed_values_dynamic_variable": "",
+                    "constant_value": "",
+                    "is_omitted": false
+                },
+                "analysis_type": {
+                    "type": "string",
+                    "description": "Type of deeper analysis needed.",
+                    "enum": [
+                        "route_improvement",
+                        "multi_day_highlights",
+                        "variant_comparison",
+                        "weather_replan",
+                        "general_planning"
+                    ],
+                    "is_system_provided": false,
+                    "dynamic_variable": "",
+                    "allowed_values_dynamic_variable": "",
+                    "constant_value": "",
+                    "is_omitted": false
+                },
+                "variant": {
+                    "type": "string",
+                    "description": "Route variant key. Defaults to besseggen when omitted.",
+                    "is_system_provided": false,
+                    "dynamic_variable": "",
+                    "allowed_values_dynamic_variable": "",
+                    "constant_value": "",
+                    "is_omitted": false
+                },
+                "start_day": {
+                    "type": "integer",
+                    "description": "Optional first itinerary day to include when the question is scoped to a day window.",
+                    "is_system_provided": false,
+                    "dynamic_variable": "",
+                    "allowed_values_dynamic_variable": "",
+                    "constant_value": "",
+                    "is_omitted": false
+                },
+                "end_day": {
+                    "type": "integer",
+                    "description": "Optional final itinerary day to include when the question is scoped to a day window.",
+                    "is_system_provided": false,
+                    "dynamic_variable": "",
+                    "allowed_values_dynamic_variable": "",
+                    "constant_value": "",
+                    "is_omitted": false
+                },
+                "constraints": {
+                    "type": "string",
+                    "description": "Optional constraints Hugh mentioned, such as shorter days, extra rest, weather concern, side quest, or booking limits.",
+                    "is_system_provided": false,
+                    "dynamic_variable": "",
+                    "allowed_values_dynamic_variable": "",
+                    "constant_value": "",
+                    "is_omitted": false
+                },
+                "current_date": {
+                    "type": "string",
+                    "description": "Runtime current_date from the embedded website when available.",
+                    "is_system_provided": false,
+                    "dynamic_variable": "",
+                    "allowed_values_dynamic_variable": "",
+                    "constant_value": "",
+                    "is_omitted": false
+                },
+                "current_itinerary_date": {
+                    "type": "string",
+                    "description": "Runtime current_itinerary_date from the embedded website when available.",
+                    "is_system_provided": false,
+                    "dynamic_variable": "",
+                    "allowed_values_dynamic_variable": "",
+                    "constant_value": "",
+                    "is_omitted": false
+                },
+                "conversation_id": {
+                    "type": "string",
+                    "description": "Optional ElevenLabs conversation id if available.",
+                    "is_system_provided": false,
+                    "dynamic_variable": "",
+                    "allowed_values_dynamic_variable": "",
+                    "constant_value": "",
+                    "is_omitted": false
+                }
+            }
+        },
+        "content_type": "application/json",
+        "auth_resolved_params": []
+    }
+}

@@ -144,3 +144,54 @@ export type SearchTripPlacesResult =
       error: string;
       validVariants: string[];
     };
+
+export type DeepTripAnalysisType =
+  | "route_improvement"
+  | "multi_day_highlights"
+  | "variant_comparison"
+  | "weather_replan"
+  | "general_planning";
+
+export interface StartDeepTripAnalysisInput {
+  question: string;
+  analysis_type?: DeepTripAnalysisType;
+  variant?: string;
+  start_day?: number;
+  end_day?: number;
+  constraints?: string;
+  current_date?: string;
+  current_itinerary_date?: string;
+  conversation_id?: string;
+}
+
+export interface DeepTripAnalysisJob {
+  id: string;
+  createdAt: string;
+  status: "queued";
+  variant: string;
+  analysisType: DeepTripAnalysisType;
+  question: string;
+  startDay: number | undefined;
+  endDay: number | undefined;
+  constraints: string[];
+  currentDate: string | undefined;
+  currentItineraryDate: string | undefined;
+  conversationId: string | undefined;
+  prompt: string;
+}
+
+export type StartDeepTripAnalysisResult =
+  | {
+      ok: true;
+      handoff: "deep_trip_analysis";
+      request_id: string;
+      status: "queued";
+      variant: string;
+      analysis_type: DeepTripAnalysisType;
+      message: string;
+    }
+  | {
+      ok: false;
+      error: string;
+      validVariants?: string[];
+    };

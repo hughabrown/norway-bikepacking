@@ -1,8 +1,17 @@
+import {
+  DEEP_TRIP_ANALYSIS_TYPES,
+  prepareDeepTripAnalysis,
+} from "../fjordpilot/deep-analysis";
 import { prepareTripNote, type SaveTripNoteInput } from "../fjordpilot/notes";
 import { searchTripPlaces } from "../fjordpilot/places";
 import { lookupItineraryDay } from "../fjordpilot/trip-data";
+import type { StartDeepTripAnalysisInput } from "../fjordpilot/types";
 import { isAuthorized, isPostCallWebhookAuthorized } from "./auth";
-import { insertPostCallLog, insertTripNote } from "./d1-store";
+import {
+  insertDeepTripAnalysisJob,
+  insertPostCallLog,
+  insertTripNote,
+} from "./d1-store";
 import { jsonResponse, optionsResponse } from "./http";
 
 export interface Env {
@@ -281,6 +290,95 @@ function validateSaveTripNoteRequest(body: unknown): ValidationResult<SaveTripNo
   };
 }
 
+function validateStartDeepTripAnalysisRequest(
+  body: unknown,
+): ValidationResult<StartDeepTripAnalysisInput> {
+  const objectResult = asObject(body);
+  if (!objectResult.ok) return objectResult;
+
+  const questionResult = readRequiredString(objectResult.value, "question");
+  if (!questionResult.ok) {
+    return questionResult as ValidationResult<StartDeepTripAnalysisInput>;
+  }
+
+  const analysisTypeResult = readEnum(
+    objectResult.value,
+    "analysis_type",
+    DEEP_TRIP_ANALYSIS_TYPES,
+    { required: false },
+  );
+  if (!analysisTypeResult.ok) {
+    return analysisTypeResult as ValidationResult<StartDeepTripAnalysisInput>;
+  }
+
+  const variantResult = readOptionalString(objectResult.value, "variant");
+  if (!variantResult.ok) {
+    return variantResult as ValidationResult<StartDeepTripAnalysisInput>;
+  }
+
+  const startDayResult = readInteger(objectResult.value, "start_day", {
+    required: false,
+    minimum: 0,
+  });
+  if (!startDayResult.ok) {
+    return startDayResult as ValidationResult<StartDeepTripAnalysisInput>;
+  }
+
+  const endDayResult = readInteger(objectResult.value, "end_day", {
+    required: false,
+    minimum: 0,
+  });
+  if (!endDayResult.ok) {
+    return endDayResult as ValidationResult<StartDeepTripAnalysisInput>;
+  }
+
+  const constraintsResult = readOptionalString(objectResult.value, "constraints");
+  if (!constraintsResult.ok) {
+    return constraintsResult as ValidationResult<StartDeepTripAnalysisInput>;
+  }
+
+  const currentDateResult = readOptionalString(objectResult.value, "current_date");
+  if (!currentDateResult.ok) {
+    return currentDateResult as ValidationResult<StartDeepTripAnalysisInput>;
+  }
+
+  const currentItineraryDateResult = readOptionalString(
+    objectResult.value,
+    "current_itinerary_date",
+  );
+  if (!currentItineraryDateResult.ok) {
+    return currentItineraryDateResult as ValidationResult<StartDeepTripAnalysisInput>;
+  }
+
+  const conversationIdResult = readOptionalString(objectResult.value, "conversation_id");
+  if (!conversationIdResult.ok) {
+    return conversationIdResult as ValidationResult<StartDeepTripAnalysisInput>;
+  }
+
+  return {
+    ok: true,
+    value: {
+      question: questionResult.value,
+      ...(analysisTypeResult.value !== undefined
+        ? { analysis_type: analysisTypeResult.value }
+        : {}),
+      ...(variantResult.value !== undefined ? { variant: variantResult.value } : {}),
+      ...(startDayResult.value !== undefined ? { start_day: startDayResult.value } : {}),
+      ...(endDayResult.value !== undefined ? { end_day: endDayResult.value } : {}),
+      ...(constraintsResult.value !== undefined ? { constraints: constraintsResult.value } : {}),
+      ...(currentDateResult.value !== undefined
+        ? { current_date: currentDateResult.value }
+        : {}),
+      ...(currentItineraryDateResult.value !== undefined
+        ? { current_itinerary_date: currentItineraryDateResult.value }
+        : {}),
+      ...(conversationIdResult.value !== undefined
+        ? { conversation_id: conversationIdResult.value }
+        : {}),
+    },
+  };
+}
+
 function requireToolAuth(request: Request, env: Env): Response | undefined {
   if (!isAuthorized(request, env.FJORDPILOT_TOOL_TOKEN)) {
     return jsonResponse({ ok: false, error: "Unauthorized" }, { status: 401 });
@@ -379,6 +477,24 @@ export async function handleRequest(
 
     await insertTripNote(env.DB, prepared.note);
     return jsonResponse(prepared);
+  }
+
+  if (url.pathname === "/api/fjordpilot/tools/start_deep_trip_analysis") {
+    const parsed = validateStartDeepTripAnalysisRequest(body);
+    if (!parsed.ok) {
+      return invalidRequest(parsed.error);
+    }
+
+    const prepared = prepareDeepTripAnalysis(parsed.value, {
+      now: () => new Date().toISOString(),
+      id: () => crypto.randomUUID(),
+    });
+    if (!prepared.ok) {
+      return jsonResponse(prepared, { status: 400 });
+    }
+
+    await insertDeepTripAnalysisJob(env.DB, prepared.job);
+    return jsonResponse(prepared.result);
   }
 
   return jsonResponse({ ok: false, error: "Unknown tool" }, { status: 404 });

@@ -282,6 +282,81 @@ describe("FjordPilot worker routes", () => {
     await expectInvalidRequest(response, "confirmed is required");
   });
 
+  it("queues start_deep_trip_analysis through D1", async () => {
+    const testEnv = env();
+    const response = await handleRequest(
+      post("/api/fjordpilot/tools/start_deep_trip_analysis", {
+        question: "Can you give me the highlights of the next five days?",
+        analysis_type: "multi_day_highlights",
+        variant: "besseggen",
+        start_day: 3,
+        end_day: 7,
+        constraints: "Keep ride days realistic if the weather turns.",
+        current_date: "2026-07-12",
+        current_itinerary_date: "2026-07-12",
+        conversation_id: "conv_deep_1",
+      }),
+      testEnv,
+    );
+
+    expect(response.status).toBe(200);
+    const json = (await response.json()) as {
+      ok: boolean;
+      handoff: string;
+      request_id: string;
+      status: string;
+      variant: string;
+      analysis_type: string;
+    };
+    expect(json.ok).toBe(true);
+    expect(json.handoff).toBe("deep_trip_analysis");
+    expect(json.request_id).toBeTruthy();
+    expect(json.status).toBe("queued");
+    expect(json.variant).toBe("besseggen");
+    expect(json.analysis_type).toBe("multi_day_highlights");
+    expect(testEnv.DB.writes.length).toBe(1);
+    expect(String(testEnv.DB.writes[0]?.[0])).toContain("deep_trip_analysis_jobs");
+    expect(testEnv.DB.writes[0]).toContain("conv_deep_1");
+  });
+
+  it("rejects start_deep_trip_analysis when question is missing", async () => {
+    const response = await handleRequest(
+      post("/api/fjordpilot/tools/start_deep_trip_analysis", {
+        analysis_type: "multi_day_highlights",
+      }),
+      env(),
+    );
+
+    await expectInvalidRequest(response, "question is required");
+  });
+
+  it("rejects start_deep_trip_analysis when analysis_type is not supported", async () => {
+    const response = await handleRequest(
+      post("/api/fjordpilot/tools/start_deep_trip_analysis", {
+        question: "Is there a better way of doing this trip?",
+        analysis_type: "huge_model_magic",
+      }),
+      env(),
+    );
+
+    await expectInvalidRequest(
+      response,
+      "analysis_type must be one of: route_improvement, multi_day_highlights, variant_comparison, weather_replan, general_planning",
+    );
+  });
+
+  it("rejects start_deep_trip_analysis when constraints is not a string", async () => {
+    const response = await handleRequest(
+      post("/api/fjordpilot/tools/start_deep_trip_analysis", {
+        question: "Is there a better way of doing this trip?",
+        constraints: ["shorter days"],
+      }),
+      env(),
+    );
+
+    await expectInvalidRequest(response, "constraints must be a string");
+  });
+
   it("stores post-call webhook payloads", async () => {
     const testEnv = env();
     const response = await handleRequest(
