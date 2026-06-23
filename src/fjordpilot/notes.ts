@@ -43,7 +43,8 @@ export function prepareTripNote(input: SaveTripNoteInput, env: SaveTripNoteEnv):
   });
 
   if (!gate.ok) {
-    return { ok: false, error: `Trip note was not saved because ${gate.error}.` };
+    const gateMessage = gate.error === "write gate was invalid" ? "the write gate was invalid" : gate.error;
+    return { ok: false, error: `Trip note was not saved because ${gateMessage}.` };
   }
 
   if (!allowedCategories.includes(input.category)) {

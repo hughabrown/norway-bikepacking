@@ -16,7 +16,7 @@ export function validateWriteGate(input: WriteGateInput): WriteGateResult {
     return { ok: false, error: "server write gate is not configured" };
   }
   if (!input.providedGate || input.providedGate !== input.expectedGate) {
-    return { ok: false, error: "the write gate was invalid" };
+    return { ok: false, error: "write gate was invalid" };
   }
   return { ok: true };
 }

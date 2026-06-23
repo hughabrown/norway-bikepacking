@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { prepareTripNote } from "../../src/fjordpilot/notes";
+import { validateWriteGate } from "../../src/fjordpilot/write-gate";
 
 const env = {
   writeGate: "fjord-2026",
@@ -53,5 +54,17 @@ describe("prepareTripNote", () => {
         note: "Stay in Beitostolen if day 4 is too hard."
       }
     });
+  });
+});
+
+describe("validateWriteGate", () => {
+  it("returns expected error text for invalid gates", () => {
+    expect(
+      validateWriteGate({
+        confirmed: true,
+        providedGate: "wrong",
+        expectedGate: "fjord-2026"
+      })
+    ).toEqual({ ok: false, error: "write gate was invalid" });
   });
 });
