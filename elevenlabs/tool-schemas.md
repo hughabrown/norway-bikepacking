@@ -66,7 +66,7 @@ Request schema:
 
 - Method: `POST`
 - Path: `/api/fjordpilot/tools/save_trip_note`
-- Description: Save an explicitly confirmed trip note after validating the write gate.
+- Description: Save an explicitly confirmed trip note after validating Hugh's save code.
 
 Request schema:
 
@@ -91,7 +91,7 @@ Request schema:
 
 - Method: `POST`
 - Path: `/api/fjordpilot/tools/start_deep_trip_analysis`
-- Description: Queue an async deep itinerary analysis request for broad planning questions that need whole-itinerary reasoning, slower compute, or a more capable model. The returned request id is for internal follow-up calls and should not be read aloud unless Hugh explicitly asks for it.
+- Description: Start async deep itinerary analysis for broad planning questions that need whole-itinerary reasoning, slower compute, or a more capable model. The returned internal reference is for follow-up calls and should not be read aloud.
 
 Request schema:
 
@@ -127,7 +127,7 @@ Request schema:
 
 - Method: `POST`
 - Path: `/api/fjordpilot/tools/get_deep_trip_analysis`
-- Description: Retrieve the status and final answer for a previously queued deep itinerary analysis request.
+- Description: Retrieve the final answer for earlier deep itinerary analysis.
 
 Request schema:
 
@@ -147,7 +147,7 @@ Completed response shape:
 ```json
 {
   "ok": true,
-  "request_id": "uuid-for-internal-follow-up",
+  "request_id": "internal-reference",
   "status": "completed",
   "variant": "besseggen",
   "analysis_type": "multi_day_highlights",
@@ -162,13 +162,13 @@ Completed response shape:
 }
 ```
 
-Response shape:
+Started response shape:
 
 ```json
 {
   "ok": true,
   "handoff": "deep_trip_analysis",
-  "request_id": "uuid",
+  "request_id": "internal-reference",
   "status": "queued",
   "variant": "besseggen",
   "analysis_type": "multi_day_highlights",

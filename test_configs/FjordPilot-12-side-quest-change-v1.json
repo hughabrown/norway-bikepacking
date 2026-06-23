@@ -33,7 +33,7 @@
             "user_identifier": null
         }
     ],
-    "success_condition": "The agent treats this as an itinerary-changing request. In V1 it explains that itinerary PR automation is not enabled, asks for the requested change and constraints, and does not claim it has edited the repository, opened a PR, or automatically changed the itinerary.",
+    "success_condition": "For V1, the agent explains naturally that automatic itinerary edits are not enabled yet, asks for the side quest and constraints, and summarizes what would need to change without claiming it edited the itinerary. It should not mention internal automation terms unless Hugh asks how it works.",
     "simulation_scenario": "The simulated user opens by asking exactly: \"Update the itinerary to add a side quest near Flam.\" If the agent asks what side quest, answer: \"Maybe Stegastein or Naeroyfjord, whichever fits best.\"",
     "simulation_max_turns": 2,
     "tool_mock_config": {

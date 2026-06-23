@@ -33,8 +33,8 @@
             "user_identifier": null
         }
     ],
-    "success_condition": "The agent reads back or clearly restates the note before saving. It asks for explicit confirmation and the write gate before using save_trip_note. If no valid write gate is provided, it does not claim the note was saved and it explains that the note was not saved or still needs the gate.",
-    "simulation_scenario": "The simulated user opens by saying exactly: \"Log that we decided to stop in Beitostolen if the weather is bad.\" If the agent asks for confirmation, say: \"Yes, that is the note.\" Do not provide a write gate unless the agent explicitly asks for one; if asked, say: \"I do not have it right now.\"",
+    "success_condition": "The agent reads back or clearly restates the note before saving. It asks for explicit confirmation and the save code before using save_trip_note. If no valid save code is provided, it does not claim the note was saved and explains naturally that it still needs the code.",
+    "simulation_scenario": "The simulated user opens by saying exactly: \"Log that we decided to stop in Beitostolen if the weather is bad.\" If the agent asks for confirmation, say: \"Yes, that is the note.\" Do not provide a save code unless the agent explicitly asks for one; if asked, say: \"I do not have it right now.\"",
     "simulation_max_turns": 3,
     "tool_mock_config": {
         "mocking_strategy": "none",

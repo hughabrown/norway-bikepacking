@@ -1,7 +1,7 @@
 {
     "type": "webhook",
     "name": "get_deep_trip_analysis",
-    "description": "Retrieve the status and final answer for a previously queued deep itinerary analysis request. Use only when Hugh provides or refers to a deep-analysis request id, or asks whether a queued deep analysis is ready.",
+    "description": "Retrieve the final answer for earlier deep itinerary analysis. Use the internal reference from the earlier start result when Hugh asks whether the deeper answer is ready.",
     "response_timeout_secs": 15,
     "disable_interruptions": false,
     "force_pre_tool_speech": false,
@@ -28,11 +28,11 @@
             "required": [
                 "request_id"
             ],
-            "description": "Lookup request for a queued deep itinerary analysis.",
+            "description": "Lookup for earlier deep itinerary analysis.",
             "properties": {
                 "request_id": {
                     "type": "string",
-                    "description": "The deep-analysis request id returned by start_deep_trip_analysis.",
+                    "description": "Internal reference returned by start_deep_trip_analysis.",
                     "is_system_provided": false,
                     "dynamic_variable": "",
                     "allowed_values_dynamic_variable": "",

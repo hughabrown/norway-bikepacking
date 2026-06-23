@@ -33,7 +33,7 @@
             "user_identifier": null
         }
     ],
-    "success_condition": "The agent acknowledges broad planning with the exact phrase \"Let me think that through across the itinerary\" or a very close equivalent. Because current_itinerary_date is empty, it asks for the start day first; after the user says day 3, it calls start_deep_trip_analysis with analysis_type multi_day_highlights and a five-day window, says the deeper analysis is queued or being worked on, does not read the request id aloud, and does not invent the final highlights answer.",
+    "success_condition": "The agent acknowledges broad planning naturally; \"Let me think that through across the itinerary\" is acceptable but not required. Because current_itinerary_date is empty, it asks for the start day first; after the user says day 3, it calls start_deep_trip_analysis with analysis_type multi_day_highlights and a five-day window, says it is working through the full route, does not expose internal references, and does not invent the final highlights answer.",
     "simulation_scenario": "The simulated user opens by asking exactly: \"Can you give me the highlights of the next five days?\" If the agent asks for a start day, answer: \"Start from day 3.\"",
     "simulation_max_turns": 2,
     "tool_mock_config": {
@@ -41,5 +41,5 @@
         "fallback_strategy": "raise_error",
         "mocked_tool_ids": []
     },
-    "name": "FjordPilot 10 next five days deep handoff"
+    "name": "FjordPilot 10 next five days deep planning"
 }

@@ -1,7 +1,7 @@
 {
     "type": "webhook",
     "name": "save_trip_note",
-    "description": "Save an explicitly confirmed trip note after validating the write gate. Use only after reading back the exact note and receiving Hugh's confirmation plus the write gate.",
+    "description": "Save an explicitly confirmed trip note after validating Hugh's save code. Use only after reading back the exact note, receiving Hugh's confirmation, and asking for the save code.",
     "response_timeout_secs": 15,
     "disable_interruptions": false,
     "force_pre_tool_speech": false,
@@ -97,7 +97,7 @@
                 },
                 "write_gate": {
                     "type": "string",
-                    "description": "The write gate Hugh provides after confirming the note.",
+                    "description": "The save code Hugh provides after confirming the note.",
                     "is_system_provided": false,
                     "dynamic_variable": "",
                     "allowed_values_dynamic_variable": "",
