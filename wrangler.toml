@@ -10,4 +10,4 @@ ELEVENLABS_AGENT_ID = "agent_2701kvfdp91hew6vyh90mbx3ha39"
 [[d1_databases]]
 binding = "DB"
 database_name = "fjordpilot"
-database_id = "local-dev-fjordpilot"
+database_id = "2bf11142-a295-4e51-a850-db1809bf0de6"

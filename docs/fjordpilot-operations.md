@@ -65,6 +65,12 @@ npm run worker:deploy
 
 Record the HTTPS Worker URL printed by Wrangler. Use that URL as the base URL for ElevenLabs webhook tools.
 
+Current production Worker URL:
+
+```text
+https://fjordpilot-api.hughbrown.workers.dev
+```
+
 ## ElevenLabs Dashboard
 
 1. Open agent `agent_2701kvfdp91hew6vyh90mbx3ha39`.
@@ -75,7 +81,15 @@ Record the HTTPS Worker URL printed by Wrangler. Use that URL as the base URL fo
 
 ## Website Deploy
 
-Deploy the static site with Cloudflare Pages connected to this repository. Configure a route so `/api/fjordpilot/*` reaches the `fjordpilot-api` Worker. Keep the existing `<elevenlabs-convai>` element in `index.html`.
+The static website is served by GitHub Pages:
+
+```text
+https://hughabrown.github.io/norway-bikepacking/
+```
+
+GitHub Pages deploys from the repository's `main` branch. Keep the existing `<elevenlabs-convai>` element in `index.html`.
+
+Use the Worker URL directly for ElevenLabs webhook tools. A Cloudflare Pages project is not required for the V1 deployment.
 
 ## Rollback
 
