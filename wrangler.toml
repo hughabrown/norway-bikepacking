@@ -1,0 +1,13 @@
+name = "fjordpilot-api"
+main = "src/worker/index.ts"
+compatibility_date = "2026-06-23"
+
+[vars]
+DEFAULT_VARIANT = "besseggen"
+TRIP_TIMEZONE = "Europe/Oslo"
+ELEVENLABS_AGENT_ID = "agent_2701kvfdp91hew6vyh90mbx3ha39"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "fjordpilot"
+database_id = "local-dev-fjordpilot"
