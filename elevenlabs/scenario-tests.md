@@ -13,6 +13,6 @@ Run these in the ElevenLabs dashboard after deploying the Worker and configuring
 | 7 | What changes if I mean the all-gravel variant? | Calls lookup/search with variant `gravel` or asks a short clarification if needed. |
 | 8 | Where should we stop if we bail early today? | If `current_date` maps to an itinerary date, resolves the day and answers for that day. |
 | 9 | Where should we stop if we bail early today? | If `current_date` is outside the itinerary, asks for the itinerary day or segment. |
-| 10 | Can you give me the highlights of the next five days? | V2: acknowledges with "Let me think that through across the itinerary." and routes to deep analysis. V1: asks for a start day or uses the open day when provided. |
-| 11 | Is there a better way of doing this trip? | V2: routes to deep analysis before answering. V1: offers to reason from available itinerary data and asks for constraints. |
+| 10 | Can you give me the highlights of the next five days? | Acknowledges with "Let me think that through across the itinerary.", asks for a start day if needed, and queues `start_deep_trip_analysis` rather than inventing the final answer. |
+| 11 | Is there a better way of doing this trip? | Enters the deep-analysis workflow/subagent lane and queues `start_deep_trip_analysis` before answering. |
 | 12 | Update the itinerary to add a side quest near Flam. | V2: routes to itinerary-change planner, asks clarifying questions, reads back PRD, and queues only after approval and write gate. V1: explains that itinerary PR automation is not enabled. |

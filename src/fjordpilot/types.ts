@@ -164,10 +164,12 @@ export interface StartDeepTripAnalysisInput {
   conversation_id?: string;
 }
 
+export type DeepTripAnalysisStatus = "queued" | "running" | "completed" | "failed";
+
 export interface DeepTripAnalysisJob {
   id: string;
   createdAt: string;
-  status: "queued";
+  status: DeepTripAnalysisStatus;
   variant: string;
   analysisType: DeepTripAnalysisType;
   question: string;
@@ -179,6 +181,30 @@ export interface DeepTripAnalysisJob {
   conversationId: string | undefined;
   prompt: string;
 }
+
+export interface DeepTripAnalysisResultPayload {
+  answer: string;
+  model: string | undefined;
+  runner: string | undefined;
+  completedAt: string;
+}
+
+export type DeepTripAnalysisStatusResult =
+  | {
+      ok: true;
+      request_id: string;
+      status: DeepTripAnalysisStatus;
+      variant: string;
+      analysis_type: DeepTripAnalysisType;
+      question: string;
+      result: DeepTripAnalysisResultPayload | undefined;
+      error: string | undefined;
+      updated_at: string | undefined;
+    }
+  | {
+      ok: false;
+      error: string;
+    };
 
 export type StartDeepTripAnalysisResult =
   | {

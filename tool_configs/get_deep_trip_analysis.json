@@ -1,0 +1,47 @@
+{
+    "type": "webhook",
+    "name": "get_deep_trip_analysis",
+    "description": "Retrieve the status and final answer for a previously queued deep itinerary analysis request. Use only when Hugh provides or refers to a deep-analysis request id, or asks whether a queued deep analysis is ready.",
+    "response_timeout_secs": 15,
+    "disable_interruptions": false,
+    "force_pre_tool_speech": false,
+    "pre_tool_speech": "auto",
+    "assignments": [],
+    "tool_call_sound_behavior": "auto",
+    "tool_error_handling_mode": "auto",
+    "dynamic_variables": {
+        "dynamic_variable_placeholders": {}
+    },
+    "execution_mode": "immediate",
+    "api_schema": {
+        "request_headers": {
+            "Content-Type": "application/json",
+            "Authorization": {
+                "secret_id": "sxigwRMBXvRlxnpJCM1a"
+            }
+        },
+        "url": "https://fjordpilot-api.hughbrown.workers.dev/api/fjordpilot/tools/get_deep_trip_analysis",
+        "method": "POST",
+        "path_params_schema": {},
+        "request_body_schema": {
+            "type": "object",
+            "required": [
+                "request_id"
+            ],
+            "description": "Lookup request for a queued deep itinerary analysis.",
+            "properties": {
+                "request_id": {
+                    "type": "string",
+                    "description": "The deep-analysis request id returned by start_deep_trip_analysis.",
+                    "is_system_provided": false,
+                    "dynamic_variable": "",
+                    "allowed_values_dynamic_variable": "",
+                    "constant_value": "",
+                    "is_omitted": false
+                }
+            }
+        },
+        "content_type": "application/json",
+        "auth_resolved_params": []
+    }
+}

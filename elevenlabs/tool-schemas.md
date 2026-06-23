@@ -123,6 +123,45 @@ Request schema:
 }
 ```
 
+## `get_deep_trip_analysis`
+
+- Method: `POST`
+- Path: `/api/fjordpilot/tools/get_deep_trip_analysis`
+- Description: Retrieve the status and final answer for a previously queued deep itinerary analysis request.
+
+Request schema:
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "request_id": { "type": "string" }
+  },
+  "required": ["request_id"],
+  "additionalProperties": false
+}
+```
+
+Completed response shape:
+
+```json
+{
+  "ok": true,
+  "request_id": "uuid",
+  "status": "completed",
+  "variant": "besseggen",
+  "analysis_type": "multi_day_highlights",
+  "question": "Can you give me the highlights of the next five days?",
+  "result": {
+    "answer": "Final async answer.",
+    "model": "gpt-5",
+    "runner": "hermes-codex",
+    "completedAt": "2026-06-23T12:00:00.000Z"
+  },
+  "updated_at": "2026-06-23T12:00:00.000Z"
+}
+```
+
 Response shape:
 
 ```json

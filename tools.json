@@ -29,6 +29,11 @@
             "type": "webhook",
             "config": "tool_configs/start_deep_trip_analysis.json",
             "id": "tool_6301kvtmnhxbemtba8ty3gs0e8sz"
+        },
+        {
+            "type": "webhook",
+            "config": "tool_configs/get_deep_trip_analysis.json",
+            "id": "tool_5901kvtx46wnfnqtjznwymrg087f"
         }
     ]
 }

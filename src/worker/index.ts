@@ -8,6 +8,10 @@ import { lookupItineraryDay } from "../fjordpilot/trip-data";
 import type { StartDeepTripAnalysisInput } from "../fjordpilot/types";
 import { isAuthorized, isPostCallWebhookAuthorized } from "./auth";
 import {
+  claimNextDeepTripAnalysisJob,
+  completeDeepTripAnalysisJob,
+  failDeepTripAnalysisJob,
+  getDeepTripAnalysisJobStatus,
   insertDeepTripAnalysisJob,
   insertPostCallLog,
   insertTripNote,
@@ -16,6 +20,7 @@ import { jsonResponse, optionsResponse } from "./http";
 
 export interface Env {
   FJORDPILOT_TOOL_TOKEN: string;
+  FJORDPILOT_ADMIN_TOKEN?: string;
   FJORDPILOT_WRITE_GATE: string;
   DB: D1Database;
 }
@@ -379,8 +384,136 @@ function validateStartDeepTripAnalysisRequest(
   };
 }
 
+function validateDeepTripAnalysisStatusRequest(
+  body: unknown,
+): ValidationResult<{ request_id: string }> {
+  const objectResult = asObject(body);
+  if (!objectResult.ok) return objectResult;
+
+  const requestIdResult = readRequiredString(objectResult.value, "request_id");
+  if (!requestIdResult.ok) {
+    return requestIdResult as ValidationResult<{ request_id: string }>;
+  }
+
+  return { ok: true, value: { request_id: requestIdResult.value } };
+}
+
+function validateCompleteDeepTripAnalysisRequest(body: unknown): ValidationResult<{
+  request_id: string;
+  answer: string;
+  model?: string;
+  runner?: string;
+}> {
+  const objectResult = asObject(body);
+  if (!objectResult.ok) return objectResult;
+
+  const requestIdResult = readRequiredString(objectResult.value, "request_id");
+  if (!requestIdResult.ok) {
+    return requestIdResult as ValidationResult<{
+      request_id: string;
+      answer: string;
+      model?: string;
+      runner?: string;
+    }>;
+  }
+
+  const answerResult = readRequiredString(objectResult.value, "answer");
+  if (!answerResult.ok) {
+    return answerResult as ValidationResult<{
+      request_id: string;
+      answer: string;
+      model?: string;
+      runner?: string;
+    }>;
+  }
+
+  const modelResult = readOptionalString(objectResult.value, "model");
+  if (!modelResult.ok) {
+    return modelResult as ValidationResult<{
+      request_id: string;
+      answer: string;
+      model?: string;
+      runner?: string;
+    }>;
+  }
+
+  const runnerResult = readOptionalString(objectResult.value, "runner");
+  if (!runnerResult.ok) {
+    return runnerResult as ValidationResult<{
+      request_id: string;
+      answer: string;
+      model?: string;
+      runner?: string;
+    }>;
+  }
+
+  return {
+    ok: true,
+    value: {
+      request_id: requestIdResult.value,
+      answer: answerResult.value,
+      ...(modelResult.value !== undefined ? { model: modelResult.value } : {}),
+      ...(runnerResult.value !== undefined ? { runner: runnerResult.value } : {}),
+    },
+  };
+}
+
+function validateFailDeepTripAnalysisRequest(body: unknown): ValidationResult<{
+  request_id: string;
+  error: string;
+  runner?: string;
+}> {
+  const objectResult = asObject(body);
+  if (!objectResult.ok) return objectResult;
+
+  const requestIdResult = readRequiredString(objectResult.value, "request_id");
+  if (!requestIdResult.ok) {
+    return requestIdResult as ValidationResult<{
+      request_id: string;
+      error: string;
+      runner?: string;
+    }>;
+  }
+
+  const errorResult = readRequiredString(objectResult.value, "error");
+  if (!errorResult.ok) {
+    return errorResult as ValidationResult<{
+      request_id: string;
+      error: string;
+      runner?: string;
+    }>;
+  }
+
+  const runnerResult = readOptionalString(objectResult.value, "runner");
+  if (!runnerResult.ok) {
+    return runnerResult as ValidationResult<{
+      request_id: string;
+      error: string;
+      runner?: string;
+    }>;
+  }
+
+  return {
+    ok: true,
+    value: {
+      request_id: requestIdResult.value,
+      error: errorResult.value,
+      ...(runnerResult.value !== undefined ? { runner: runnerResult.value } : {}),
+    },
+  };
+}
+
 function requireToolAuth(request: Request, env: Env): Response | undefined {
   if (!isAuthorized(request, env.FJORDPILOT_TOOL_TOKEN)) {
+    return jsonResponse({ ok: false, error: "Unauthorized" }, { status: 401 });
+  }
+
+  return undefined;
+}
+
+function requireAdminAuth(request: Request, env: Env): Response | undefined {
+  const token = env.FJORDPILOT_ADMIN_TOKEN || env.FJORDPILOT_TOOL_TOKEN;
+  if (!isAuthorized(request, token)) {
     return jsonResponse({ ok: false, error: "Unauthorized" }, { status: 401 });
   }
 
@@ -411,6 +544,7 @@ export async function handleRequest(
 
   const isProtectedRoute =
     url.pathname.startsWith("/api/fjordpilot/tools/") ||
+    url.pathname.startsWith("/api/fjordpilot/admin/") ||
     url.pathname === "/api/fjordpilot/webhooks/post-call";
   if (!isProtectedRoute) {
     return jsonResponse({ ok: false, error: "Not found" }, { status: 404 });
@@ -419,6 +553,8 @@ export async function handleRequest(
   const authError =
     url.pathname === "/api/fjordpilot/webhooks/post-call"
       ? requirePostCallWebhookAuth(request, env)
+      : url.pathname.startsWith("/api/fjordpilot/admin/")
+        ? requireAdminAuth(request, env)
       : requireToolAuth(request, env);
   if (authError) {
     return authError;
@@ -442,6 +578,53 @@ export async function handleRequest(
       payload,
     });
     return jsonResponse({ ok: true });
+  }
+
+  if (url.pathname === "/api/fjordpilot/admin/deep-analysis/claim-next") {
+    const job = await claimNextDeepTripAnalysisJob(env.DB, new Date().toISOString());
+    if (!job) {
+      return jsonResponse({ ok: true, status: "empty" });
+    }
+
+    return jsonResponse({ ok: true, status: "claimed", job });
+  }
+
+  if (url.pathname === "/api/fjordpilot/admin/deep-analysis/complete") {
+    const parsed = validateCompleteDeepTripAnalysisRequest(body);
+    if (!parsed.ok) {
+      return invalidRequest(parsed.error);
+    }
+
+    const answer = parsed.value.answer.trim();
+    if (answer.length < 20) {
+      return invalidRequest("answer must be at least 20 characters");
+    }
+
+    await completeDeepTripAnalysisJob(env.DB, {
+      id: parsed.value.request_id,
+      answer,
+      model: parsed.value.model,
+      runner: parsed.value.runner,
+      completedAt: new Date().toISOString(),
+    });
+    const status = await getDeepTripAnalysisJobStatus(env.DB, parsed.value.request_id);
+    return jsonResponse(status, { status: status.ok ? 200 : 404 });
+  }
+
+  if (url.pathname === "/api/fjordpilot/admin/deep-analysis/fail") {
+    const parsed = validateFailDeepTripAnalysisRequest(body);
+    if (!parsed.ok) {
+      return invalidRequest(parsed.error);
+    }
+
+    await failDeepTripAnalysisJob(env.DB, {
+      id: parsed.value.request_id,
+      error: parsed.value.error,
+      runner: parsed.value.runner,
+      failedAt: new Date().toISOString(),
+    });
+    const status = await getDeepTripAnalysisJobStatus(env.DB, parsed.value.request_id);
+    return jsonResponse(status, { status: status.ok ? 200 : 404 });
   }
 
   if (url.pathname === "/api/fjordpilot/tools/lookup_itinerary_day") {
@@ -495,6 +678,16 @@ export async function handleRequest(
 
     await insertDeepTripAnalysisJob(env.DB, prepared.job);
     return jsonResponse(prepared.result);
+  }
+
+  if (url.pathname === "/api/fjordpilot/tools/get_deep_trip_analysis") {
+    const parsed = validateDeepTripAnalysisStatusRequest(body);
+    if (!parsed.ok) {
+      return invalidRequest(parsed.error);
+    }
+
+    const status = await getDeepTripAnalysisJobStatus(env.DB, parsed.value.request_id);
+    return jsonResponse(status, { status: status.ok ? 200 : 404 });
   }
 
   return jsonResponse({ ok: false, error: "Unknown tool" }, { status: 404 });

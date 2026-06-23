@@ -3,7 +3,7 @@ import { handleRequest, type Env } from "../../src/worker";
 
 class FakeStatement {
   constructor(
-    private readonly sink: unknown[][],
+    private readonly db: FakeD1,
     private readonly sql: string,
   ) {}
 
@@ -15,25 +15,123 @@ class FakeStatement {
   }
 
   async run() {
-    this.sink.push([this.sql, ...this.values]);
+    this.db.writes.push([this.sql, ...this.values]);
+    if (this.sql.includes("UPDATE deep_trip_analysis_jobs")) {
+      const normalizedSql = this.sql.replace(/\s+/g, " ").trim();
+      if (normalizedSql.includes("SET status = 'running'")) {
+        const [updatedAt, id] = this.values as [string, string];
+        this.db.deepRows = this.db.deepRows.map((row) =>
+          row.id === id && row.status === "queued"
+            ? { ...row, status: "running", updated_at: updatedAt }
+            : row,
+        );
+      }
+      if (normalizedSql.includes("SET status = 'completed'")) {
+        const [resultJson, updatedAt, id] = this.values as [string, string, string];
+        this.db.deepRows = this.db.deepRows.map((row) =>
+          row.id === id
+            ? {
+                ...row,
+                status: "completed",
+                result_json: resultJson,
+                updated_at: updatedAt,
+              }
+            : row,
+        );
+      }
+      if (normalizedSql.includes("SET status = 'failed'")) {
+        const [resultJson, updatedAt, id] = this.values as [string, string, string];
+        this.db.deepRows = this.db.deepRows.map((row) =>
+          row.id === id
+            ? {
+                ...row,
+                status: "failed",
+                result_json: resultJson,
+                updated_at: updatedAt,
+              }
+            : row,
+        );
+      }
+    }
     return { success: true };
+  }
+
+  async first<T>() {
+    if (!this.sql.includes("FROM deep_trip_analysis_jobs")) {
+      return null;
+    }
+
+    if (this.sql.includes("WHERE id = ?")) {
+      return (this.db.deepRows.find((row) => row.id === this.values[0]) ?? null) as T | null;
+    }
+
+    if (this.sql.includes("WHERE status = 'queued'")) {
+      return (
+        this.db.deepRows
+          .filter((row) => row.status === "queued")
+          .sort((left, right) => left.created_at.localeCompare(right.created_at))[0] ?? null
+      ) as T | null;
+    }
+
+    return null;
   }
 }
 
+type FakeDeepRow = {
+  id: string;
+  created_at: string;
+  status: string;
+  variant: string;
+  analysis_type: string;
+  question: string;
+  start_day: number | null;
+  end_day: number | null;
+  constraints_json: string;
+  current_date: string | null;
+  current_itinerary_date: string | null;
+  conversation_id: string | null;
+  prompt: string;
+  result_json: string | null;
+  updated_at: string | null;
+};
+
 class FakeD1 {
   writes: unknown[][] = [];
+  deepRows: FakeDeepRow[] = [];
 
   prepare(sql: string) {
-    return new FakeStatement(this.writes, sql);
+    return new FakeStatement(this, sql);
   }
 }
 
 function env(): Env & { DB: FakeD1 } {
   return {
     FJORDPILOT_TOOL_TOKEN: "tool-token",
+    FJORDPILOT_ADMIN_TOKEN: "admin-token",
     FJORDPILOT_WRITE_GATE: "fjord-2026",
     DB: new FakeD1() as unknown as D1Database,
   } as Env & { DB: FakeD1 };
+}
+
+function deepRow(overrides: Partial<FakeDeepRow> = {}): FakeDeepRow {
+  return {
+    id: "deep_1",
+    created_at: "2026-06-23T10:00:00.000Z",
+    status: "queued",
+    variant: "besseggen",
+    analysis_type: "multi_day_highlights",
+    question: "Can you give me the highlights of the next five days?",
+    start_day: 3,
+    end_day: 7,
+    constraints_json: JSON.stringify(["Keep ride days realistic."]),
+    current_date: "2026-07-12",
+    current_itinerary_date: "2026-07-12",
+    conversation_id: "conv_1",
+    prompt: "Deep analysis prompt",
+    result_json: null,
+    updated_at: null,
+    ...overrides,
+  };
 }
 
 function post(path: string, body: unknown, token = "tool-token") {
@@ -45,6 +143,10 @@ function post(path: string, body: unknown, token = "tool-token") {
     },
     body: JSON.stringify(body),
   });
+}
+
+function adminPost(path: string, body: unknown, token = "admin-token") {
+  return post(path, body, token);
 }
 
 function postWithHeaders(path: string, body: unknown, headers: Record<string, string>) {
@@ -83,6 +185,19 @@ describe("FjordPilot worker routes", () => {
   it("rejects tool requests without the bearer token", async () => {
     const response = await handleRequest(
       post("/api/fjordpilot/tools/lookup_itinerary_day", { day: 4 }, "bad-token"),
+      env(),
+    );
+
+    expect(response.status).toBe(401);
+    await expect(response.json()).resolves.toEqual({
+      ok: false,
+      error: "Unauthorized",
+    });
+  });
+
+  it("rejects admin requests without the admin bearer token", async () => {
+    const response = await handleRequest(
+      adminPost("/api/fjordpilot/admin/deep-analysis/claim-next", {}, "tool-token"),
       env(),
     );
 
@@ -355,6 +470,141 @@ describe("FjordPilot worker routes", () => {
     );
 
     await expectInvalidRequest(response, "constraints must be a string");
+  });
+
+  it("claims the next queued deep-analysis job", async () => {
+    const testEnv = env();
+    testEnv.DB.deepRows.push(
+      deepRow({ id: "deep_later", created_at: "2026-06-23T11:00:00.000Z" }),
+      deepRow({ id: "deep_earlier", created_at: "2026-06-23T09:00:00.000Z" }),
+    );
+
+    const response = await handleRequest(
+      adminPost("/api/fjordpilot/admin/deep-analysis/claim-next", {}),
+      testEnv,
+    );
+
+    expect(response.status).toBe(200);
+    const json = (await response.json()) as {
+      ok: boolean;
+      status: string;
+      job: { id: string; status: string; prompt: string };
+    };
+    expect(json.ok).toBe(true);
+    expect(json.status).toBe("claimed");
+    expect(json.job.id).toBe("deep_earlier");
+    expect(json.job.status).toBe("running");
+    expect(json.job.prompt).toBe("Deep analysis prompt");
+    expect(testEnv.DB.deepRows.find((row) => row.id === "deep_earlier")?.status).toBe("running");
+  });
+
+  it("returns empty when no deep-analysis jobs are queued", async () => {
+    const response = await handleRequest(
+      adminPost("/api/fjordpilot/admin/deep-analysis/claim-next", {}),
+      env(),
+    );
+
+    expect(response.status).toBe(200);
+    await expect(response.json()).resolves.toEqual({ ok: true, status: "empty" });
+  });
+
+  it("completes a deep-analysis job", async () => {
+    const testEnv = env();
+    testEnv.DB.deepRows.push(deepRow({ status: "running" }));
+
+    const response = await handleRequest(
+      adminPost("/api/fjordpilot/admin/deep-analysis/complete", {
+        request_id: "deep_1",
+        answer: "Here is the completed deeper analysis with enough useful detail.",
+        model: "codex-test",
+        runner: "hermes-test",
+      }),
+      testEnv,
+    );
+
+    expect(response.status).toBe(200);
+    const json = (await response.json()) as {
+      ok: boolean;
+      status: string;
+      result: { answer: string; model: string; runner: string };
+    };
+    expect(json.ok).toBe(true);
+    expect(json.status).toBe("completed");
+    expect(json.result.answer).toContain("completed deeper analysis");
+    expect(json.result.model).toBe("codex-test");
+    expect(json.result.runner).toBe("hermes-test");
+  });
+
+  it("fails a deep-analysis job", async () => {
+    const testEnv = env();
+    testEnv.DB.deepRows.push(deepRow({ status: "running" }));
+
+    const response = await handleRequest(
+      adminPost("/api/fjordpilot/admin/deep-analysis/fail", {
+        request_id: "deep_1",
+        error: "Codex timed out.",
+        runner: "hermes-test",
+      }),
+      testEnv,
+    );
+
+    expect(response.status).toBe(200);
+    const json = (await response.json()) as {
+      ok: boolean;
+      status: string;
+      error: string;
+    };
+    expect(json.ok).toBe(true);
+    expect(json.status).toBe("failed");
+    expect(json.error).toBe("Codex timed out.");
+  });
+
+  it("serves completed deep-analysis status to the voice agent", async () => {
+    const testEnv = env();
+    testEnv.DB.deepRows.push(
+      deepRow({
+        status: "completed",
+        result_json: JSON.stringify({
+          answer: "The next five days are hike, long ride, recovery, resupply, and finish.",
+          model: "codex-test",
+          runner: "hermes-test",
+          completedAt: "2026-06-23T12:00:00.000Z",
+        }),
+        updated_at: "2026-06-23T12:00:00.000Z",
+      }),
+    );
+
+    const response = await handleRequest(
+      post("/api/fjordpilot/tools/get_deep_trip_analysis", {
+        request_id: "deep_1",
+      }),
+      testEnv,
+    );
+
+    expect(response.status).toBe(200);
+    const json = (await response.json()) as {
+      ok: boolean;
+      status: string;
+      result: { answer: string };
+    };
+    expect(json.ok).toBe(true);
+    expect(json.status).toBe("completed");
+    expect(json.result.answer).toContain("The next five days");
+  });
+
+  it("returns 404 for an unknown deep-analysis request id", async () => {
+    const response = await handleRequest(
+      post("/api/fjordpilot/tools/get_deep_trip_analysis", {
+        request_id: "missing",
+      }),
+      env(),
+    );
+
+    expect(response.status).toBe(404);
+    await expect(response.json()).resolves.toEqual({
+      ok: false,
+      error: "No deep analysis request found for missing.",
+    });
   });
 
   it("stores post-call webhook payloads", async () => {

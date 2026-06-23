@@ -3,8 +3,9 @@
   "type": "module",
   "scripts": {
     "fjordpilot:export-data": "node scripts/export-tripdata-json.mjs",
-    "test": "vitest run",
+    "test": "vitest run && npm run hermes:test",
     "test:watch": "vitest",
+    "hermes:test": "node --test ops/hermes/*.test.mjs",
     "typecheck": "tsc --noEmit",
     "worker:dev": "wrangler dev",
     "worker:deploy": "wrangler deploy"

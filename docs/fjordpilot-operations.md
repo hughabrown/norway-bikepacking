@@ -22,6 +22,12 @@ npm test
 npm run typecheck
 ```
 
+Run Hermes/Codex runner helper tests only:
+
+```bash
+npm run hermes:test
+```
+
 Run the static site:
 
 ```bash
@@ -135,4 +141,43 @@ Inspect queued deep itinerary analyses:
 
 ```bash
 npx wrangler d1 execute fjordpilot --remote --command "SELECT created_at, status, variant, analysis_type, question FROM deep_trip_analysis_jobs ORDER BY created_at DESC LIMIT 20"
+```
+
+## Deep Analysis Runner
+
+The voice agent queues broad planning questions in `deep_trip_analysis_jobs`. The Mac mini runner drains one queued job at a time, runs Codex in read-only mode, and writes the final answer back to D1.
+
+Runner environment:
+
+```bash
+export FJORDPILOT_API_BASE_URL="https://fjordpilot-api.hughbrown.workers.dev"
+export FJORDPILOT_ADMIN_TOKEN="<admin or tool token>"
+export FJORDPILOT_REPO_ROOT="/Users/hughbrown/coding/live/norway-bikepacking"
+export FJORDPILOT_DEEP_ANALYSIS_MODEL="gpt-5"
+```
+
+Run one queued job:
+
+```bash
+node ops/hermes/fjordpilot-deep-runner.mjs --once
+```
+
+Hermes should schedule repeated one-shot runs rather than keeping a long-running process alive. The runner uses:
+
+```text
+codex exec --sandbox read-only --ephemeral --cd <repo> --output-last-message <tmpfile> --model <model> -
+```
+
+Admin endpoints used by the runner:
+
+```text
+POST /api/fjordpilot/admin/deep-analysis/claim-next
+POST /api/fjordpilot/admin/deep-analysis/complete
+POST /api/fjordpilot/admin/deep-analysis/fail
+```
+
+The voice agent can check completed work with:
+
+```text
+POST /api/fjordpilot/tools/get_deep_trip_analysis
 ```
