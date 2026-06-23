@@ -1,0 +1,56 @@
+{
+    "type": "webhook",
+    "name": "lookup_itinerary_day",
+    "description": "Return authoritative itinerary day information for the Norway bikepacking route. Use for exact day plans, dates, distance, ascent, overnight, route summary, highlights, notes, and variant-specific day resolution.",
+    "response_timeout_secs": 15,
+    "disable_interruptions": false,
+    "force_pre_tool_speech": false,
+    "pre_tool_speech": "auto",
+    "assignments": [],
+    "tool_call_sound_behavior": "auto",
+    "tool_error_handling_mode": "auto",
+    "dynamic_variables": {
+        "dynamic_variable_placeholders": {}
+    },
+    "execution_mode": "immediate",
+    "api_schema": {
+        "request_headers": {
+            "Content-Type": "application/json",
+            "Authorization": {
+                "secret_id": "sxigwRMBXvRlxnpJCM1a"
+            }
+        },
+        "url": "https://fjordpilot-api.hughbrown.workers.dev/api/fjordpilot/tools/lookup_itinerary_day",
+        "method": "POST",
+        "path_params_schema": {},
+        "request_body_schema": {
+            "type": "object",
+            "required": [
+                "day"
+            ],
+            "description": "Itinerary day lookup request.",
+            "properties": {
+                "day": {
+                    "type": "integer",
+                    "description": "Itinerary day number to look up. Use the selected route context when resolving relative references.",
+                    "is_system_provided": false,
+                    "dynamic_variable": "",
+                    "allowed_values_dynamic_variable": "",
+                    "constant_value": "",
+                    "is_omitted": false
+                },
+                "variant": {
+                    "type": "string",
+                    "description": "Route variant key. Defaults to besseggen when omitted. Use gravel only when Hugh asks for the all-gravel variant.",
+                    "is_system_provided": false,
+                    "dynamic_variable": "",
+                    "allowed_values_dynamic_variable": "",
+                    "constant_value": "",
+                    "is_omitted": false
+                }
+            }
+        },
+        "content_type": "application/json",
+        "auth_resolved_params": []
+    }
+}

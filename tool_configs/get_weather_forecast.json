@@ -1,0 +1,43 @@
+{
+    "type": "webhook",
+    "name": "get_weather_forecast",
+    "description": "Gets current and near-term weather forecast from Open-Meteo for a specific latitude and longitude. Use for weather, wind, rain, temperature, and rideability questions. No API key required.",
+    "response_timeout_secs": 20,
+    "disable_interruptions": false,
+    "force_pre_tool_speech": false,
+    "pre_tool_speech": "auto",
+    "assignments": [],
+    "tool_call_sound_behavior": "auto",
+    "tool_error_handling_mode": "auto",
+    "dynamic_variables": {
+        "dynamic_variable_placeholders": {}
+    },
+    "execution_mode": "immediate",
+    "api_schema": {
+        "request_headers": {},
+        "url": "https://api.open-meteo.com/v1/forecast?latitude={{latitude}}&longitude={{longitude}}&current=temperature_2m,relative_humidity_2m,precipitation,rain,showers,snowfall,weather_code,cloud_cover,wind_speed_10m,wind_direction_10m,wind_gusts_10m&hourly=temperature_2m,relative_humidity_2m,precipitation_probability,precipitation,weather_code,cloud_cover,wind_speed_10m,wind_gusts_10m,visibility&forecast_days=3&timezone=Europe%2FOslo",
+        "method": "GET",
+        "path_params_schema": {
+            "latitude": {
+                "type": "string",
+                "description": "Decimal latitude for the requested Norway location, for example 60.699 for Gol. Determine from place name or route context.",
+                "is_system_provided": false,
+                "dynamic_variable": "",
+                "allowed_values_dynamic_variable": "",
+                "constant_value": "",
+                "is_omitted": false
+            },
+            "longitude": {
+                "type": "string",
+                "description": "Decimal longitude for the requested Norway location, for example 8.950 for Gol. Determine from place name or route context.",
+                "is_system_provided": false,
+                "dynamic_variable": "",
+                "allowed_values_dynamic_variable": "",
+                "constant_value": "",
+                "is_omitted": false
+            }
+        },
+        "content_type": "application/json",
+        "auth_resolved_params": []
+    }
+}

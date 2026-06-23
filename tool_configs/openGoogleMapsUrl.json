@@ -1,0 +1,44 @@
+{
+    "type": "client",
+    "name": "openGoogleMapsUrl",
+    "description": "Opens a Google Maps search in the user's browser for a place, town, route stop, campsite, shop, viewpoint, or detour mentioned in the conversation. Use only when the user asks to show, open, find, or map something.",
+    "response_timeout_secs": 10,
+    "disable_interruptions": false,
+    "force_pre_tool_speech": false,
+    "pre_tool_speech": "auto",
+    "assignments": [],
+    "tool_call_sound_behavior": "auto",
+    "tool_error_handling_mode": "auto",
+    "parameters": {
+        "type": "object",
+        "required": [
+            "query"
+        ],
+        "description": "Google Maps search parameters.",
+        "properties": {
+            "query": {
+                "type": "string",
+                "description": "The Google Maps search query, including Norway when helpful. Example: Gol supermarket Norway, Gjendesheim Norway, Vaset to Gol cycling.",
+                "is_system_provided": false,
+                "dynamic_variable": "",
+                "allowed_values_dynamic_variable": "",
+                "constant_value": "",
+                "is_omitted": false
+            },
+            "label": {
+                "type": "string",
+                "description": "Short spoken label for what is being opened, for example Gol supermarket or Day 4 finish.",
+                "is_system_provided": false,
+                "dynamic_variable": "",
+                "allowed_values_dynamic_variable": "",
+                "constant_value": "",
+                "is_omitted": false
+            }
+        }
+    },
+    "expects_response": true,
+    "dynamic_variables": {
+        "dynamic_variable_placeholders": {}
+    },
+    "execution_mode": "immediate"
+}

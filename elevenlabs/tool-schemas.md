@@ -15,7 +15,7 @@ Configure the ElevenLabs post-call webhook to:
 
 - Method: `POST`
 - Path: `/api/fjordpilot/webhooks/post-call`
-- Header: the same `Authorization` value used for tools
+- Header: `X-FjordPilot-Tool-Token` with the raw `FJORDPILOT_TOOL_TOKEN` value
 
 The Worker stores the full payload in D1 table `post_call_logs`. Use it for summaries, unresolved follow-ups, and analytics. Explicit "log this" requests still use the live `save_trip_note` tool during the conversation.
 

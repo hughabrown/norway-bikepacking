@@ -1,0 +1,112 @@
+{
+    "type": "webhook",
+    "name": "save_trip_note",
+    "description": "Save an explicitly confirmed trip note after validating the write gate. Use only after reading back the exact note and receiving Hugh's confirmation plus the write gate.",
+    "response_timeout_secs": 15,
+    "disable_interruptions": false,
+    "force_pre_tool_speech": false,
+    "pre_tool_speech": "auto",
+    "assignments": [],
+    "tool_call_sound_behavior": "auto",
+    "tool_error_handling_mode": "auto",
+    "dynamic_variables": {
+        "dynamic_variable_placeholders": {}
+    },
+    "execution_mode": "immediate",
+    "api_schema": {
+        "request_headers": {
+            "Content-Type": "application/json",
+            "Authorization": {
+                "secret_id": "sxigwRMBXvRlxnpJCM1a"
+            }
+        },
+        "url": "https://fjordpilot-api.hughbrown.workers.dev/api/fjordpilot/tools/save_trip_note",
+        "method": "POST",
+        "path_params_schema": {},
+        "request_body_schema": {
+            "type": "object",
+            "required": [
+                "category",
+                "note",
+                "confirmed",
+                "write_gate"
+            ],
+            "description": "Confirmed trip note write request.",
+            "properties": {
+                "day": {
+                    "type": "integer",
+                    "description": "Optional itinerary day number the note relates to.",
+                    "is_system_provided": false,
+                    "dynamic_variable": "",
+                    "allowed_values_dynamic_variable": "",
+                    "constant_value": "",
+                    "is_omitted": false
+                },
+                "variant": {
+                    "type": "string",
+                    "description": "Route variant key. Defaults to besseggen when omitted.",
+                    "is_system_provided": false,
+                    "dynamic_variable": "",
+                    "allowed_values_dynamic_variable": "",
+                    "constant_value": "",
+                    "is_omitted": false
+                },
+                "location": {
+                    "type": "string",
+                    "description": "Optional place, town, stage, or route segment the note relates to.",
+                    "is_system_provided": false,
+                    "dynamic_variable": "",
+                    "allowed_values_dynamic_variable": "",
+                    "constant_value": "",
+                    "is_omitted": false
+                },
+                "category": {
+                    "type": "string",
+                    "description": "Trip note category.",
+                    "enum": [
+                        "decision",
+                        "mechanical",
+                        "food",
+                        "weather",
+                        "lodging",
+                        "follow_up"
+                    ],
+                    "is_system_provided": false,
+                    "dynamic_variable": "",
+                    "allowed_values_dynamic_variable": "",
+                    "constant_value": "",
+                    "is_omitted": false
+                },
+                "note": {
+                    "type": "string",
+                    "description": "Exact note text Hugh confirmed should be saved.",
+                    "is_system_provided": false,
+                    "dynamic_variable": "",
+                    "allowed_values_dynamic_variable": "",
+                    "constant_value": "",
+                    "is_omitted": false
+                },
+                "confirmed": {
+                    "type": "boolean",
+                    "description": "Must be true only after Hugh explicitly confirms the read-back note.",
+                    "is_system_provided": false,
+                    "dynamic_variable": "",
+                    "allowed_values_dynamic_variable": "",
+                    "constant_value": "",
+                    "is_omitted": false
+                },
+                "write_gate": {
+                    "type": "string",
+                    "description": "The write gate Hugh provides after confirming the note.",
+                    "is_system_provided": false,
+                    "dynamic_variable": "",
+                    "allowed_values_dynamic_variable": "",
+                    "constant_value": "",
+                    "is_omitted": false
+                }
+            }
+        },
+        "content_type": "application/json",
+        "auth_resolved_params": []
+    }
+}

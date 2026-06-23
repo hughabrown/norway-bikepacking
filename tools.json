@@ -1,0 +1,29 @@
+{
+    "tools": [
+        {
+            "type": "webhook",
+            "config": "tool_configs/get_weather_forecast.json",
+            "id": "tool_2201kvg5aw76erqr0av5tpw5bd04"
+        },
+        {
+            "type": "client",
+            "config": "tool_configs/openGoogleMapsUrl.json",
+            "id": "tool_0401kvg5ad9kearr4gm9q1x8c7yt"
+        },
+        {
+            "type": "webhook",
+            "config": "tool_configs/lookup_itinerary_day.json",
+            "id": "tool_3301kvtex2d1e7rambhppxq2krvp"
+        },
+        {
+            "type": "webhook",
+            "config": "tool_configs/search_trip_places.json",
+            "id": "tool_7601kvtex3jyfj88r5kecvtbyprn"
+        },
+        {
+            "type": "webhook",
+            "config": "tool_configs/save_trip_note.json",
+            "id": "tool_6601kvtex3znf5p9b0kxbf34ycgm"
+        }
+    ]
+}

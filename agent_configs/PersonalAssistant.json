@@ -1,0 +1,997 @@
+{
+    "name": "PersonalAssistant",
+    "conversation_config": {
+        "asr": {
+            "quality": "high",
+            "provider": "scribe_realtime",
+            "user_input_audio_format": "pcm_16000",
+            "keywords": []
+        },
+        "turn": {
+            "turn_timeout": 7,
+            "silence_end_call_timeout": -1,
+            "mode": "turn",
+            "turn_eagerness": "normal",
+            "spelling_patience": "auto",
+            "speculative_turn": true,
+            "retranscribe_on_turn_timeout": false,
+            "turn_model": "turn_v3",
+            "interruption_ignore_terms": [],
+            "soft_timeout_config": {
+                "timeout_seconds": -1,
+                "message": "Hhmmmm...yeah.",
+                "additional_soft_timeout_messages": [],
+                "use_llm_generated_message": false,
+                "randomize_fillers": false,
+                "max_soft_timeouts_per_generation": 1
+            }
+        },
+        "tts": {
+            "model_id": "eleven_v3_conversational",
+            "voice_id": "WLKp2jV6nrS8aMkPPDRO",
+            "supported_voices": [],
+            "expressive_mode": true,
+            "suggested_audio_tags": [
+                {
+                    "tag": "Confidently",
+                    "description": ""
+                },
+                {
+                    "tag": "Warmly",
+                    "description": ""
+                },
+                {
+                    "tag": "Excitedly",
+                    "description": ""
+                },
+                {
+                    "tag": "Laughing",
+                    "description": ""
+                },
+                {
+                    "tag": "Chuckles",
+                    "description": ""
+                },
+                {
+                    "tag": "Empathetically",
+                    "description": ""
+                },
+                {
+                    "tag": "Patiently",
+                    "description": ""
+                },
+                {
+                    "tag": "Enthusiastically",
+                    "description": ""
+                },
+                {
+                    "tag": "Seriously",
+                    "description": ""
+                },
+                {
+                    "tag": "Sighs",
+                    "description": ""
+                }
+            ],
+            "agent_output_audio_format": "pcm_16000",
+            "optimize_streaming_latency": 3,
+            "stability": 0.5,
+            "speed": 1,
+            "similarity_boost": 0.8,
+            "text_normalisation_type": "system_prompt",
+            "pronunciation_dictionary_locators": [],
+            "enable_phoneme_tags": false
+        },
+        "conversation": {
+            "text_only": false,
+            "max_duration_seconds": 600,
+            "client_events": [
+                "audio",
+                "interruption",
+                "agent_response",
+                "user_transcript",
+                "agent_response_correction",
+                "agent_tool_response"
+            ],
+            "file_input": {
+                "enabled": true,
+                "max_files_per_conversation": 10
+            },
+            "monitoring_enabled": false,
+            "monitoring_events": [
+                "user_transcript",
+                "agent_response",
+                "agent_response_correction"
+            ],
+            "dtmf_input_settings": null,
+            "background_sound": {
+                "source_type": null,
+                "source_id": null,
+                "volume": 0.6,
+                "crossfade_loop": false
+            },
+            "source_attribution": true
+        },
+        "language_presets": {},
+        "vad": {
+            "background_voice_detection": false
+        },
+        "agent": {
+            "first_message": "[warmly] Hello! I'm here to help with your Norway bikepacking plan. I'll use the route variant selected on this page and ask if anything is ambiguous. What would you like to check?",
+            "language": "en",
+            "hinglish_mode": false,
+            "dynamic_variables": {
+                "dynamic_variable_placeholders": {
+                    "selected_variant_key": "",
+                    "selected_variant_label": "",
+                    "selected_variant_subtitle": "",
+                    "selected_variant_focused_day": "",
+                    "selected_variant_focused_day_detail": "",
+                    "route_page_url": "",
+                    "route_context_version": "",
+                    "selected_variant_stage_table": "",
+                    "route_context_rule": "",
+                    "default_variant": "",
+                    "trip_timezone": "",
+                    "current_date": "",
+                    "current_itinerary_date": ""
+                }
+            },
+            "disable_first_message_interruptions": false,
+            "max_conversation_duration_message": "",
+            "prompt": {
+                "prompt": "# Personality\nYou are Paul, Hugh's calm, practical Norway bikepacking trip assistant.\nYou help Hugh understand, plan, and enjoy his July 2026 Norway route from Dombas to Flam, including the ferry to Bergen, train to Oslo, and flight home.\nYou are concise, precise, route-aware, and honest about uncertainty.\n\n# Environment\nYou are speaking with Hugh through a voice interface on the Norway bikepacking web page.\nThe page can pass runtime context using dynamic variables. Treat those runtime variables as higher priority than general knowledge-base retrieval for route variant and day-number questions.\nYou have no live access to weather, booking systems, shop hours, ferry status, train status, road conditions, or trail conditions unless a configured tool returns that information during this conversation.\n\n# Runtime Page Context\nSelected variant key: {{selected_variant_key}}\nSelected variant label: {{selected_variant_label}}\nSelected variant subtitle: {{selected_variant_subtitle}}\nFocused day, if Hugh opened one on the page: {{selected_variant_focused_day}}\nFocused day detail, if present:\n{{selected_variant_focused_day_detail}}\nRoute page URL: {{route_page_url}}\nRoute context version: {{route_context_version}}\nDefault variant: {{default_variant}}\nTrip timezone: {{trip_timezone}}\nCurrent date: {{current_date}}\nCurrent itinerary date, if current date maps onto the trip: {{current_itinerary_date}}\n\nAuthoritative compact selected-variant stage table:\n{{selected_variant_stage_table}}\n\nRuntime rule from the page:\n{{route_context_rule}}\n\n# FjordPilot API Tools\n\nUse these tools for route data before relying on memory or broad knowledge-base retrieval.\n\n- lookup_itinerary_day: use for exact day plans, dates, distance, ascent, overnight, highlights, notes, and variant-specific day resolution.\n- search_trip_places: use for food, sleep, resupply, sights, detours, bailouts, and fallback stops.\n- save_trip_note: use only after reading back the exact note and receiving explicit confirmation plus the write gate. Never say a note was saved unless the tool returns ok: true. If the write fails, say it was not saved and give the returned reason.\n\nDefault to variant `besseggen` unless the selected page context or Hugh explicitly indicates `gravel`. For questions about \"today\" or \"tomorrow\", resolve using current_date and trip_timezone. If current_itinerary_date is empty or outside the trip, ask which itinerary day or route segment Hugh means.\n\nFor broad planning questions such as route improvements, five-day highlights, variant comparison, or weather-driven replanning, say: \"Let me think that through across the itinerary.\" V1 can reason from available itinerary data, but do not claim the deeper workflow is enabled yet.\n\nFor itinerary-changing requests such as side quests, date changes, or shortening/extending the plan, explain that itinerary PR automation is not enabled in V1. Ask for the requested change and constraints, then summarize what would need to change. Do not directly edit the repository from the voice conversation.\n\n# Specialist Workflows and Subagents\n\nUse the base route assistant for normal itinerary questions. For weather and maps/navigation requests, switch into the relevant specialist mode below. These specialist modes are intentionally narrow: collect only the missing inputs, call the required tool when needed, and then return to the route assistant.\n\n## Weather Subagent\n\nTrigger this mode when Hugh asks about weather, rain, wind, temperature, forecast, conditions, safety, or whether a ride day looks sensible.\n\nWorkflow:\n1. Identify the requested location and date from Hugh's words, the selected variant, focused day detail, and compact stage table.\n2. If the user asks about a day, use the exact selected-variant day first; do not mix variants.\n3. Convert the best route stop or stage area to latitude and longitude using the coordinate anchors below.\n4. Call get_weather_forecast before answering any current or future weather question.\n5. Summarize only the returned forecast: temperature, precipitation risk, wind, gusts, and any uncertainty.\n6. If the location or date is ambiguous, ask one short clarifying question before calling the tool.\n7. If the tool fails or cannot cover the date/location, say you cannot verify live weather and avoid guessing.\n\nWeather coordinate anchors, approximate and only for lookup:\n- Dombas: 62.0750, 9.1284\n- Vaga: 61.8775, 9.0979\n- Gjendesheim/Besseggen: 61.4930, 8.8120\n- Haugseter/Vinstre: 61.3423, 8.9782\n- Vaset/Stolsvidda: 61.0533, 8.8095\n- Gol: 60.7027, 8.9332\n- Haugastol: 60.5120, 7.8772\n- Flam: 60.8622, 7.1141\n- Bergen: 60.3920, 5.3240\n- Oslo: 59.9139, 10.7522\n\nWeather safety rule: town forecasts are not the same as exposed mountain-pass conditions. Mention this for Valdresflye, Slettefjell, Stolsvidda, Finse, Rallarvegen, and Besseggen.\n\n## Maps Subagent\n\nTrigger this mode when Hugh asks to show, open, map, locate, find nearby, or get a Google Maps link for a place, stop, campsite, shop, viewpoint, or detour.\n\nWorkflow:\n1. Resolve the map target from the selected route context, focused day detail, or Hugh's place name.\n2. If the target is ambiguous, ask one short clarifying question.\n3. For simple map requests, call openGoogleMapsUrl with a concise query such as \"Gol supermarket Norway\" or \"Vaset to Gol cycling Norway\".\n4. Tell Hugh briefly what you opened.\n5. Do not claim live opening hours, traffic, road closures, or exact routing time unless a live tool returns it.\n\nMaps rule: openGoogleMapsUrl only opens a browser search. It does not verify route safety, road surface, shop hours, or bike legality.\n\n# Exact Day Lookup Rule\nThis step is important: Do not answer day-number questions from memory.\nWhen Hugh asks about \"Day N\", \"the last day\", \"today's stage\", or a named stop, first use lookup_itinerary_day or the authoritative compact selected-variant stage table above. If focused day detail is present and matches the requested day, use it for summary and watch-out details.\nIf the selected-variant stage table contains the day, answer from that exact line before adding knowledge-base details.\nIf knowledge-base retrieval conflicts with the selected-variant stage table, the selected-variant stage table wins.\nIf the selected-variant stage table is missing, empty, unreplaced, or Hugh appears to be looking at another variant, ask one clarifying question: \"Are you on the Besseggen variant or the all-gravel variant?\"\nIf Hugh corrects a day or place, stop and restate the exact variant/day mapping before continuing.\n\nKnown anchors for this trip:\n- In both Dombas variants, Sladalsvegen is Day 1, Dombas to Vaga. It is not Day 4.\n- If the selected variant is all-gravel and Hugh asks about Day 4, Day 4 is Vaset -> Gol.\n- If the selected variant is Besseggen and Hugh asks about Day 4, Day 4 is Gjendesheim -> Vaset.\n- The final travel sequence is Flåm -> Bergen by ferry on Friday 17 July, Bergen -> Oslo by train on Saturday 18 July, then fly home from Oslo on Sunday 19 July.\n\n# Tone\nUse natural spoken language.\nKeep most answers to one to three short sentences.\nGive the direct answer first, then the reason.\nAsk one clarifying question when the answer depends on route variant, day, current location, energy level, weather, or bookings.\nDo not use filler words deliberately. A light spoken style is fine, but clarity matters more than sounding casual.\n\n# Expressive Delivery\nUse expressive tags sparingly.\nUse [slow] only before critical route, safety, timing, booking, or correction details.\nWhen Hugh sounds confused or frustrated, slow down, acknowledge the confusion briefly, and ground the answer in the selected variant and day number.\nDo not use laughter, whispers, sighs, exaggerated excitement, or repeated expressive tags for route corrections, safety, transport, weather, or resupply advice.\n\n# Goal\nYour primary goal is to give Hugh accurate, actionable answers about the selected Norway bikepacking plan.\nUse the trip knowledge base for places, logistics, resupply, sleeping, ferry/train notes, safety, and route background.\nUse lookup_itinerary_day and the runtime selected-variant stage table for day numbers, dates, stage start/end points, and variant-specific sequencing.\nSeparate facts from recommendations.\nFlag anything that needs live re-checking.\nThis step is important: Never present stale logistics as live truth.\n\n# Guardrails\nNever invent route facts, day mappings, opening hours, bookings, live weather, train availability, ferry availability, road openings, or trail status.\nNever imply that a reservation, shop, ferry, hut, campsite, or transport option is currently available unless the knowledge base or a live tool confirms it.\nNever continue confidently after Hugh says you are wrong. Re-ground in the selected variant stage table and correct yourself.\nNever mix the Besseggen and all-gravel variants without saying so.\nIf information is missing, say what is missing and suggest the next best check.\nFor safety-critical questions, recommend conservative choices and live verification.\n\n# Answer Style\nFor day questions, use this structure:\n- Variant and day: name the selected variant and exact day line.\n- What happens: one concise summary.\n- Watch-outs: only the most relevant timing, food, weather, booking, or uncertainty.\n\nExample:\n\"On the all-gravel plan, Day 4 is Monday 13 July: Vaset to Gol. It is a gentler Mjolkevegen day across Stolsvidda past Tisleifjorden, then down to Gol for full resupply. The main watch-out is not to confuse it with Sladalsvegen, which is Day 1.\"\n\n# Conversation Success Criteria\nA conversation is successful when Hugh gets a clear route-aware answer, the route variant and day number are correct, unsupported claims are avoided, and Hugh knows what to verify next when live information matters.",
+                "llm": "qwen35-397b-a17b",
+                "temperature": 0,
+                "max_tokens": -1,
+                "tool_ids": [
+                    "tool_2201kvg5aw76erqr0av5tpw5bd04",
+                    "tool_0401kvg5ad9kearr4gm9q1x8c7yt",
+                    "tool_3301kvtex2d1e7rambhppxq2krvp",
+                    "tool_7601kvtex3jyfj88r5kecvtbyprn",
+                    "tool_6601kvtex3znf5p9b0kxbf34ycgm"
+                ],
+                "built_in_tools": {
+                    "end_call": {
+                        "type": "system",
+                        "name": "end_call",
+                        "description": "",
+                        "response_timeout_secs": 20,
+                        "disable_interruptions": false,
+                        "force_pre_tool_speech": false,
+                        "pre_tool_speech": "auto",
+                        "assignments": [],
+                        "tool_call_sound_behavior": "auto",
+                        "tool_error_handling_mode": "auto",
+                        "params": {
+                            "system_tool_type": "end_call"
+                        }
+                    },
+                    "language_detection": {
+                        "type": "system",
+                        "name": "language_detection",
+                        "description": "",
+                        "response_timeout_secs": 20,
+                        "disable_interruptions": false,
+                        "force_pre_tool_speech": false,
+                        "pre_tool_speech": "auto",
+                        "assignments": [],
+                        "tool_call_sound_behavior": "auto",
+                        "tool_error_handling_mode": "auto",
+                        "params": {
+                            "system_tool_type": "language_detection"
+                        }
+                    },
+                    "skip_turn": {
+                        "type": "system",
+                        "name": "skip_turn",
+                        "description": "",
+                        "response_timeout_secs": 20,
+                        "disable_interruptions": false,
+                        "force_pre_tool_speech": false,
+                        "pre_tool_speech": "auto",
+                        "assignments": [],
+                        "tool_call_sound_behavior": "auto",
+                        "tool_error_handling_mode": "auto",
+                        "params": {
+                            "system_tool_type": "skip_turn"
+                        }
+                    },
+                    "update_state": null,
+                    "memory_entry_search": null,
+                    "memory_entry_create": null,
+                    "memory_entry_update": null,
+                    "memory_entry_delete": null,
+                    "agent_prompt_change": null,
+                    "procedure_update": null,
+                    "procedure_create": null,
+                    "procedure_delete": null,
+                    "transfer_to_genesys_chat": null
+                },
+                "enable_parallel_tool_calls": false,
+                "mcp_server_ids": [],
+                "native_mcp_server_ids": [],
+                "knowledge_base": [
+                    {
+                        "type": "url",
+                        "name": "Røros → Flåm · Setrer og villmark · July 2026",
+                        "id": "tVnC8gJJsIYPICmq2o5S",
+                        "usage_mode": "auto"
+                    }
+                ],
+                "speech_engine": null,
+                "ignore_default_personality": false,
+                "rag": {
+                    "enabled": true,
+                    "embedding_model": "e5_mistral_7b_instruct",
+                    "optional_rag_enabled": false,
+                    "max_vector_distance": 0.6,
+                    "max_documents_length": 50000,
+                    "max_retrieved_rag_chunks_count": 20
+                },
+                "timezone": "Europe/Amsterdam",
+                "backup_llm_config": {
+                    "preference": "default"
+                },
+                "cascade_timeout_seconds": 8,
+                "tools": [
+                    {
+                        "type": "webhook",
+                        "name": "get_weather_forecast",
+                        "description": "Gets current and near-term weather forecast from Open-Meteo for a specific latitude and longitude. Use for weather, wind, rain, temperature, and rideability questions. No API key required.",
+                        "response_timeout_secs": 20,
+                        "disable_interruptions": false,
+                        "force_pre_tool_speech": false,
+                        "pre_tool_speech": "auto",
+                        "assignments": [],
+                        "tool_call_sound_behavior": "auto",
+                        "tool_error_handling_mode": "auto",
+                        "dynamic_variables": {
+                            "dynamic_variable_placeholders": {}
+                        },
+                        "execution_mode": "immediate",
+                        "api_schema": {
+                            "request_headers": {},
+                            "url": "https://api.open-meteo.com/v1/forecast?latitude={{latitude}}&longitude={{longitude}}&current=temperature_2m,relative_humidity_2m,precipitation,rain,showers,snowfall,weather_code,cloud_cover,wind_speed_10m,wind_direction_10m,wind_gusts_10m&hourly=temperature_2m,relative_humidity_2m,precipitation_probability,precipitation,weather_code,cloud_cover,wind_speed_10m,wind_gusts_10m,visibility&forecast_days=3&timezone=Europe%2FOslo",
+                            "method": "GET",
+                            "path_params_schema": {
+                                "latitude": {
+                                    "type": "string",
+                                    "description": "Decimal latitude for the requested Norway location, for example 60.699 for Gol. Determine from place name or route context.",
+                                    "is_system_provided": false,
+                                    "dynamic_variable": "",
+                                    "allowed_values_dynamic_variable": "",
+                                    "constant_value": "",
+                                    "is_omitted": false
+                                },
+                                "longitude": {
+                                    "type": "string",
+                                    "description": "Decimal longitude for the requested Norway location, for example 8.950 for Gol. Determine from place name or route context.",
+                                    "is_system_provided": false,
+                                    "dynamic_variable": "",
+                                    "allowed_values_dynamic_variable": "",
+                                    "constant_value": "",
+                                    "is_omitted": false
+                                }
+                            },
+                            "content_type": "application/json",
+                            "auth_resolved_params": []
+                        }
+                    },
+                    {
+                        "type": "client",
+                        "name": "openGoogleMapsUrl",
+                        "description": "Opens a Google Maps search in the user's browser for a place, town, route stop, campsite, shop, viewpoint, or detour mentioned in the conversation. Use only when the user asks to show, open, find, or map something.",
+                        "response_timeout_secs": 10,
+                        "disable_interruptions": false,
+                        "force_pre_tool_speech": false,
+                        "pre_tool_speech": "auto",
+                        "assignments": [],
+                        "tool_call_sound_behavior": "auto",
+                        "tool_error_handling_mode": "auto",
+                        "parameters": {
+                            "type": "object",
+                            "required": [
+                                "query"
+                            ],
+                            "description": "Google Maps search parameters.",
+                            "properties": {
+                                "query": {
+                                    "type": "string",
+                                    "description": "The Google Maps search query, including Norway when helpful. Example: Gol supermarket Norway, Gjendesheim Norway, Vaset to Gol cycling.",
+                                    "is_system_provided": false,
+                                    "dynamic_variable": "",
+                                    "allowed_values_dynamic_variable": "",
+                                    "constant_value": "",
+                                    "is_omitted": false
+                                },
+                                "label": {
+                                    "type": "string",
+                                    "description": "Short spoken label for what is being opened, for example Gol supermarket or Day 4 finish.",
+                                    "is_system_provided": false,
+                                    "dynamic_variable": "",
+                                    "allowed_values_dynamic_variable": "",
+                                    "constant_value": "",
+                                    "is_omitted": false
+                                }
+                            }
+                        },
+                        "expects_response": true,
+                        "dynamic_variables": {
+                            "dynamic_variable_placeholders": {}
+                        },
+                        "execution_mode": "immediate"
+                    },
+                    {
+                        "type": "webhook",
+                        "name": "lookup_itinerary_day",
+                        "description": "Return authoritative itinerary day information for the Norway bikepacking route. Use for exact day plans, dates, distance, ascent, overnight, route summary, highlights, notes, and variant-specific day resolution.",
+                        "response_timeout_secs": 15,
+                        "disable_interruptions": false,
+                        "force_pre_tool_speech": false,
+                        "pre_tool_speech": "auto",
+                        "assignments": [],
+                        "tool_call_sound_behavior": "auto",
+                        "tool_error_handling_mode": "auto",
+                        "dynamic_variables": {
+                            "dynamic_variable_placeholders": {}
+                        },
+                        "execution_mode": "immediate",
+                        "api_schema": {
+                            "request_headers": {
+                                "Content-Type": "application/json",
+                                "Authorization": {
+                                    "secret_id": "sxigwRMBXvRlxnpJCM1a"
+                                }
+                            },
+                            "url": "https://fjordpilot-api.hughbrown.workers.dev/api/fjordpilot/tools/lookup_itinerary_day",
+                            "method": "POST",
+                            "path_params_schema": {},
+                            "request_body_schema": {
+                                "type": "object",
+                                "required": [
+                                    "day"
+                                ],
+                                "description": "Itinerary day lookup request.",
+                                "properties": {
+                                    "day": {
+                                        "type": "integer",
+                                        "description": "Itinerary day number to look up. Use the selected route context when resolving relative references.",
+                                        "is_system_provided": false,
+                                        "dynamic_variable": "",
+                                        "allowed_values_dynamic_variable": "",
+                                        "constant_value": "",
+                                        "is_omitted": false
+                                    },
+                                    "variant": {
+                                        "type": "string",
+                                        "description": "Route variant key. Defaults to besseggen when omitted. Use gravel only when Hugh asks for the all-gravel variant.",
+                                        "is_system_provided": false,
+                                        "dynamic_variable": "",
+                                        "allowed_values_dynamic_variable": "",
+                                        "constant_value": "",
+                                        "is_omitted": false
+                                    }
+                                }
+                            },
+                            "content_type": "application/json",
+                            "auth_resolved_params": []
+                        }
+                    },
+                    {
+                        "type": "webhook",
+                        "name": "search_trip_places",
+                        "description": "Return ranked saved places for food, sleep, resupply, sights, detours, and fallback planning on the Norway bikepacking route.",
+                        "response_timeout_secs": 15,
+                        "disable_interruptions": false,
+                        "force_pre_tool_speech": false,
+                        "pre_tool_speech": "auto",
+                        "assignments": [],
+                        "tool_call_sound_behavior": "auto",
+                        "tool_error_handling_mode": "auto",
+                        "dynamic_variables": {
+                            "dynamic_variable_placeholders": {}
+                        },
+                        "execution_mode": "immediate",
+                        "api_schema": {
+                            "request_headers": {
+                                "Content-Type": "application/json",
+                                "Authorization": {
+                                    "secret_id": "sxigwRMBXvRlxnpJCM1a"
+                                }
+                            },
+                            "url": "https://fjordpilot-api.hughbrown.workers.dev/api/fjordpilot/tools/search_trip_places",
+                            "method": "POST",
+                            "path_params_schema": {},
+                            "request_body_schema": {
+                                "type": "object",
+                                "required": [],
+                                "description": "Trip place search request.",
+                                "properties": {
+                                    "day": {
+                                        "type": "integer",
+                                        "description": "Optional itinerary day number for day-scoped search.",
+                                        "is_system_provided": false,
+                                        "dynamic_variable": "",
+                                        "allowed_values_dynamic_variable": "",
+                                        "constant_value": "",
+                                        "is_omitted": false
+                                    },
+                                    "variant": {
+                                        "type": "string",
+                                        "description": "Route variant key. Defaults to besseggen when omitted.",
+                                        "is_system_provided": false,
+                                        "dynamic_variable": "",
+                                        "allowed_values_dynamic_variable": "",
+                                        "constant_value": "",
+                                        "is_omitted": false
+                                    },
+                                    "near": {
+                                        "type": "string",
+                                        "description": "Optional town, stop, or route place to search near.",
+                                        "is_system_provided": false,
+                                        "dynamic_variable": "",
+                                        "allowed_values_dynamic_variable": "",
+                                        "constant_value": "",
+                                        "is_omitted": false
+                                    },
+                                    "category": {
+                                        "type": "string",
+                                        "description": "Place category to search.",
+                                        "enum": [
+                                            "eat",
+                                            "sleep",
+                                            "resupply",
+                                            "sight"
+                                        ],
+                                        "is_system_provided": false,
+                                        "dynamic_variable": "",
+                                        "allowed_values_dynamic_variable": "",
+                                        "constant_value": "",
+                                        "is_omitted": false
+                                    },
+                                    "need": {
+                                        "type": "string",
+                                        "description": "Plain-language need such as lunch, groceries, campsite, bailout, coffee, or viewpoint.",
+                                        "is_system_provided": false,
+                                        "dynamic_variable": "",
+                                        "allowed_values_dynamic_variable": "",
+                                        "constant_value": "",
+                                        "is_omitted": false
+                                    },
+                                    "limit": {
+                                        "type": "integer",
+                                        "description": "Maximum number of ranked results to return, from 1 to 12.",
+                                        "is_system_provided": false,
+                                        "dynamic_variable": "",
+                                        "allowed_values_dynamic_variable": "",
+                                        "constant_value": "",
+                                        "is_omitted": false
+                                    }
+                                }
+                            },
+                            "content_type": "application/json",
+                            "auth_resolved_params": []
+                        }
+                    },
+                    {
+                        "type": "webhook",
+                        "name": "save_trip_note",
+                        "description": "Save an explicitly confirmed trip note after validating the write gate. Use only after reading back the exact note and receiving Hugh's confirmation plus the write gate.",
+                        "response_timeout_secs": 15,
+                        "disable_interruptions": false,
+                        "force_pre_tool_speech": false,
+                        "pre_tool_speech": "auto",
+                        "assignments": [],
+                        "tool_call_sound_behavior": "auto",
+                        "tool_error_handling_mode": "auto",
+                        "dynamic_variables": {
+                            "dynamic_variable_placeholders": {}
+                        },
+                        "execution_mode": "immediate",
+                        "api_schema": {
+                            "request_headers": {
+                                "Content-Type": "application/json",
+                                "Authorization": {
+                                    "secret_id": "sxigwRMBXvRlxnpJCM1a"
+                                }
+                            },
+                            "url": "https://fjordpilot-api.hughbrown.workers.dev/api/fjordpilot/tools/save_trip_note",
+                            "method": "POST",
+                            "path_params_schema": {},
+                            "request_body_schema": {
+                                "type": "object",
+                                "required": [
+                                    "category",
+                                    "note",
+                                    "confirmed",
+                                    "write_gate"
+                                ],
+                                "description": "Confirmed trip note write request.",
+                                "properties": {
+                                    "day": {
+                                        "type": "integer",
+                                        "description": "Optional itinerary day number the note relates to.",
+                                        "is_system_provided": false,
+                                        "dynamic_variable": "",
+                                        "allowed_values_dynamic_variable": "",
+                                        "constant_value": "",
+                                        "is_omitted": false
+                                    },
+                                    "variant": {
+                                        "type": "string",
+                                        "description": "Route variant key. Defaults to besseggen when omitted.",
+                                        "is_system_provided": false,
+                                        "dynamic_variable": "",
+                                        "allowed_values_dynamic_variable": "",
+                                        "constant_value": "",
+                                        "is_omitted": false
+                                    },
+                                    "location": {
+                                        "type": "string",
+                                        "description": "Optional place, town, stage, or route segment the note relates to.",
+                                        "is_system_provided": false,
+                                        "dynamic_variable": "",
+                                        "allowed_values_dynamic_variable": "",
+                                        "constant_value": "",
+                                        "is_omitted": false
+                                    },
+                                    "category": {
+                                        "type": "string",
+                                        "description": "Trip note category.",
+                                        "enum": [
+                                            "decision",
+                                            "mechanical",
+                                            "food",
+                                            "weather",
+                                            "lodging",
+                                            "follow_up"
+                                        ],
+                                        "is_system_provided": false,
+                                        "dynamic_variable": "",
+                                        "allowed_values_dynamic_variable": "",
+                                        "constant_value": "",
+                                        "is_omitted": false
+                                    },
+                                    "note": {
+                                        "type": "string",
+                                        "description": "Exact note text Hugh confirmed should be saved.",
+                                        "is_system_provided": false,
+                                        "dynamic_variable": "",
+                                        "allowed_values_dynamic_variable": "",
+                                        "constant_value": "",
+                                        "is_omitted": false
+                                    },
+                                    "confirmed": {
+                                        "type": "boolean",
+                                        "description": "Must be true only after Hugh explicitly confirms the read-back note.",
+                                        "is_system_provided": false,
+                                        "dynamic_variable": "",
+                                        "allowed_values_dynamic_variable": "",
+                                        "constant_value": "",
+                                        "is_omitted": false
+                                    },
+                                    "write_gate": {
+                                        "type": "string",
+                                        "description": "The write gate Hugh provides after confirming the note.",
+                                        "is_system_provided": false,
+                                        "dynamic_variable": "",
+                                        "allowed_values_dynamic_variable": "",
+                                        "constant_value": "",
+                                        "is_omitted": false
+                                    }
+                                }
+                            },
+                            "content_type": "application/json",
+                            "auth_resolved_params": []
+                        }
+                    },
+                    {
+                        "type": "system",
+                        "name": "end_call",
+                        "description": "",
+                        "response_timeout_secs": 20,
+                        "disable_interruptions": false,
+                        "force_pre_tool_speech": false,
+                        "pre_tool_speech": "auto",
+                        "assignments": [],
+                        "tool_call_sound_behavior": "auto",
+                        "tool_error_handling_mode": "auto",
+                        "params": {
+                            "system_tool_type": "end_call"
+                        }
+                    },
+                    {
+                        "type": "system",
+                        "name": "language_detection",
+                        "description": "",
+                        "response_timeout_secs": 20,
+                        "disable_interruptions": false,
+                        "force_pre_tool_speech": false,
+                        "pre_tool_speech": "auto",
+                        "assignments": [],
+                        "tool_call_sound_behavior": "auto",
+                        "tool_error_handling_mode": "auto",
+                        "params": {
+                            "system_tool_type": "language_detection"
+                        }
+                    },
+                    {
+                        "type": "system",
+                        "name": "skip_turn",
+                        "description": "",
+                        "response_timeout_secs": 20,
+                        "disable_interruptions": false,
+                        "force_pre_tool_speech": false,
+                        "pre_tool_speech": "auto",
+                        "assignments": [],
+                        "tool_call_sound_behavior": "auto",
+                        "tool_error_handling_mode": "auto",
+                        "params": {
+                            "system_tool_type": "skip_turn"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "platform_settings": {
+        "evaluation": {
+            "criteria": [
+                {
+                    "id": "route_variant_grounded",
+                    "name": "Route Variant Grounded",
+                    "type": "prompt",
+                    "conversation_goal_prompt": "Did the agent identify or preserve the correct route variant before answering variant-dependent questions?",
+                    "use_knowledge_base": false,
+                    "scope": "conversation"
+                },
+                {
+                    "id": "day_number_accuracy",
+                    "name": "Day Number Accuracy",
+                    "type": "prompt",
+                    "conversation_goal_prompt": "When the user asked about a numbered day, did the agent answer using the correct day from the selected variant stage table?",
+                    "use_knowledge_base": false,
+                    "scope": "conversation"
+                },
+                {
+                    "id": "unsupported_claims_avoided",
+                    "name": "Unsupported Claims Avoided",
+                    "type": "prompt",
+                    "conversation_goal_prompt": "Did the agent avoid inventing live availability, bookings, weather, shop hours, or route facts not supported by the page context or knowledge base?",
+                    "use_knowledge_base": false,
+                    "scope": "conversation"
+                },
+                {
+                    "id": "correction_recovery",
+                    "name": "Correction Recovery",
+                    "type": "prompt",
+                    "conversation_goal_prompt": "If the user corrected the agent, did the agent stop, re-ground in the selected variant/day table, and correct the answer without compounding the error?",
+                    "use_knowledge_base": false,
+                    "scope": "conversation"
+                },
+                {
+                    "id": "task_or_reminder_captured",
+                    "name": "Task or Reminder Captured",
+                    "type": "prompt",
+                    "conversation_goal_prompt": "Did the agent successfully capture and confirm the task or reminder details?",
+                    "use_knowledge_base": false,
+                    "scope": "conversation"
+                },
+                {
+                    "id": "calendar_managed_correctly",
+                    "name": "Calendar Managed Correctly",
+                    "type": "prompt",
+                    "conversation_goal_prompt": "Did the agent correctly schedule, modify, or retrieve calendar information as requested?",
+                    "use_knowledge_base": false,
+                    "scope": "conversation"
+                },
+                {
+                    "id": "email_action_confirmed",
+                    "name": "Email Action Confirmed",
+                    "type": "prompt",
+                    "conversation_goal_prompt": "If an email action was requested, did the agent confirm it with the user before proceeding?",
+                    "use_knowledge_base": false,
+                    "scope": "conversation"
+                },
+                {
+                    "id": "user_felt_organized",
+                    "name": "User Felt More Organized",
+                    "type": "prompt",
+                    "conversation_goal_prompt": "Did the user express or imply that the agent helped them feel more organized?",
+                    "use_knowledge_base": false,
+                    "scope": "conversation"
+                }
+            ]
+        },
+        "widget": {
+            "variant": "full",
+            "placement": "bottom-right",
+            "expandable": "never",
+            "avatar": {
+                "type": "orb",
+                "color1": "#2792dc",
+                "color2": "#9ce6e6"
+            },
+            "feedback_mode": "none",
+            "end_feedback": {
+                "type": "rating"
+            },
+            "bg_color": "#ffffff",
+            "text_color": "#000000",
+            "btn_color": "#000000",
+            "btn_text_color": "#ffffff",
+            "border_color": "#e1e1e1",
+            "focus_color": "#000000",
+            "shareable_page_show_terms": true,
+            "show_avatar_when_collapsed": false,
+            "disable_banner": false,
+            "markdown_link_allowed_hosts": [],
+            "markdown_link_include_www": true,
+            "markdown_link_allow_http": true,
+            "mic_muting_enabled": false,
+            "transcript_enabled": false,
+            "text_input_enabled": true,
+            "conversation_mode_toggle_enabled": false,
+            "default_expanded": false,
+            "always_expanded": false,
+            "dismissible": false,
+            "show_agent_status": false,
+            "show_conversation_id": true,
+            "strip_audio_tags": true,
+            "text_contents": {},
+            "styles": {},
+            "language_selector": false,
+            "supports_text_only": true,
+            "language_presets": {}
+        },
+        "data_collection": {
+            "route_variant": {
+                "type": "string",
+                "description": "Route variant discussed in the conversation: 'besseggen', 'gravel', or 'unknown'.",
+                "enum": [
+                    "besseggen",
+                    "gravel",
+                    "unknown"
+                ],
+                "is_system_provided": false,
+                "dynamic_variable": "",
+                "allowed_values_dynamic_variable": "",
+                "constant_value": "",
+                "is_omitted": false
+            },
+            "referenced_day": {
+                "type": "string",
+                "description": "Numbered day discussed by the user, if any, such as Day 4 or Day 9.",
+                "is_system_provided": false,
+                "dynamic_variable": "",
+                "allowed_values_dynamic_variable": "",
+                "constant_value": "",
+                "is_omitted": false
+            },
+            "needs_live_recheck": {
+                "type": "boolean",
+                "description": "Whether the answer depends on live booking, weather, route-status, shop-hour, ferry, or train data that should be re-checked.",
+                "is_system_provided": false,
+                "dynamic_variable": "",
+                "allowed_values_dynamic_variable": "",
+                "constant_value": "",
+                "is_omitted": false
+            },
+            "request_type": {
+                "type": "string",
+                "description": "The primary type of request made by the user (e.g., 'add_task', 'schedule_event', 'read_email', 'set_reminder').",
+                "enum": [
+                    "add_task",
+                    "schedule_event",
+                    "read_email",
+                    "send_email",
+                    "set_reminder",
+                    "retrieve_info",
+                    "modify_task/event"
+                ],
+                "is_system_provided": false,
+                "dynamic_variable": "",
+                "allowed_values_dynamic_variable": "",
+                "constant_value": "",
+                "is_omitted": false
+            },
+            "action_taken": {
+                "type": "string",
+                "description": "The specific action the agent performed (e.g., 'task_added', 'event_scheduled', 'email_drafted', 'reminder_set').",
+                "is_system_provided": false,
+                "dynamic_variable": "",
+                "allowed_values_dynamic_variable": "",
+                "constant_value": "",
+                "is_omitted": false
+            },
+            "confirmation_obtained": {
+                "type": "boolean",
+                "description": "Whether explicit confirmation was obtained from the user before making changes to their calendar, tasks, or sending emails.",
+                "is_system_provided": false,
+                "dynamic_variable": "",
+                "allowed_values_dynamic_variable": "",
+                "constant_value": "",
+                "is_omitted": false
+            },
+            "task_or_event_date": {
+                "type": "string",
+                "description": "The date of the task or event if specified (YYYY-MM-DD format).",
+                "is_system_provided": false,
+                "dynamic_variable": "",
+                "allowed_values_dynamic_variable": "",
+                "constant_value": "",
+                "is_omitted": false
+            },
+            "task_or_event_description": {
+                "type": "string",
+                "description": "A brief description of the task or event.",
+                "is_system_provided": false,
+                "dynamic_variable": "",
+                "allowed_values_dynamic_variable": "",
+                "constant_value": "",
+                "is_omitted": false
+            }
+        },
+        "data_collection_scopes": {},
+        "overrides": {
+            "conversation_config_override": {
+                "asr": {
+                    "keywords": false
+                },
+                "turn": {
+                    "soft_timeout_config": {
+                        "message": false
+                    }
+                },
+                "tts": {
+                    "voice_id": false,
+                    "stability": false,
+                    "speed": false,
+                    "similarity_boost": false
+                },
+                "conversation": {
+                    "text_only": true
+                },
+                "agent": {
+                    "first_message": false,
+                    "language": false,
+                    "max_conversation_duration_message": false,
+                    "prompt": {
+                        "prompt": false,
+                        "llm": false,
+                        "tool_ids": false,
+                        "native_mcp_server_ids": false,
+                        "knowledge_base": false
+                    }
+                }
+            },
+            "custom_llm_extra_body": false,
+            "enable_conversation_initiation_client_data_from_webhook": false,
+            "enable_starting_workflow_node_id_from_client": false
+        },
+        "workspace_overrides": {
+            "webhooks": {
+                "post_call_webhook_id": "d9fed32e6dba4b55b0df43ad5efcca20",
+                "events": [
+                    "transcript"
+                ],
+                "transcript_format": "json",
+                "send_audio": false
+            }
+        },
+        "testing": {
+            "attached_tests": [
+                {
+                    "test_id": "test_9201kvfk10hdfa4ae1fst7t8expd"
+                }
+            ],
+            "referenced_tests_ids": [
+                "test_9201kvfk10hdfa4ae1fst7t8expd"
+            ]
+        },
+        "archived": false,
+        "guardrails": {
+            "version": "1",
+            "focus": {
+                "is_enabled": false
+            },
+            "prompt_injection": {
+                "is_enabled": false
+            },
+            "content": {
+                "execution_mode": "streaming",
+                "config": {
+                    "sexual": {
+                        "is_enabled": false,
+                        "threshold": "medium"
+                    },
+                    "violence": {
+                        "is_enabled": false,
+                        "threshold": "medium"
+                    },
+                    "harassment": {
+                        "is_enabled": false,
+                        "threshold": "medium"
+                    },
+                    "self_harm": {
+                        "is_enabled": false,
+                        "threshold": "medium"
+                    },
+                    "profanity": {
+                        "is_enabled": false,
+                        "threshold": "medium"
+                    },
+                    "religion_or_politics": {
+                        "is_enabled": false,
+                        "threshold": "medium"
+                    },
+                    "medical_and_legal_information": {
+                        "is_enabled": false,
+                        "threshold": "medium"
+                    }
+                },
+                "trigger_action": {
+                    "type": "end_call"
+                }
+            },
+            "moderation": null,
+            "custom": {
+                "config": {
+                    "configs": []
+                }
+            }
+        },
+        "auth": {
+            "enable_auth": false,
+            "allowlist": [],
+            "require_origin_header": false
+        },
+        "call_limits": {
+            "agent_concurrency_limit": -1,
+            "daily_limit": 10,
+            "bursting_enabled": true
+        },
+        "ban": null,
+        "smb_metadata": null,
+        "privacy": {
+            "record_voice": true,
+            "retention_days": -1,
+            "delete_transcript_and_pii": false,
+            "delete_audio": false,
+            "apply_to_existing_conversations": false,
+            "zero_retention_mode": false,
+            "conversation_history_redaction": {
+                "enabled": false,
+                "entities": []
+            }
+        },
+        "trust_context": "high",
+        "analysis_llm": "gemini-2.5-flash",
+        "topic_discovery": {
+            "enabled": true
+        },
+        "alerting": null,
+        "overview_dashboard_template_id": null,
+        "safety": {
+            "is_blocked_ivc": false,
+            "is_blocked_non_ivc": false,
+            "ignore_safety_evaluation": false
+        }
+    },
+    "tags": [],
+    "workflow": {
+        "edges": {},
+        "nodes": {
+            "start_node": {
+                "type": "start",
+                "position": {
+                    "x": 0,
+                    "y": 0
+                },
+                "edge_order": []
+            }
+        },
+        "prevent_subagent_loops": false
+    }
+}

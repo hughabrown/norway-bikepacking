@@ -79,6 +79,29 @@ https://fjordpilot-api.hughbrown.workers.dev
 4. Add the `Authorization` header with the same token stored as `FJORDPILOT_TOOL_TOKEN`.
 5. Run every scenario in `elevenlabs/scenario-tests.md`.
 
+The agent and tool configuration is also managed as code:
+
+```bash
+elevenlabs agents pull --agent agent_2701kvfdp91hew6vyh90mbx3ha39 --update
+elevenlabs tools pull --all --update
+elevenlabs tools push
+elevenlabs agents push --agent agent_2701kvfdp91hew6vyh90mbx3ha39
+```
+
+Tool webhooks use the ElevenLabs workspace secret `FJORDPILOT_TOOL_TOKEN` as the `Authorization` header value.
+
+The ElevenLabs workspace post-call webhook cannot use the reserved `Authorization` header. It sends the same raw token with:
+
+```text
+X-FjordPilot-Tool-Token: <token>
+```
+
+Current post-call webhook:
+
+```text
+FjordPilot post-call log -> d9fed32e6dba4b55b0df43ad5efcca20
+```
+
 ## Website Deploy
 
 The static website is served by GitHub Pages:

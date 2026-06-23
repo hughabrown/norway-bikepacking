@@ -1,7 +1,7 @@
 import { prepareTripNote, type SaveTripNoteInput } from "../fjordpilot/notes";
 import { searchTripPlaces } from "../fjordpilot/places";
 import { lookupItineraryDay } from "../fjordpilot/trip-data";
-import { isAuthorized } from "./auth";
+import { isAuthorized, isPostCallWebhookAuthorized } from "./auth";
 import { insertPostCallLog, insertTripNote } from "./d1-store";
 import { jsonResponse, optionsResponse } from "./http";
 
@@ -289,6 +289,14 @@ function requireToolAuth(request: Request, env: Env): Response | undefined {
   return undefined;
 }
 
+function requirePostCallWebhookAuth(request: Request, env: Env): Response | undefined {
+  if (!isPostCallWebhookAuthorized(request, env.FJORDPILOT_TOOL_TOKEN)) {
+    return jsonResponse({ ok: false, error: "Unauthorized" }, { status: 401 });
+  }
+
+  return undefined;
+}
+
 export async function handleRequest(
   request: Request,
   env: Env,
@@ -310,7 +318,10 @@ export async function handleRequest(
     return jsonResponse({ ok: false, error: "Not found" }, { status: 404 });
   }
 
-  const authError = requireToolAuth(request, env);
+  const authError =
+    url.pathname === "/api/fjordpilot/webhooks/post-call"
+      ? requirePostCallWebhookAuth(request, env)
+      : requireToolAuth(request, env);
   if (authError) {
     return authError;
   }

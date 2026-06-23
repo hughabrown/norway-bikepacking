@@ -1,0 +1,96 @@
+{
+    "type": "webhook",
+    "name": "search_trip_places",
+    "description": "Return ranked saved places for food, sleep, resupply, sights, detours, and fallback planning on the Norway bikepacking route.",
+    "response_timeout_secs": 15,
+    "disable_interruptions": false,
+    "force_pre_tool_speech": false,
+    "pre_tool_speech": "auto",
+    "assignments": [],
+    "tool_call_sound_behavior": "auto",
+    "tool_error_handling_mode": "auto",
+    "dynamic_variables": {
+        "dynamic_variable_placeholders": {}
+    },
+    "execution_mode": "immediate",
+    "api_schema": {
+        "request_headers": {
+            "Content-Type": "application/json",
+            "Authorization": {
+                "secret_id": "sxigwRMBXvRlxnpJCM1a"
+            }
+        },
+        "url": "https://fjordpilot-api.hughbrown.workers.dev/api/fjordpilot/tools/search_trip_places",
+        "method": "POST",
+        "path_params_schema": {},
+        "request_body_schema": {
+            "type": "object",
+            "required": [],
+            "description": "Trip place search request.",
+            "properties": {
+                "day": {
+                    "type": "integer",
+                    "description": "Optional itinerary day number for day-scoped search.",
+                    "is_system_provided": false,
+                    "dynamic_variable": "",
+                    "allowed_values_dynamic_variable": "",
+                    "constant_value": "",
+                    "is_omitted": false
+                },
+                "variant": {
+                    "type": "string",
+                    "description": "Route variant key. Defaults to besseggen when omitted.",
+                    "is_system_provided": false,
+                    "dynamic_variable": "",
+                    "allowed_values_dynamic_variable": "",
+                    "constant_value": "",
+                    "is_omitted": false
+                },
+                "near": {
+                    "type": "string",
+                    "description": "Optional town, stop, or route place to search near.",
+                    "is_system_provided": false,
+                    "dynamic_variable": "",
+                    "allowed_values_dynamic_variable": "",
+                    "constant_value": "",
+                    "is_omitted": false
+                },
+                "category": {
+                    "type": "string",
+                    "description": "Place category to search.",
+                    "enum": [
+                        "eat",
+                        "sleep",
+                        "resupply",
+                        "sight"
+                    ],
+                    "is_system_provided": false,
+                    "dynamic_variable": "",
+                    "allowed_values_dynamic_variable": "",
+                    "constant_value": "",
+                    "is_omitted": false
+                },
+                "need": {
+                    "type": "string",
+                    "description": "Plain-language need such as lunch, groceries, campsite, bailout, coffee, or viewpoint.",
+                    "is_system_provided": false,
+                    "dynamic_variable": "",
+                    "allowed_values_dynamic_variable": "",
+                    "constant_value": "",
+                    "is_omitted": false
+                },
+                "limit": {
+                    "type": "integer",
+                    "description": "Maximum number of ranked results to return, from 1 to 12.",
+                    "is_system_provided": false,
+                    "dynamic_variable": "",
+                    "allowed_values_dynamic_variable": "",
+                    "constant_value": "",
+                    "is_omitted": false
+                }
+            }
+        },
+        "content_type": "application/json",
+        "auth_resolved_params": []
+    }
+}

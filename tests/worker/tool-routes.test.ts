@@ -47,6 +47,17 @@ function post(path: string, body: unknown, token = "tool-token") {
   });
 }
 
+function postWithHeaders(path: string, body: unknown, headers: Record<string, string>) {
+  return new Request(`https://fjordpilot.test${path}`, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      ...headers,
+    },
+    body: JSON.stringify(body),
+  });
+}
+
 async function expectInvalidRequest(response: Response, error: string) {
   expect(response.status).toBe(400);
   await expect(response.json()).resolves.toEqual({
@@ -279,6 +290,25 @@ describe("FjordPilot worker routes", () => {
         summary: "Discussed day 4 bailout and Beitostolen resupply.",
         follow_up_needed: false,
       }),
+      testEnv,
+    );
+
+    expect(response.status).toBe(200);
+    await expect(response.json()).resolves.toEqual({ ok: true });
+    expect(testEnv.DB.writes.length).toBe(1);
+  });
+
+  it("accepts the ElevenLabs-compatible token header for post-call webhooks", async () => {
+    const testEnv = env();
+    const response = await handleRequest(
+      postWithHeaders(
+        "/api/fjordpilot/webhooks/post-call",
+        {
+          conversation_id: "conv_2",
+          summary: "Logged through the workspace webhook.",
+        },
+        { "x-fjordpilot-tool-token": "tool-token" },
+      ),
       testEnv,
     );
 
