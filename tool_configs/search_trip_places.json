@@ -1,7 +1,7 @@
 {
     "type": "webhook",
     "name": "search_trip_places",
-    "description": "Return ranked saved places for food, sleep, resupply, sights, detours, and fallback planning on the Norway bikepacking route.",
+    "description": "MANDATORY before answering any Norway route question about lunch, dinner, cafes, restaurants, groceries, resupply, lodging, campsites, hotels, bailouts, fallback stops, sights, or detours. Returns ranked saved places for the selected day/variant so the agent does not invent or rely on stale RAG place details.",
     "response_timeout_secs": 15,
     "disable_interruptions": false,
     "force_pre_tool_speech": false,
@@ -26,7 +26,7 @@
         "request_body_schema": {
             "type": "object",
             "required": [],
-            "description": "Trip place search request.",
+            "description": "Trip place search request. Call this before recommending named places for food, sleep, resupply, sights, bailouts, detours, or fallback stops.",
             "properties": {
                 "day": {
                     "type": "integer",

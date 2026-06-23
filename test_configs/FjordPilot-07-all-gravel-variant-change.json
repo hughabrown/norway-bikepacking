@@ -1,0 +1,45 @@
+{
+    "type": "simulation",
+    "from_conversation_metadata": {
+        "conversation_id": "",
+        "agent_id": "agent_2701kvfdp91hew6vyh90mbx3ha39",
+        "original_agent_reply": []
+    },
+    "dynamic_variables": {
+        "selected_variant_key": "gravel",
+        "selected_variant_label": "Dombas, all-gravel (no hike)",
+        "selected_variant_subtitle": "All-gravel route from Dombas to Flam",
+        "selected_variant_focused_day": "",
+        "selected_variant_focused_day_detail": "",
+        "route_page_url": "https://hughabrown.github.io/norway-bikepacking/",
+        "route_context_version": "test",
+        "selected_variant_stage_table": "Day 0 (2026-07-09): Arrive Oslo -> Oslo; 0 km; 0 m up; overnight Oslo.\nDay 1 (2026-07-10): Dombas -> Vaga; 48 km; 900 m up; overnight Vaga.\nDay 2 (2026-07-11): Vaga -> Haugseter (Vinstre); 90 km; 1750 m up; overnight Haugseter; hard day, start early.\nDay 3 (2026-07-12): Haugseter -> Vaset; 77 km; 1000 m up; overnight Vaset; Sunday groceries caveat.\nDay 4 (2026-07-13): Vaset -> Gol; 70 km; 800 m up; overnight Gol; recovery day and full-service resupply.\nDay 5 (2026-07-14): Gol -> Haugastol; 75 km; 1300 m up; overnight Haugastol; Geilo is the last big resupply before Flam.\nDay 6 (2026-07-15): Haugastol -> Flam; 83 km; 500 m up; overnight Flam.\nDay 7 (2026-07-16): Flam -> Flam; side quest or rest day.\nDay 8 (2026-07-17): Flam -> Bergen; travel day; be at the quay by 15:00 with a bike reservation.\nDay 9 (2026-07-18): Bergen -> Oslo; train day; book the bike space.\nDay 10 (2026-07-19): Oslo -> Fly home.",
+        "route_context_rule": "Use the selected-variant stage table for day, date, and route-variant questions. Use tools for richer day detail, places, bailouts, notes, and uncertainty.",
+        "default_variant": "besseggen",
+        "trip_timezone": "Europe/Oslo",
+        "current_date": "2026-06-23",
+        "current_itinerary_date": ""
+    },
+    "chat_history": [
+        {
+            "role": "agent",
+            "message": "Hello, how can I help you today?",
+            "tool_calls": [],
+            "tool_results": [],
+            "time_in_call_secs": 0,
+            "interrupted": false,
+            "used_static_kb_document_ids": [],
+            "analysis": null,
+            "user_identifier": null
+        }
+    ],
+    "success_condition": "The agent recognizes the all-gravel or gravel variant and does not continue with the Besseggen day mapping. It explains the main sequencing changes, including no Besseggen hike and the all-gravel Day 4 being Vaset to Gol, or asks one concise clarification before comparing.",
+    "simulation_scenario": "The simulated user opens by asking exactly: \"What changes if I mean the all-gravel variant?\" If the agent asks what to compare against, answer: \"Compared with the Besseggen version.\"",
+    "simulation_max_turns": 2,
+    "tool_mock_config": {
+        "mocking_strategy": "none",
+        "fallback_strategy": "raise_error",
+        "mocked_tool_ids": []
+    },
+    "name": "FjordPilot 07 all-gravel variant change"
+}

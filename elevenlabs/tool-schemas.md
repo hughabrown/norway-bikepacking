@@ -43,7 +43,7 @@ Request schema:
 
 - Method: `POST`
 - Path: `/api/fjordpilot/tools/search_trip_places`
-- Description: Return ranked saved places for food, sleep, resupply, sights, and fallback planning.
+- Description: Mandatory before answering trip-specific questions about lunch, dinner, cafes, restaurants, groceries, resupply, lodging, campsites, hotels, bailouts, fallback stops, sights, or detours. Return ranked saved places for food, sleep, resupply, sights, and fallback planning.
 
 Request schema:
 

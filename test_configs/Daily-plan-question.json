@@ -1,0 +1,32 @@
+{
+    "type": "simulation",
+    "from_conversation_metadata": {
+        "conversation_id": "",
+        "agent_id": "agent_2701kvfdp91hew6vyh90mbx3ha39",
+        "original_agent_reply": []
+    },
+    "dynamic_variables": {},
+    "chat_history": [
+        {
+            "role": "agent",
+            "message": "Hello, how can I help you today?",
+            "tool_calls": [],
+            "tool_results": [],
+            "time_in_call_secs": 0,
+            "interrupted": false,
+            "used_static_kb_document_ids": [],
+            "analysis": null,
+            "user_identifier": null
+        }
+    ],
+    "simulation_scenario": "A user asks about a plan on a particular day of the trip",
+    "simulation_max_turns": 1,
+    "tool_mock_config": {
+        "mocking_strategy": "none",
+        "fallback_strategy": "raise_error",
+        "mocked_tool_ids": []
+    },
+    "id": "test_9201kvfk10hdfa4ae1fst7t8expd",
+    "name": "Daily plan question",
+    "success_condition": "The agent successfully sources information from the trip plan and accurately answers their question"
+}

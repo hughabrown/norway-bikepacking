@@ -1,0 +1,45 @@
+{
+    "type": "simulation",
+    "from_conversation_metadata": {
+        "conversation_id": "",
+        "agent_id": "agent_2701kvfdp91hew6vyh90mbx3ha39",
+        "original_agent_reply": []
+    },
+    "dynamic_variables": {
+        "selected_variant_key": "besseggen",
+        "selected_variant_label": "Dombas + Besseggen",
+        "selected_variant_subtitle": "Dombas to Flam via Besseggen",
+        "selected_variant_focused_day": "",
+        "selected_variant_focused_day_detail": "",
+        "route_page_url": "https://hughabrown.github.io/norway-bikepacking/",
+        "route_context_version": "test",
+        "selected_variant_stage_table": "Day 0 (2026-07-09): Arrive Oslo -> Oslo; 0 km; 0 m up; overnight Oslo; last easy chance for stove gas, spares, and a big dinner.\nDay 1 (2026-07-10): Dombas -> Vaga; 48 km; 900 m up; overnight Vaga; afternoon-start transit day; buy lunch and dinner in Dombas.\nDay 2 (2026-07-11): Vaga -> Gjendesheim; 52 km; 650 m up; overnight Gjendesheim; confirm the next morning Gjende boat to Memurubu.\nDay 3 (2026-07-12): Besseggen ridge -> Gjendesheim; 0 km riding; 1100 m hike ascent; overnight Gjendesheim; skip the hike if it is storming.\nDay 4 (2026-07-13): Gjendesheim -> Vaset; 89 km; 1500 m up; overnight Vaset; longest riding day after the hike; bailout is Beitostolen at km 38.\nDay 5 (2026-07-14): Vaset -> Gol; 70 km; 800 m up; overnight Gol; recovery day and full-service resupply.\nDay 6 (2026-07-15): Gol -> Haugastol; 75 km; 1300 m up; overnight Haugastol; Geilo is the last big resupply before Flam.\nDay 7 (2026-07-16): Haugastol -> Flam; 83 km; 500 m up; overnight Flam; long but net-downhill after Finse; finish in Flam.\nDay 8 (2026-07-17): Flam -> Bergen; travel day; be at the Flam quay by 15:00 with a bike reservation.\nDay 9 (2026-07-18): Bergen -> Oslo; train day; book the bike space.\nDay 10 (2026-07-19): Oslo -> Fly home.",
+        "route_context_rule": "Use the selected-variant stage table for day, date, and route-variant questions. Use tools for richer day detail, places, bailouts, notes, and uncertainty.",
+        "default_variant": "besseggen",
+        "trip_timezone": "Europe/Oslo",
+        "current_date": "2026-06-23",
+        "current_itinerary_date": ""
+    },
+    "chat_history": [
+        {
+            "role": "agent",
+            "message": "Hello, how can I help you today?",
+            "tool_calls": [],
+            "tool_results": [],
+            "time_in_call_secs": 0,
+            "interrupted": false,
+            "used_static_kb_document_ids": [],
+            "analysis": null,
+            "user_identifier": null
+        }
+    ],
+    "success_condition": "The agent treats the question as the Besseggen Day 4 route from Gjendesheim to Vaset. It uses search_trip_places or equivalent tool-backed place context for day 4 lunch, recommends Beitostolen and/or Vaset-relevant lunch or resupply options, and states that opening hours should be checked or are uncertain.",
+    "simulation_scenario": "The simulated user opens by asking exactly: \"Where can we go for lunch on day 4?\" If the agent asks which variant, answer: \"The default Besseggen variant.\" Do not add other constraints.",
+    "simulation_max_turns": 1,
+    "tool_mock_config": {
+        "mocking_strategy": "none",
+        "fallback_strategy": "raise_error",
+        "mocked_tool_ids": []
+    },
+    "name": "FjordPilot 01 lunch on day 4"
+}

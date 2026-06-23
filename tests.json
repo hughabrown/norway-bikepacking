@@ -1,0 +1,69 @@
+{
+    "tests": [
+        {
+            "config": "test_configs/Daily-plan-question.json",
+            "id": "test_9201kvfk10hdfa4ae1fst7t8expd",
+            "type": "simulation"
+        },
+        {
+            "config": "test_configs/FjordPilot-01-lunch-day-4.json",
+            "type": "simulation",
+            "id": "test_6101kvtgvtwjf5esand8tab25zkp"
+        },
+        {
+            "config": "test_configs/FjordPilot-02-day-7-plan.json",
+            "type": "simulation",
+            "id": "test_5801kvtgvv3df01sajt5a1h7gz3c"
+        },
+        {
+            "config": "test_configs/FjordPilot-03-last-grocery-remote-section.json",
+            "type": "simulation",
+            "id": "test_0401kvtgvx17ec78jzh4b37zrj9r"
+        },
+        {
+            "config": "test_configs/FjordPilot-04-day-4-bailout-stay.json",
+            "type": "simulation",
+            "id": "test_7301kvtgvx88fb0s8ddtahnrjmve"
+        },
+        {
+            "config": "test_configs/FjordPilot-05-day-4-watch-outs.json",
+            "type": "simulation",
+            "id": "test_8901kvtgvxhqf6kspkvx6s9zwht0"
+        },
+        {
+            "config": "test_configs/FjordPilot-06-guarded-save-note.json",
+            "type": "simulation",
+            "id": "test_7301kvtgvxr4fqp85chbwfca51h3"
+        },
+        {
+            "config": "test_configs/FjordPilot-07-all-gravel-variant-change.json",
+            "type": "simulation",
+            "id": "test_3901kvtgvxz9fh5a4qchewptqwyn"
+        },
+        {
+            "config": "test_configs/FjordPilot-08-today-bailout-inside-itinerary.json",
+            "type": "simulation",
+            "id": "test_1501kvtgvy56fabsy4hydhn3vs2e"
+        },
+        {
+            "config": "test_configs/FjordPilot-09-today-bailout-outside-itinerary.json",
+            "type": "simulation",
+            "id": "test_9101kvtgvybgekgaz2zq7dfczv8t"
+        },
+        {
+            "config": "test_configs/FjordPilot-10-next-five-days-v1.json",
+            "type": "simulation",
+            "id": "test_1401kvtgvyhyf3zb3hrfjpx3zh51"
+        },
+        {
+            "config": "test_configs/FjordPilot-11-better-trip-v1.json",
+            "type": "simulation",
+            "id": "test_5101kvtgvyrcfjbvcc0fkvyf1g38"
+        },
+        {
+            "config": "test_configs/FjordPilot-12-side-quest-change-v1.json",
+            "type": "simulation",
+            "id": "test_7701kvtgvyxzebvbb3nvhrszbnkz"
+        }
+    ]
+}
