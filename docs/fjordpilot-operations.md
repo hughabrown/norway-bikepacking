@@ -153,7 +153,8 @@ Runner environment:
 export FJORDPILOT_API_BASE_URL="https://fjordpilot-api.hughbrown.workers.dev"
 export FJORDPILOT_ADMIN_TOKEN="<admin or tool token>"
 export FJORDPILOT_REPO_ROOT="/Users/hughbrown/coding/live/norway-bikepacking"
-export FJORDPILOT_DEEP_ANALYSIS_MODEL="gpt-5"
+# Optional. Leave unset to use the model in ~/.codex/config.toml.
+export FJORDPILOT_DEEP_ANALYSIS_MODEL="gpt-5.5"
 ```
 
 Run one queued job:
@@ -165,7 +166,7 @@ node ops/hermes/fjordpilot-deep-runner.mjs --once
 Hermes should schedule repeated one-shot runs rather than keeping a long-running process alive. The runner uses:
 
 ```text
-codex exec --sandbox read-only --ephemeral --cd <repo> --output-last-message <tmpfile> --model <model> -
+codex exec --sandbox read-only --ephemeral --cd <repo> --output-last-message <tmpfile> [-m <model>] -
 ```
 
 Admin endpoints used by the runner:

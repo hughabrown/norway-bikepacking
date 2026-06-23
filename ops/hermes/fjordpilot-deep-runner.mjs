@@ -5,7 +5,7 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 const DEFAULT_API_BASE_URL = "https://fjordpilot-api.hughbrown.workers.dev";
-const DEFAULT_MODEL = "gpt-5";
+const DEFAULT_MODEL_LABEL = "codex-config-default";
 
 export function safeJobId(id) {
   return String(id)
@@ -34,7 +34,7 @@ export function buildRunnerPrompt(job) {
   ].join("\n");
 }
 
-export function buildCodexArgs({ model = DEFAULT_MODEL, repoRoot, outputPath } = {}) {
+export function buildCodexArgs({ model, repoRoot, outputPath } = {}) {
   const args = [
     "exec",
     "--sandbox",
@@ -56,7 +56,7 @@ export function buildCodexArgs({ model = DEFAULT_MODEL, repoRoot, outputPath } =
 
 export function runCodexAnalysis(job, options) {
   const repoRoot = options.repoRoot;
-  const model = options.model ?? DEFAULT_MODEL;
+  const model = options.model;
   const codexBin = options.codexBin ?? "codex";
   const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "fjordpilot-deep-"));
   const outputPath = path.join(tmpDir, "answer.md");
@@ -116,7 +116,7 @@ export async function completeJob(options, job, answer) {
     {
       request_id: job.id,
       answer,
-      model: options.model ?? DEFAULT_MODEL,
+      model: options.model || DEFAULT_MODEL_LABEL,
       runner: options.runnerName,
     },
   );
@@ -176,7 +176,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
     apiBaseUrl: process.env.FJORDPILOT_API_BASE_URL || DEFAULT_API_BASE_URL,
     adminToken,
     repoRoot,
-    model: process.env.FJORDPILOT_DEEP_ANALYSIS_MODEL || DEFAULT_MODEL,
+    model: process.env.FJORDPILOT_DEEP_ANALYSIS_MODEL?.trim() || undefined,
     codexBin: process.env.FJORDPILOT_CODEX_BIN || "codex",
     runnerName: process.env.FJORDPILOT_RUNNER_NAME || "hermes-codex",
   });

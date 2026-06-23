@@ -46,4 +46,13 @@ describe("fjordpilot deep runner helpers", () => {
       "-",
     ]);
   });
+
+  it("uses the local Codex default model when no model is provided", () => {
+    const args = buildCodexArgs({
+      repoRoot: "/repo",
+      outputPath: "/tmp/answer.md",
+    });
+
+    assert.equal(args.includes("--model"), false);
+  });
 });
