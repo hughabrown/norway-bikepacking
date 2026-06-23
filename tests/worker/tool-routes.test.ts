@@ -47,6 +47,14 @@ function post(path: string, body: unknown, token = "tool-token") {
   });
 }
 
+async function expectInvalidRequest(response: Response, error: string) {
+  expect(response.status).toBe(400);
+  await expect(response.json()).resolves.toEqual({
+    ok: false,
+    error: `Invalid request: ${error}`,
+  });
+}
+
 describe("FjordPilot worker routes", () => {
   it("returns health without auth", async () => {
     const response = await handleRequest(
@@ -90,6 +98,24 @@ describe("FjordPilot worker routes", () => {
     expect(json.stage.to).toBe("Vaset");
   });
 
+  it("rejects lookup_itinerary_day when day is missing", async () => {
+    const response = await handleRequest(
+      post("/api/fjordpilot/tools/lookup_itinerary_day", {}),
+      env(),
+    );
+
+    await expectInvalidRequest(response, "day is required");
+  });
+
+  it("rejects lookup_itinerary_day when day is not an integer", async () => {
+    const response = await handleRequest(
+      post("/api/fjordpilot/tools/lookup_itinerary_day", { day: "4" }),
+      env(),
+    );
+
+    await expectInvalidRequest(response, "day must be an integer");
+  });
+
   it("serves search_trip_places", async () => {
     const response = await handleRequest(
       post("/api/fjordpilot/tools/search_trip_places", {
@@ -107,6 +133,33 @@ describe("FjordPilot worker routes", () => {
     };
     expect(json.ok).toBe(true);
     expect(json.places.map((place) => place.name)).toContain("SPAR Beitostolen");
+  });
+
+  it("rejects search_trip_places when near is not a string", async () => {
+    const response = await handleRequest(
+      post("/api/fjordpilot/tools/search_trip_places", { near: 4 }),
+      env(),
+    );
+
+    await expectInvalidRequest(response, "near must be a string");
+  });
+
+  it("rejects search_trip_places when limit is not an integer", async () => {
+    const response = await handleRequest(
+      post("/api/fjordpilot/tools/search_trip_places", { limit: "4" }),
+      env(),
+    );
+
+    await expectInvalidRequest(response, "limit must be an integer between 1 and 12");
+  });
+
+  it("rejects search_trip_places when limit is out of range", async () => {
+    const response = await handleRequest(
+      post("/api/fjordpilot/tools/search_trip_places", { limit: 13 }),
+      env(),
+    );
+
+    await expectInvalidRequest(response, "limit must be an integer between 1 and 12");
   });
 
   it("persists save_trip_note through D1", async () => {
@@ -132,6 +185,64 @@ describe("FjordPilot worker routes", () => {
     expect(json.ok).toBe(true);
     expect(json.note.location).toBe("Beitostolen");
     expect(testEnv.DB.writes.length).toBe(1);
+  });
+
+  it("rejects save_trip_note when note is missing", async () => {
+    const response = await handleRequest(
+      post("/api/fjordpilot/tools/save_trip_note", {
+        category: "decision",
+        confirmed: true,
+        write_gate: "fjord-2026",
+      }),
+      env(),
+    );
+
+    await expectInvalidRequest(response, "note is required");
+  });
+
+  it("rejects save_trip_note when note is not a string", async () => {
+    const response = await handleRequest(
+      post("/api/fjordpilot/tools/save_trip_note", {
+        category: "decision",
+        note: false,
+        confirmed: true,
+        write_gate: "fjord-2026",
+      }),
+      env(),
+    );
+
+    await expectInvalidRequest(response, "note must be a string");
+  });
+
+  it("rejects save_trip_note when category is not supported", async () => {
+    const response = await handleRequest(
+      post("/api/fjordpilot/tools/save_trip_note", {
+        category: 7,
+        note: "Stay in Beitostolen if day 4 is too hard.",
+        confirmed: true,
+        write_gate: "fjord-2026",
+      }),
+      env(),
+    );
+
+    await expectInvalidRequest(
+      response,
+      "category must be one of: decision, mechanical, food, weather, lodging, follow_up",
+    );
+  });
+
+  it("rejects save_trip_note when confirmed is not a boolean", async () => {
+    const response = await handleRequest(
+      post("/api/fjordpilot/tools/save_trip_note", {
+        category: "decision",
+        note: "Stay in Beitostolen if day 4 is too hard.",
+        confirmed: "yes",
+        write_gate: "fjord-2026",
+      }),
+      env(),
+    );
+
+    await expectInvalidRequest(response, "confirmed must be a boolean");
   });
 
   it("stores post-call webhook payloads", async () => {

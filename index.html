@@ -494,7 +494,7 @@ footer a{color:var(--ink-soft)}
   /* ---------- variants ---------- */
   var variants = TRIP.variants || {};
   var variantKeys = Object.keys(variants);
-  var current = variantKeys[0] || null;
+  var current = variants.besseggen ? 'besseggen' : (variantKeys[0] || null);
   var currentFocusDay = '';
   var tripTimezone = 'Europe/Oslo';
 

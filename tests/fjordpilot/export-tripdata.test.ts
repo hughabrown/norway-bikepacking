@@ -31,4 +31,12 @@ describe("tripdata export foundation", () => {
     expect(Object.keys(exportedTripData.variants)).toContain("besseggen");
     expect(Object.keys(exportedTripData.variants)).toContain("gravel");
   });
+
+  test("index.html prefers the besseggen variant when it is available", () => {
+    const repoRoot = process.cwd();
+    const indexPath = path.join(repoRoot, "index.html");
+    const indexSource = fs.readFileSync(indexPath, "utf8");
+
+    expect(indexSource).toContain("var current = variants.besseggen ? 'besseggen' : (variantKeys[0] || null);");
+  });
 });
