@@ -106,3 +106,41 @@ export type ResolveDateResult =
       error: string;
       validDateRange: { start: string; end: string };
     };
+
+export type PlaceCategory = "eat" | "sleep" | "resupply" | "sight";
+
+export interface SearchTripPlacesInput {
+  day?: number;
+  variant?: string;
+  near?: string;
+  category?: PlaceCategory;
+  need?: string;
+  limit?: number;
+}
+
+export interface RankedTripPlace {
+  name: string;
+  category: PlaceCategory;
+  type: string;
+  near: string;
+  description: string;
+  price: string | undefined;
+  coordinates: { lat: number; lng: number } | undefined;
+  googleMapsUrl: string | undefined;
+  confidence: "high" | "medium";
+  uncertaintyNotes: string[];
+}
+
+export type SearchTripPlacesResult =
+  | {
+      ok: true;
+      variant: string;
+      day: number | undefined;
+      query: SearchTripPlacesInput;
+      places: RankedTripPlace[];
+    }
+  | {
+      ok: false;
+      error: string;
+      validVariants: string[];
+    };
