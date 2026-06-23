@@ -1,7 +1,7 @@
 {
     "type": "webhook",
     "name": "start_deep_trip_analysis",
-    "description": "MANDATORY for broad Norway trip-planning questions that need whole-itinerary reasoning, slower compute, or a more capable async model. Use for questions like whether there is a better way to do the trip, highlights of the next five days, route improvement, variant comparison, weather-driven replanning, or substantial tradeoff analysis. Returns quickly with a queued request id; do not invent the final deep answer until an async runner completes it.",
+    "description": "MANDATORY for broad Norway trip-planning questions that need whole-itinerary reasoning, slower compute, or a more capable async model. Use for questions like whether there is a better way to do the trip, highlights of the next five days, route improvement, variant comparison, weather-driven replanning, or substantial tradeoff analysis. Returns quickly with an internal queued request id; do not read that id aloud unless Hugh explicitly asks for it, and do not invent the final deep answer until an async runner completes it.",
     "response_timeout_secs": 15,
     "disable_interruptions": false,
     "force_pre_tool_speech": false,

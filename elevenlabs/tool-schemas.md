@@ -91,7 +91,7 @@ Request schema:
 
 - Method: `POST`
 - Path: `/api/fjordpilot/tools/start_deep_trip_analysis`
-- Description: Queue an async deep itinerary analysis request for broad planning questions that need whole-itinerary reasoning, slower compute, or a more capable model.
+- Description: Queue an async deep itinerary analysis request for broad planning questions that need whole-itinerary reasoning, slower compute, or a more capable model. The returned request id is for internal follow-up calls and should not be read aloud unless Hugh explicitly asks for it.
 
 Request schema:
 
@@ -147,7 +147,7 @@ Completed response shape:
 ```json
 {
   "ok": true,
-  "request_id": "uuid",
+  "request_id": "uuid-for-internal-follow-up",
   "status": "completed",
   "variant": "besseggen",
   "analysis_type": "multi_day_highlights",
