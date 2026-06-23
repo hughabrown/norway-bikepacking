@@ -94,7 +94,7 @@ function scorePlace(place: RankedTripPlace, input: SearchTripPlacesInput, stopKe
   if (stopKeys.has(near)) score += 50;
   if (input.near && near.includes(normalize(input.near))) score += 50;
   if (input.category && place.category === input.category) score += 40;
-  if (input.category === "eat" && place.category === "resupply") score += 40;
+  if (input.category === "eat" && place.category === "resupply") score += 18;
   if (input.need) {
     for (const token of normalize(input.need).split(" ").filter(Boolean)) {
       if (name.includes(token)) score += 8;
@@ -108,15 +108,16 @@ function scorePlace(place: RankedTripPlace, input: SearchTripPlacesInput, stopKe
 
 export function searchTripPlaces(input: SearchTripPlacesInput): SearchTripPlacesResult {
   const trip = getTrip();
+  const requestedVariant = input.variant?.trim();
   const validVariants = getValidVariants();
-  if (input.variant && !trip.variants[input.variant]) {
-    return { ok: false, error: `Unknown variant: ${input.variant}`, validVariants };
+  if (requestedVariant && !trip.variants[requestedVariant]) {
+    return { ok: false, error: `Unknown variant: ${requestedVariant}`, validVariants };
   }
-  const variant = getVariantKey(input.variant);
+  const variant = getVariantKey(requestedVariant);
   const stageResult =
     typeof input.day === "number"
-      ? input.variant
-        ? lookupItineraryDay({ day: input.day, variant: input.variant })
+      ? requestedVariant
+        ? lookupItineraryDay({ day: input.day, variant: requestedVariant })
         : lookupItineraryDay({ day: input.day })
       : undefined;
   if (stageResult && !stageResult.ok) {
@@ -162,19 +163,40 @@ export function searchTripPlaces(input: SearchTripPlacesInput): SearchTripPlaces
     }
   }
 
-  const ranked = places
+  const scored = places
     .filter((place) => !input.category || place.category === input.category || (input.category === "eat" && place.category === "resupply"))
     .map((place) => ({ place, score: scorePlace(place, input, stopKeys) }))
     .filter((entry) => entry.score > 0 || !input.day)
-    .sort((a, b) => b.score - a.score || a.place.name.localeCompare(b.place.name))
-    .slice(0, input.limit ?? 8)
-    .map((entry) => entry.place);
+    .sort((a, b) => b.score - a.score || a.place.name.localeCompare(b.place.name));
+
+  const limit = input.limit ?? 8;
+  const shouldPromoteResupply =
+    input.category === "eat" && normalize(input.need ?? "").split(" ").includes("lunch");
+
+  const ranked = shouldPromoteResupply
+    ? (() => {
+        const top = scored.slice(0, limit);
+        if (top.some((entry) => entry.place.category === "resupply")) return top.slice(0, limit);
+
+        const resupplyEntry = scored.find((entry) => entry.place.category === "resupply");
+        if (!resupplyEntry) return top;
+
+        if (top.length >= limit) {
+          const replacedTop = top.slice(0, limit - 1);
+          return [...replacedTop, resupplyEntry];
+        }
+
+        return [...top, resupplyEntry];
+      })()
+    : scored.slice(0, limit);
+
+  const placeResults = ranked.map((entry) => entry.place);
 
   return {
     ok: true,
     variant,
     day: input.day,
     query: input,
-    places: ranked,
+    places: placeResults,
   };
 }

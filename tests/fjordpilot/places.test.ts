@@ -33,4 +33,13 @@ describe("searchTripPlaces", () => {
       expect(result.error).toBe("Unknown variant: full");
     }
   });
+
+  it("trims variant input before lookup", () => {
+    const result = searchTripPlaces({ day: 4, variant: "besseggen ", category: "eat", need: "lunch" });
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.variant).toBe("besseggen");
+    }
+  });
 });
