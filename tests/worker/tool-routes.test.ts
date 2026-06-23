@@ -231,6 +231,19 @@ describe("FjordPilot worker routes", () => {
     );
   });
 
+  it("rejects save_trip_note when category is missing", async () => {
+    const response = await handleRequest(
+      post("/api/fjordpilot/tools/save_trip_note", {
+        note: "Stay in Beitostolen if day 4 is too hard.",
+        confirmed: true,
+        write_gate: "fjord-2026",
+      }),
+      env(),
+    );
+
+    await expectInvalidRequest(response, "category is required");
+  });
+
   it("rejects save_trip_note when confirmed is not a boolean", async () => {
     const response = await handleRequest(
       post("/api/fjordpilot/tools/save_trip_note", {
@@ -243,6 +256,19 @@ describe("FjordPilot worker routes", () => {
     );
 
     await expectInvalidRequest(response, "confirmed must be a boolean");
+  });
+
+  it("rejects save_trip_note when confirmed is missing", async () => {
+    const response = await handleRequest(
+      post("/api/fjordpilot/tools/save_trip_note", {
+        category: "decision",
+        note: "Stay in Beitostolen if day 4 is too hard.",
+        write_gate: "fjord-2026",
+      }),
+      env(),
+    );
+
+    await expectInvalidRequest(response, "confirmed is required");
   });
 
   it("stores post-call webhook payloads", async () => {
