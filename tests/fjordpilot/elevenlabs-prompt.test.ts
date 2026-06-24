@@ -20,7 +20,13 @@ function readAgentConfig(): {
       suggested_audio_tags: Array<{ tag: string }>;
     };
   };
-  workflow: { nodes: Record<string, { additional_prompt?: string }> };
+  workflow: {
+    nodes: Record<string, { additional_prompt?: string }>;
+    edges: Record<
+      string,
+      { forward_condition?: { type: string; condition?: string } }
+    >;
+  };
 } {
   return JSON.parse(readText("agent_configs/PersonalAssistant.json"));
 }
@@ -85,5 +91,30 @@ describe("ElevenLabs prompt contract", () => {
     expect(tags.length).toBeLessThanOrEqual(5);
     expect(speakerText).toMatch(/\[slow\]/);
     expect(speakerText).toMatch(/Do not use expressive tags in every response/i);
+  });
+
+  it("answers whole-trip must-see highlights without the async deep path", () => {
+    const config = readAgentConfig();
+    const speakerText = speakerFacingAgentText();
+    const startTool = JSON.parse(readText("tool_configs/start_deep_trip_analysis.json")) as {
+      description: string;
+    };
+    const routeConcierge = config.workflow.nodes.route_concierge;
+    const routeToDeep = config.workflow.edges.route_to_deep_analysis;
+
+    expect(speakerText).toMatch(
+      /whole-trip top highlights, must-see stops, best moments, or what not to miss/i,
+    );
+    expect(speakerText).toMatch(
+      /Do not call `start_deep_trip_analysis` for whole-trip highlight questions/i,
+    );
+    expect(routeConcierge).toBeDefined();
+    expect(routeToDeep).toBeDefined();
+    expect(routeConcierge?.additional_prompt).toMatch(/whole-trip top highlights/i);
+    expect(routeToDeep?.forward_condition?.condition).toMatch(
+      /Simple whole-trip top highlights and must-see summaries should stay with the route concierge/i,
+    );
+    expect(startTool.description).not.toMatch(/\btrip highlights\b/i);
+    expect(startTool.description).toMatch(/next-five-days highlights/i);
   });
 });

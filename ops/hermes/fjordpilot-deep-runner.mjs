@@ -6,6 +6,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 const DEFAULT_API_BASE_URL = "https://fjordpilot-api.hughbrown.workers.dev";
 const DEFAULT_MODEL_LABEL = "codex-config-default";
+const DEFAULT_CODEX_TIMEOUT_MS = 240000;
 
 export function safeJobId(id) {
   return String(id)
@@ -54,6 +55,15 @@ export function buildCodexArgs({ model, repoRoot, outputPath } = {}) {
   return args;
 }
 
+export function buildCodexSpawnOptions({ repoRoot, timeoutMs } = {}) {
+  return {
+    cwd: repoRoot,
+    encoding: "utf8",
+    maxBuffer: 20 * 1024 * 1024,
+    timeout: timeoutMs ?? DEFAULT_CODEX_TIMEOUT_MS,
+  };
+}
+
 export function runCodexAnalysis(job, options) {
   const repoRoot = options.repoRoot;
   const model = options.model;
@@ -64,11 +74,13 @@ export function runCodexAnalysis(job, options) {
   const prompt = buildRunnerPrompt(job);
 
   const result = spawnSync(codexBin, args, {
-    cwd: repoRoot,
     input: prompt,
-    encoding: "utf8",
-    maxBuffer: 20 * 1024 * 1024,
+    ...buildCodexSpawnOptions({ repoRoot, timeoutMs: options.timeoutMs }),
   });
+
+  if (result.error) {
+    throw new Error(`Codex analysis failed: ${result.error.message}`);
+  }
 
   if (result.status !== 0) {
     const stderr = result.stderr?.trim() || "Codex exited without stderr.";
@@ -177,6 +189,9 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
     adminToken,
     repoRoot,
     model: process.env.FJORDPILOT_DEEP_ANALYSIS_MODEL?.trim() || undefined,
+    timeoutMs:
+      Number.parseInt(process.env.FJORDPILOT_DEEP_ANALYSIS_TIMEOUT_MS || "", 10) ||
+      undefined,
     codexBin: process.env.FJORDPILOT_CODEX_BIN || "codex",
     runnerName: process.env.FJORDPILOT_RUNNER_NAME || "hermes-codex",
   });

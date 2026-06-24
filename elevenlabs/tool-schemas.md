@@ -91,7 +91,7 @@ Request schema:
 
 - Method: `POST`
 - Path: `/api/fjordpilot/tools/start_deep_trip_analysis`
-- Description: Start async deep itinerary analysis for broad planning questions that need whole-itinerary reasoning, slower compute, or a more capable model. The returned internal reference is for follow-up calls and should not be read aloud.
+- Description: Start async deep itinerary analysis for broad planning questions that need whole-itinerary reasoning, slower compute, or a more capable model, such as route improvements, next-five-days highlights, variant comparison, weather-driven replanning, or substantial tradeoffs. Do not use this for simple whole-trip must-see summaries that can be answered from route context. The returned internal reference is for follow-up calls and should not be read aloud.
 
 Request schema:
 

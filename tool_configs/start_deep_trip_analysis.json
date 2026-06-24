@@ -1,7 +1,7 @@
 {
     "type": "webhook",
     "name": "start_deep_trip_analysis",
-    "description": "Use for broad Norway trip-planning questions that need whole-itinerary reasoning, slower compute, or a more capable async model. Examples include whether there is a better way to do the trip, trip highlights, route improvement, variant comparison, weather-driven replanning, or substantial tradeoff analysis. Returns an internal reference for follow-up; do not read it aloud.",
+    "description": "Use for broad Norway trip-planning questions that need whole-itinerary reasoning, slower compute, or a more capable async model. Examples include whether there is a better way to do the trip, next-five-days highlights, route improvement, variant comparison, weather-driven replanning, or substantial tradeoff analysis. Do not use for simple whole-trip must-see summaries that can be answered from route context. Returns an internal reference for follow-up; do not read it aloud.",
     "response_timeout_secs": 15,
     "disable_interruptions": false,
     "force_pre_tool_speech": false,

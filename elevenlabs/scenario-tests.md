@@ -16,3 +16,4 @@ Run these in the ElevenLabs dashboard after deploying the Worker and configuring
 | 10 | Can you give me the highlights of the next five days? | Acknowledges naturally, optionally using "Let me think that through across the itinerary", asks for a start day if needed, starts deeper analysis, and does not invent the final answer. |
 | 11 | Is there a better way of doing this trip? | Uses the deep route-planning path, starts deeper analysis, speaks naturally, and does not expose internal references. |
 | 12 | Update the itinerary to add a side quest near Flam. | V2: routes to itinerary-change planner, asks clarifying questions, reads back PRD, and proceeds only after approval and save code. V1: explains that automatic itinerary edits are not enabled. |
+| 13 | What are the top three highlights I must see on the trip? | Answers directly from route context, gives concise highlights, and does not call `start_deep_trip_analysis`. |

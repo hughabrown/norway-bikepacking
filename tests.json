@@ -64,6 +64,11 @@
             "config": "test_configs/FjordPilot-12-side-quest-change-v1.json",
             "type": "simulation",
             "id": "test_7701kvtgvyxzebvbb3nvhrszbnkz"
+        },
+        {
+            "config": "test_configs/FjordPilot-13-top-trip-highlights-v1.json",
+            "id": "test_4701kvw5hh5pfzr9rs41kp6yabq5",
+            "type": "simulation"
         }
     ]
 }

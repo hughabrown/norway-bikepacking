@@ -1,10 +1,16 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import {
   buildCodexArgs,
+  buildCodexSpawnOptions,
   buildRunnerPrompt,
   safeJobId,
 } from "./fjordpilot-deep-runner.mjs";
+
+const moduleDir = path.dirname(fileURLToPath(import.meta.url));
 
 describe("fjordpilot deep runner helpers", () => {
   it("sanitizes job ids for log and branch-safe labels", () => {
@@ -47,6 +53,19 @@ describe("fjordpilot deep runner helpers", () => {
     ]);
   });
 
+  it("builds Codex spawn options with a default timeout", () => {
+    assert.deepEqual(buildCodexSpawnOptions({ repoRoot: "/repo" }), {
+      cwd: "/repo",
+      encoding: "utf8",
+      maxBuffer: 20 * 1024 * 1024,
+      timeout: 240000,
+    });
+    assert.equal(
+      buildCodexSpawnOptions({ repoRoot: "/repo", timeoutMs: 120000 }).timeout,
+      120000,
+    );
+  });
+
   it("uses the local Codex default model when no model is provided", () => {
     const args = buildCodexArgs({
       repoRoot: "/repo",
@@ -54,5 +73,26 @@ describe("fjordpilot deep runner helpers", () => {
     });
 
     assert.equal(args.includes("--model"), false);
+  });
+
+  it("ships launchd scripts for repeated one-shot runs", () => {
+    const runner = fs.readFileSync(
+      path.join(moduleDir, "run-fjordpilot-deep-runner.zsh"),
+      "utf8",
+    );
+    const installer = fs.readFileSync(
+      path.join(moduleDir, "install-launchd-runner.zsh"),
+      "utf8",
+    );
+
+    assert.match(
+      runner,
+      /security find-generic-password -s fjordpilot -a FJORDPILOT_TOOL_TOKEN -w/,
+    );
+    assert.match(runner, /mkdir "\$LOCK_DIR"/);
+    assert.doesNotMatch(runner, /\nexec "\$NODE_BIN"/);
+    assert.match(installer, /StartInterval/);
+    assert.match(installer, /RunAtLoad/);
+    assert.match(installer, /launchctl bootstrap/);
   });
 });

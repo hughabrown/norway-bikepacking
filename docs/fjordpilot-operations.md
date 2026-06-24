@@ -77,6 +77,24 @@ Current production Worker URL:
 https://fjordpilot-api.hughbrown.workers.dev
 ```
 
+## Deep Analysis Runner
+
+The async deep-analysis tools only queue work. A local Hermes/Codex runner must be scheduled to claim queued jobs and complete them.
+
+Store the tool token in the macOS Keychain for launchd:
+
+```bash
+security add-generic-password -s fjordpilot -a FJORDPILOT_TOOL_TOKEN -w '<token>' -U
+```
+
+Install or refresh the per-user LaunchAgent:
+
+```bash
+ops/hermes/install-launchd-runner.zsh
+```
+
+The LaunchAgent runs one locked runner pass every 60 seconds and at load. Logs are written to `~/Library/Logs/fjordpilot/deep-runner.log` and `~/Library/Logs/fjordpilot/deep-runner.err.log`.
+
 ## ElevenLabs Dashboard
 
 1. Open agent `agent_2701kvfdp91hew6vyh90mbx3ha39`.
